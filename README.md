@@ -13,4 +13,7 @@
  Adafruit PWM Servo Driver Library<br>
  Adafruit BUS IO
 
-
+## 使い方
+* シリアルモニタ等で115200bpsで接続
+* wキー　エンター1回で間歇クロール待機状態
+* ここで何かキーを押すと歩行開始．
