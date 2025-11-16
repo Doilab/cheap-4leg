@@ -128,7 +128,8 @@ void SetAnglesFromArray(float Angles_array_in[4][3])
 
 char calcIK_Leg(double *th1L_out, double *th2L_out, double *th3L_out, 
 double x, double y, double z) {
-  //各脚座標系で逆運動学（Leg角）
+  //各脚座標系で逆運動学（Leg角.degree）
+  //途中計算はradian
   double th11 = atan2(y,x);
   double r = sqrt(x*x+y*y);
   double s = sqrt(pow((r-l1),2)+z*z);
@@ -138,9 +139,9 @@ double x, double y, double z) {
   double bac = acos((l2*l2+s*s-l3*l3)/(2*l2*s));
   double th12 = alpha - bac;
 
-  *th1L_out=th11;
-  *th2L_out=th12;
-  *th3L_out=th13;
+  *th1L_out=th11*180.0/M_PI;
+  *th2L_out=th12*180.0/M_PI;
+  *th3L_out=th13*180.0/M_PI;
   return 1;
 }
 
@@ -149,15 +150,15 @@ void SetPosIKLegCoordinate(int legIndex, double x, double y, double z)
 {
   //各脚座標で逆運動学
   //結果は配列に格納
-    double th1_tmp,th2_tmp,th3_tmp;
+    double th1_tmp,th2_tmp,th3_tmp;//Leg角．degree
     char buf1[64];
     calcIK_Leg(&th1_tmp, &th2_tmp, &th3_tmp, x,y,z);
-    sprintf(buf1, "LegPos%d(%.0f, %.0f,%.0f)  ->  AngL(%.1f, %.1f,%.1f)",
-      legIndex, x,y,z, th1_tmp*180/M_PI,th2_tmp*180/M_PI,th3_tmp*180/M_PI);
+    sprintf(buf1, "LegPos%d(%.1f, %.1f,%.1f)  ->  AngL(%.1f, %.1f,%.1f)",
+      legIndex, x,y,z, th1_tmp,th2_tmp,th3_tmp);
     Serial.println(buf1);
-    AnglesIK[legIndex][0]=th1_tmp*180/M_PI;
-    AnglesIK[legIndex][1]=th2_tmp*180/M_PI;
-    AnglesIK[legIndex][2]=th3_tmp*180/M_PI;
+    AnglesIK[legIndex][0]=th1_tmp;
+    AnglesIK[legIndex][1]=th2_tmp;
+    AnglesIK[legIndex][2]=th3_tmp;
    
 }
 
@@ -167,6 +168,7 @@ void SetPosIKBodyCoordinate(int legIndex, double x, double y, double z)
   double x2,y2,x3,y3;
   double th;
   double offset_x, offset_y;
+  char buf[64];
   if(legIndex==0)
   {
     th=M_PI/4;
@@ -199,127 +201,327 @@ void SetPosIKBodyCoordinate(int legIndex, double x, double y, double z)
       y2=y-offset_y;
       x3=x2*cos(-th)-y2*sin(-th);
       y3=x2*sin(-th)+y2*cos(-th);
+      sprintf(buf,"SetPosIKBodyCoordinate() (x,y,z)=(%.0f,%.0f,%.0f)",x,y,z);//debug
+      Serial.println(buf);//debug
+//      sprintf(buf,"SetPosIKBodyCoordinate() (x2,y2,z)=(%.0f,%.0f,%.0f)",x2,y2,z);//debug
+//      Serial.println(buf);//debug
+//      sprintf(buf,"SetPosIKBodyCoordinate() (x3,y3,z)=(%.0f,%.0f,%.0f)",x3,y3,z);//debug
+//      Serial.println(buf);//debug
     SetPosIKLegCoordinate(legIndex,x3,y3,z);
 }
 
 //---------------------------------------------
-void StandardStat(int mode)
+void ICrawl(int mode)
 {
-  //基準姿勢を作る
-  double stride = 40;//歩幅
+  //間歇クロール．基準姿勢を作る
+//  double stride = 40;//歩幅
+  double stride[]={40,0,0};//歩幅ベクトル
   double height = 80;//胴体高さ
   double step_height = 20;//遊脚高さ
   double dx_init = 10;//初期着地点をx方向に広げる幅
   double base_x = 50;//脚付け根x座標（Body座標）
   double base_y = 50;//脚付け根y座標（Body座標）
+  double COG[]={0,0};//重心の補正
   int leg;//動かす箇所
+  int swing_order[]={1,0,2,3};//遊脚順
   
     //基準姿勢
-      FootPos[0][0]=base_x-1.0*stride+dx_init;
-      FootPos[0][1]=base_y+60;
-      FootPos[0][2]=-height;
-      FootPos[1][0]=-base_x-1.0*stride-dx_init;
-      FootPos[1][1]=base_y+60;
-      FootPos[1][2]=-height;
-      FootPos[2][0]=-base_x-0.5*stride-dx_init;
-      FootPos[2][1]=-base_y-60;
-      FootPos[2][2]=-height;
-      FootPos[3][0]=base_x-0.5*stride+dx_init;
-      FootPos[3][1]=-base_y-60;
-      FootPos[3][2]=-height;
-      for(int i=0;i<4;i++)
-      {
-        SetPosIKBodyCoordinate(i, FootPos[i][0],FootPos[i][1],FootPos[i][2]);
-      }
+      FootPos[0][0]=base_x-1.0*stride[0]+dx_init+COG[0];
+      FootPos[0][1]=base_y-1.0*stride[1]+60+COG[1];
+      FootPos[0][2]=-height-1.0*stride[2];
+      FootPos[1][0]=-base_x-1.0*stride[0]-dx_init+COG[0];
+      FootPos[1][1]=base_y-1.0*stride[1]+60+COG[1];
+      FootPos[1][2]=-height-1.0*stride[2];
+      FootPos[2][0]=-base_x-0.5*stride[0]-dx_init+COG[0];
+      FootPos[2][1]=-base_y-0.5*stride[1]-60+COG[1];
+      FootPos[2][2]=-height-0.5*stride[2];
+      FootPos[3][0]=base_x-0.5*stride[0]+dx_init+COG[0];
+      FootPos[3][1]=-base_y-0.5*stride[1]-60+COG[1];
+      FootPos[3][2]=-height-0.5*stride[2];
 
     if(mode>=1)//２遊脚(leg==1)
     {
-      leg=1;
+      leg=swing_order[0];
       FootPos[leg][2]+=step_height;
-      SetPosIKBodyCoordinate(leg, FootPos[leg][0],FootPos[leg][1],FootPos[leg][2]);
     }
     if(mode>=2)//２遊脚復帰(leg==1)
     {
-      FootPos[leg][0]+=stride;
-      SetPosIKBodyCoordinate(leg, FootPos[leg][0],FootPos[leg][1],FootPos[leg][2]);
+      for(int i=0;i<3;i++)
+      FootPos[leg][i]+=stride[i];
     }
     if(mode>=3)//２遊脚下ろす(leg==1)
     {
       FootPos[leg][2]-=step_height;
-      SetPosIKBodyCoordinate(leg, FootPos[leg][0],FootPos[leg][1],FootPos[leg][2]);
     }
     
     if(mode>=4)//1遊脚(leg==0)
     {
-      leg=0;
+      leg=swing_order[1];
       FootPos[leg][2]+=step_height;
-      SetPosIKBodyCoordinate(leg, FootPos[leg][0],FootPos[leg][1],FootPos[leg][2]);
     }
     if(mode>=5)//1遊脚復帰(leg==0)
     {
-      FootPos[leg][0]+=stride;
-      SetPosIKBodyCoordinate(leg, FootPos[leg][0],FootPos[leg][1],FootPos[leg][2]);
+      for(int i=0;i<3;i++)
+      FootPos[leg][i]+=stride[i];
     }
     if(mode>=6)//1遊脚下ろす(leg==0)
     {
       FootPos[leg][2]-=step_height;
-      SetPosIKBodyCoordinate(leg, FootPos[leg][0],FootPos[leg][1],FootPos[leg][2]);
     }
 
     if(mode>=7)//胴体推進
     {
       for(int i=0;i<4;i++)
       {
-        FootPos[i][0]-=stride*0.5;//胴体座標系では脚先が後ろに下がるように見える．
-        SetPosIKBodyCoordinate(i, FootPos[i][0],FootPos[i][1],FootPos[i][2]);
+        for(int j=0;j<3;j++)
+        {
+          FootPos[i][j]-=stride[j]*0.5;//胴体座標系では脚先が後ろに半歩下がるように見える．
+        }
       }
     }
 
     if(mode>=8)//3遊脚(leg==2)
     {
-      leg=2;
+      leg=swing_order[2];
       FootPos[leg][2]+=step_height;
-      SetPosIKBodyCoordinate(leg, FootPos[leg][0],FootPos[leg][1],FootPos[leg][2]);
     }
     if(mode>=9)//3遊脚復帰(leg==2)
     {
-      FootPos[leg][0]+=stride;
-      SetPosIKBodyCoordinate(leg, FootPos[leg][0],FootPos[leg][1],FootPos[leg][2]);
+      for(int i=0;i<3;i++)
+      FootPos[leg][i]+=stride[i];
     }
     if(mode>=10)//3遊脚下ろす(leg==2)
     {
       FootPos[leg][2]-=step_height;
-      SetPosIKBodyCoordinate(leg, FootPos[leg][0],FootPos[leg][1],FootPos[leg][2]);
     }
     
     if(mode>=11)//4遊脚(leg==3)
     {
-      leg=3;
+      leg=swing_order[3];
       FootPos[leg][2]+=step_height;
-      SetPosIKBodyCoordinate(leg, FootPos[leg][0],FootPos[leg][1],FootPos[leg][2]);
     }
     if(mode>=12)//4遊脚復帰(leg==3)
     {
-      FootPos[leg][0]+=stride;
-      SetPosIKBodyCoordinate(leg, FootPos[leg][0],FootPos[leg][1],FootPos[leg][2]);
+      for(int i=0;i<3;i++)
+      FootPos[leg][i]+=stride[i];
     }
     if(mode>=13)//4遊脚下ろす(leg==3)
     {
       FootPos[leg][2]-=step_height;
-      SetPosIKBodyCoordinate(leg, FootPos[leg][0],FootPos[leg][1],FootPos[leg][2]);
     }
 
     if(mode>=14)//胴体推進
     {
       for(int i=0;i<4;i++)
       {
-        FootPos[i][0]-=stride*0.5;//胴体座標系では脚先が後ろに下がるように見える．
-        SetPosIKBodyCoordinate(i, FootPos[i][0],FootPos[i][1],FootPos[i][2]);
+        for(int j=0;j<3;j++)
+        {
+          FootPos[i][j]-=stride[j]*0.5;//胴体座標系では脚先が後ろに半歩下がるように見える．
+        }
       }
     }
 
+    //脚先座標を関節角に反映
+    for(int i=0;i<4;i++)
+    {
+      SetPosIKBodyCoordinate(i, FootPos[i][0],FootPos[i][1],FootPos[i][2]);
+    }
     SetAnglesFromArray(AnglesIK);
   
+}
+//---------------------------------------------
+//以下テスト関数群
+//---------------------------------------------
+void PWM_test(void)// モータチェック用
+{
+  char buf[64];
+  Serial.println("PWM_test()1 or q");
+  while(1)
+  {
+    while(Serial.available()<=0)//シリアルモニタで何か文字が入力されるまで待つ
+    {; }
+    String str1=Serial.readString();
+    str1.trim();
+    Serial.println(str1);
+    if(str1=="q")
+    {
+      Serial.println("PWM_test()--quit");
+      return;
+    }
+    if(str1=="1")
+    {
+      int value = 300;//PWM
+      int ch =7;
+      sprintf(buf,"PWM ch[%d] value[%d]",ch,value);
+      Serial.println(buf);
+      pwm.setPWM(ch, 0, value);//生のPWM設定．モータ１個テスト用
+    }
+ 
+  }
+}
+//---------------------------------------------
+void moveServo_test(void)
+{
+  char buf[64];
+  Serial.println("moveServo_test()1 or q");
+  while(1)
+  {
+    while(Serial.available()<=0)//シリアルモニタで何か文字が入力されるまで待つ
+    {; }
+    String str1=Serial.readString();
+    str1.trim();
+    Serial.println(str1);
+    if(str1=="q")
+    {
+      Serial.println("moveServo_test()--quit");
+      return;
+    }
+    if(str1=="1")
+    {
+      int value = 10;//サーボ角
+      int ch =7;
+      sprintf(buf,"moveServo ch[%d] value[%d]",ch,value);
+      Serial.println(buf);
+      moveServo(ch, value);//角度入力（サーボ角）．モータ１個テスト用
+    }
+ 
+  }
+}
+//---------------------------------------------
+void SetAnglesFromArray_test(void)
+{
+  char buf[64];
+  Serial.println("SetAnglesFromArray_test()1,2,3,4 or q");
+  while(1)
+  {
+    while(Serial.available()<=0)//シリアルモニタで何か文字が入力されるまで待つ
+    {; }
+    String str1=Serial.readString();
+    str1.trim();
+    Serial.println(str1);
+    if(str1=="q")
+    {
+      Serial.println("SetAnglesFromArray_test()--quit");
+      return;
+    }
+    else if(str1=="1")
+    {
+      sprintf(buf,"SetAnglesFromArray 1");
+      Serial.println(buf);
+      SetAnglesFromArray(Angles1);
+    }
+    else if(str1=="2")
+    {
+      sprintf(buf,"SetAnglesFromArray 2");
+      Serial.println(buf);
+      SetAnglesFromArray(Angles2);
+    }
+    else if(str1=="3")
+    {
+      sprintf(buf,"SetAnglesFromArray 3");
+      Serial.println(buf);
+      SetAnglesFromArray(Angles3);
+    }
+    else if(str1=="4")
+    {
+      sprintf(buf,"SetAnglesFromArray 4");
+      Serial.println(buf);
+      SetAnglesFromArray(Angles4);
+    }
+ 
+  }
+}
+
+//---------------------------------------------
+void SetPosIKLegCoordinate_test(void)
+{
+  //脚座標で逆運動学のテスト
+  char buf[64];
+  Serial.println("SetPosIKLegCoordinate_test()1 or 2 or q");
+  while(1)
+  {
+    while(Serial.available()<=0)//シリアルモニタで何か文字が入力されるまで待つ
+    {; }
+    String str1=Serial.readString();
+    str1.trim();
+    Serial.println(str1);
+    if(str1=="q")
+    {
+      Serial.println("SetPosIKLegCoordinate_test()--quit");
+      return;
+    }
+    if(str1=="1")
+    {
+      float x=90;
+      float y=0;
+      float z=-80;
+      
+      sprintf(buf,"SetPosIKLegCoordinate (%.1f, %.1f, %.1f )",x,y,z);
+      Serial.println(buf);
+      SetPosIKLegCoordinate(0,x,y,z);
+      SetPosIKLegCoordinate(1,x,y,z);
+      SetPosIKLegCoordinate(2,x,y,z);
+      SetPosIKLegCoordinate(3,x,y,z);
+      SetAnglesFromArray(AnglesIK);
+    }
+    else if(str1=="2")
+    {
+      float x=90;
+      float y=10;
+      float z=-70;
+      
+      sprintf(buf,"SetPosIKLegCoordinate (%.1f, %.1f, %.1f )",x,y,z);
+      Serial.println(buf);
+      SetPosIKLegCoordinate(0,x,y,z);
+      SetPosIKLegCoordinate(1,x,y,z);
+      SetPosIKLegCoordinate(2,x,y,z);
+      SetPosIKLegCoordinate(3,x,y,z);
+      SetAnglesFromArray(AnglesIK);
+    }
+ 
+  }
+}
+//---------------------------------------------
+void SetPosIKBodyCoordinate_test(void)
+{
+  //胴体座標で逆運動学のテスト
+  char buf[64];
+  Serial.println("SetPosIKBodyCoordinate_test() 1 or 2 or q");
+  while(1)
+  {
+    while(Serial.available()<=0)//シリアルモニタで何か文字が入力されるまで待つ
+    {; }
+    String str1=Serial.readString();
+    str1.trim();
+    Serial.println(str1);
+    if(str1=="q")
+    {
+      Serial.println("SetPosIKBodyCoordinate_test()--quit");
+      return;
+    }
+    if(str1=="1")
+    {
+      double x=140;
+      double y=50;
+      double z=-80;
+      sprintf(buf,"Body coordinate (%.0f, %.0f, %.0f)",x,y,z);
+      Serial.println(buf);
+      SetPosIKBodyCoordinate(0,x,y,z);
+      SetPosIKBodyCoordinate(1,-x,y,z);
+      SetPosIKBodyCoordinate(2,-x,-y,z);
+      SetPosIKBodyCoordinate(3,x,-y,z);
+      SetAnglesFromArray(AnglesIK);
+    }
+    if(str1=="2")
+    {
+      SetPosIKBodyCoordinate(0,50,140,-50);
+      SetPosIKBodyCoordinate(1,-50,140,-50);
+      SetPosIKBodyCoordinate(2,-50,-140,-50);
+      SetPosIKBodyCoordinate(3,50,-140,-50);
+      SetAnglesFromArray(AnglesIK);
+    }
+ 
+  }
 }
 //---------------------------------------------
 void WalkTest(void)
@@ -327,26 +529,23 @@ void WalkTest(void)
   //歩行モーションを作る
 
   //基準姿勢
-  StandardStat(0);
+  ICrawl(0);
   
     while(Serial.available()<=0)//シリアルモニタで何か文字が入力されるまで待つ
     {; }
     String str1=Serial.readString();
+    str1.trim();
     Serial.println(str1);
 
   //歩行開始
   for(int i=0;i<16;i++)
   {
-    StandardStat(i);
+    ICrawl(i);
     delay(500);
   }
 
-  
-  
-
-
-  //基準にもどる
-  StandardStat(0);
+  //基準に戻る
+  ICrawl(0);
 }
 
 //---------------------------------------------
@@ -354,81 +553,54 @@ void setup() {
   Serial.begin(115200);
   pwm.begin();
   pwm.setPWMFreq(SERVO_FREQ);
-  delay(1000);
   Serial.println("Cheap-4leg Robot test program");
-  Serial.println("Initial angles");
-  SetAnglesFromArray(initialAngles);
-  delay(1000);
   Serial.println("----");
+  //Serial.flush();
+  delay(1000);
 }
 
 //---------------------------------------------
 void loop() {
   String str1;
 
-  while(1)
-  {
+    Serial.println("1:PWM, 2:moveservo, 3:array, 4:IKLeg, 5:IKBody, w:walk");
+    Serial.flush();
+    delay(500);
     while(Serial.available()<=0)//シリアルモニタで何か文字が入力されるまで待つ
     {; }
     str1=Serial.readString();
     Serial.println(str1);
     str1.trim();
     
-    if(str1=="1")
+      if(str1=="1")
       {
-      //pwm.setPWM(7, 0, value);//生のPWM設定．モータ１個テスト用
-      //moveServo(7, value);//角度入力．モータ１個テスト用
-//      SetPosIKLegCoordinate(0,90,0,-80);
-//      SetPosIKLegCoordinate(1,90,0,-80);
-//      SetPosIKLegCoordinate(2,90,0,-80);
-//      SetPosIKLegCoordinate(3,90,0,-80);
-      SetPosIKBodyCoordinate(0,140,50,-80);
-      SetPosIKBodyCoordinate(1,-140,50,-80);
-      SetPosIKBodyCoordinate(2,-140,-50,-80);
-      SetPosIKBodyCoordinate(3,140,-50,-80);
-      SetAnglesFromArray(AnglesIK);
-  //    SetAnglesFromArray(Angles1);
+        PWM_test();//PWMでサーボ駆動
       }
-    else if(str1=="2")
+      else if(str1=="2")
       {
-        //SetAnglesFromArray(Angles2);
-//        SetPosIKLegCoordinate(0,90,0,-60);
-//        SetPosIKLegCoordinate(1,90,0,-60);
-//        SetPosIKLegCoordinate(2,90,0,-60);
-//        SetPosIKLegCoordinate(3,90,0,-60);
-        SetPosIKBodyCoordinate(0,50,140,-50);
-        SetPosIKBodyCoordinate(1,-50,140,-50);
-        SetPosIKBodyCoordinate(2,-50,-140,-50);
-        SetPosIKBodyCoordinate(3,50,-140,-50);
-        SetAnglesFromArray(AnglesIK);
-//      SetAnglesFromArray(Angles2);
+        moveServo_test();//サーボ角でサーボ駆動
       }
-    else if(str1=="3")
+      else if(str1=="3")
       {
-      SetPosIKLegCoordinate(0,90,20,-60);
-      SetPosIKLegCoordinate(1,90,20,-60);
-      SetPosIKLegCoordinate(2,90,20,-60);
-      SetPosIKLegCoordinate(3,90,20,-60);
-        SetAnglesFromArray(AnglesIK);
-//      SetAnglesFromArray(Angles3);
+        SetAnglesFromArray_test();//Leg角配列で脚駆動．初期位置補正あり
       }
-    else if(str1=="4")
-    {
-      SetAnglesFromArray(Angles4);
-    ;}
-    else if(str1=="5")
-    {;}
-    else if(str1=="6")
-    {;}
-    else if(str1=="w")
-    {
-      WalkTest();
-    }
-    else 
-      SetAnglesFromArray(initialAngles);
-
-    
-  }
+      else if(str1=="4")
+      {
+        SetPosIKLegCoordinate_test();//脚座標系で逆運動学
+      }
+      else if(str1=="5")
+      {
+        SetPosIKBodyCoordinate_test();//胴体座標系で逆運動学
+      }
+      else if(str1=="w")
+      {
+        WalkTest();//胴体座標系で軌道を設定し，逆運動学で歩行動作
+      }
+      else
+      {
+        Serial.println("Initial angles");
+        SetAnglesFromArray(initialAngles);
+      }
 
   
 }
