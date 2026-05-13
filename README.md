@@ -4,7 +4,7 @@
 ## プログラム
 * cheap1 --- シンプルなプログラム．WiFi不使用
 * CheapBrowser --- WiFi経由でブラウザでコントロールできる．シリアルインターフェースもある
-
+* CheapBrowserPlatformIO --- PlatformIOでのソースコード
 
 ## Arduino IDE による開発環境設定
 * ボードマネージャから以下インストール

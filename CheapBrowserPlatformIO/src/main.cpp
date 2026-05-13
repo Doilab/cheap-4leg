@@ -740,7 +740,7 @@ void setup() {
 
   // その後にサーボなどの設定をする
   Serial.println("--- Initializing Servos ---");
-  Wire.begin();
+  Wire.begin(38,39); // I2Cのピンを指定（SDA=38, SCL=39）
   pwm = Adafruit_PWMServoDriver(0x40);
   pwm.begin();
   pwm.setPWMFreq(SERVO_FREQ);
