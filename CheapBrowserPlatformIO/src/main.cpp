@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <M5Unified.h>
 #include <math.h>
 
 // --- ここからWi-Fi設定 ---
@@ -88,9 +89,9 @@ void Bowing(void)
     delay(25); 
   }
 
-  // --- B. 2秒間停止 ---
+  // --- B. 1秒間停止 ---
   Serial.println("Web: 2sec wait...");
-  delay(2000); 
+  delay(1000); 
 
   // --- C. 元の体勢に戻る動作（スロー） ---
   Serial.println("Web: return");
@@ -112,12 +113,173 @@ void Bowing(void)
 }
 
 //---------------------------------------------
+void RectangleFootMotion(double phase, double *x_out, double *y_out, double *z_out, char flagFrontLeg )
+{
+  //脚先  １個分を長方形状に動かす動作生成の関数
+  double stride = 40;//歩幅
+  double f_height = 20;//遊脚高さ
+  double x,y,z;
+  double dp, ratio;
+  
+  if((phase<=0)||(phase>=1.0))
+  {
+    //front/rear関係なく同じ位置
+      x=(-0.5*stride);
+      y=0;
+      z=0;
+  }
+  else if((phase>0)&&(phase<=0.40))
+  {
+    if(flagFrontLeg !=1)//後脚の場合
+    {
+        if(phase<=0.05)//足上げ
+        {
+          dp=phase;
+          ratio=dp/0.05;
+          z=f_height*ratio;
+          x=-0.5*stride;
+          y=0;
+        }
+        else if(phase<=0.15)//足復帰
+        {
+          dp=phase-0.05;
+          ratio=dp/0.10;
+          x=stride*ratio-0.5*stride;
+          y=0;
+          z=f_height;
+        }
+        else if(phase<=0.20)//足おろし
+        {
+          dp=phase-0.15;
+          ratio=dp/0.05;
+          x=0.5*stride;
+          y=0;
+          z=f_height*(1-ratio);
+        }
+        else if(phase<=0.4)//待機
+        {
+          x=0.5*stride;
+          y=0;
+          z=0;
+        }
+    }
+    else if(flagFrontLeg ==1)//前脚の場合
+    {
+        if(phase<0.20)//待機
+        {
+          x=(-0.5*stride);
+          y=0;
+          z=0;
+        }
+        else if(phase<=0.25)//足上げ
+        {
+          dp=phase-0.20;
+          ratio=dp/0.05;
+          z=f_height*ratio;
+          x=-0.5*stride;
+          y=0;
+        }
+        else if(phase<=0.35)//足復帰
+        {
+          dp=phase-0.25;
+          ratio=dp/0.10;
+          x=stride*ratio-0.5*stride;
+          y=0;
+          z=f_height;
+        }
+        else if(phase<=0.40)//足おろし
+        {
+          dp=phase-0.35;
+          ratio=dp/0.05;
+          x=0.5*stride;
+          y=0;
+          z=f_height*(1-ratio);
+        }
+    }
+  }
+  else if((phase>0.40)&&(phase<0.5))//胴体推進1（足後ろに）
+  {
+    dp=phase-0.4;
+    ratio=dp/0.10;
+    x=0.5*stride - stride*0.5*(ratio);
+    y=0;
+    z=0;
+  }
+  else if(phase<=0.9)//半周期後の姿勢で待機
+  {
+    //front/rear関係なく同じ位置
+      x=0;
+      y=0;
+      z=0;
+  }
+  else if(phase<=1.0)//胴体推進2（足後ろに）
+  {
+    dp=phase-0.9;
+    ratio=dp/0.10;
+    x= (-stride*0.5*(ratio));
+    y=0;
+    z=0;
+  }
+ 
+  *x_out=x;
+  *y_out=y;
+  *z_out=z;
+  return;
+}
+//---------------------------------------------
+void ICrawl2(double phase)
+{
+  //間歇クロールのモーション生成の関数
+  double height = 80;//胴体高さ
+  double dx_init = 10;//初期着地点をx方向に広げる幅
+  double dy_init = 60;//初期着地点をy方向に広げる幅
+  double base_x = 50;//脚付け根x座標（Body座標）
+  double base_y = 50;//脚付け根y座標（Body座標）
+  double COG[]={0,0};//重心の水平方向補正
+  int leg;//動かす箇所
+
+  //歩容軌道の中心点
+  FootPos[0][0]=base_x+dx_init+COG[0];
+  FootPos[0][1]=base_y+dy_init+COG[1];
+  FootPos[0][2]=-height;
+  FootPos[1][0]=-base_x-dx_init+COG[0];
+  FootPos[1][1]=base_y+dy_init+COG[1];
+  FootPos[1][2]=-height;
+  FootPos[2][0]=-base_x-dx_init+COG[0];
+  FootPos[2][1]=-base_y-dy_init+COG[1];
+  FootPos[2][2]=-height;
+  FootPos[3][0]=base_x+dx_init+COG[0];
+  FootPos[3][1]=-base_y-dy_init+COG[1];
+  FootPos[3][2]=-height;
+
+  double x,y,z;
+  char log_buffer[100];
+  for(leg=0;leg<4;leg++)
+//leg=0;//debug
+  {
+    double leg_phase = 0;
+    // 遊脚順に合わせて各脚の位相をずらす．等間隔ではない．
+    if(leg == 1) leg_phase = fmod(phase + 0.00, 1.0); 
+    if(leg == 0) leg_phase = fmod(phase + 0.00, 1.0); 
+    if(leg == 2) leg_phase = fmod(phase + 0.50, 1.0); 
+    if(leg == 3) leg_phase = fmod(phase + 0.50, 1.0); 
+    if((leg == 1)||(leg==2))RectangleFootMotion(leg_phase, &x, &y, &z, 0);
+    if((leg == 0)||(leg==3))RectangleFootMotion(leg_phase, &x, &y, &z, 1);
+
+    SetFootPosIKBodyCoordinate(leg, FootPos[leg][0]+x, FootPos[leg][1]+y, FootPos[leg][2]+z);
+    sprintf(log_buffer, "ICrawl2: leg=%d, phase=%.2f, x=%.1f, y=%.1f, z=%.1f", leg, fmod(phase+leg*0.25,1.0), x, y, z);
+    Serial.println(log_buffer);
+  }
+  SetAnglesFromArray(AnglesIK);
+}
+//---------------------------------------------
 void ICrawl(int mode)
 {
   double stride[]={40,0,0};//歩幅ベクトル
   double height = 80;//胴体高さ
   double step_height = 20;//遊脚高さ
   double dx_init = 10;//初期着地点をx方向に広げる幅
+  double dy_init = 60;//初期着地点をy方向に広げる幅
   double base_x = 50;//脚付け根x座標（Body座標）
   double base_y = 50;//脚付け根y座標（Body座標）
   double COG[]={0,0};//重心の補正
@@ -126,16 +288,16 @@ void ICrawl(int mode)
   
     //基準姿勢
       FootPos[0][0]=base_x-1.0*stride[0]+dx_init+COG[0];
-      FootPos[0][1]=base_y-1.0*stride[1]+60+COG[1];
+      FootPos[0][1]=base_y-1.0*stride[1]+dy_init+COG[1];
       FootPos[0][2]=-height-1.0*stride[2];
       FootPos[1][0]=-base_x-1.0*stride[0]-dx_init+COG[0];
-      FootPos[1][1]=base_y-1.0*stride[1]+60+COG[1];
+      FootPos[1][1]=base_y-1.0*stride[1]+dy_init+COG[1];
       FootPos[1][2]=-height-1.0*stride[2];
       FootPos[2][0]=-base_x-0.5*stride[0]-dx_init+COG[0];
-      FootPos[2][1]=-base_y-0.5*stride[1]-60+COG[1];
+      FootPos[2][1]=-base_y-0.5*stride[1]-dy_init+COG[1];
       FootPos[2][2]=-height-0.5*stride[2];
       FootPos[3][0]=base_x-0.5*stride[0]+dx_init+COG[0];
-      FootPos[3][1]=-base_y-0.5*stride[1]-60+COG[1];
+      FootPos[3][1]=-base_y-0.5*stride[1]-dy_init+COG[1];
       FootPos[3][2]=-height-0.5*stride[2];
 
     if(mode>=1)//２遊脚(leg==1)
@@ -234,6 +396,23 @@ void ICrawl_Back(int mode) {
   int mode2=15-mode;//ICrawlのモードを逆順にする
   ICrawl(mode2);
 } 
+//----------------------------------------------
+void Walk2(int repetitions) //引数を繰り返し回数(repetitions)に変更
+{
+  Serial.println("Walk Start");
+  ICrawl2(0);
+  delay(500);
+
+  for (int r = 0; r < repetitions; r++) {
+    for (double t = 0; t < 100; t++) {
+      ICrawl2(t/100.0); // 0から1までの値をICrawl2に渡す
+      delay(50); // 各ステップごとの待機時間（ミリ秒）
+    }
+  }
+
+  ICrawl2(0);
+  Serial.println("ICrawl Walk End");
+}
 //----------------------------------------------
 void Walk(int repetitions) //引数を繰り返し回数(repetitions)に変更
 {
@@ -385,10 +564,12 @@ void loop() {
       if (str1.length() > 1) {
         int count = str1.substring(1).toInt();
         if (count <= 0) count = 1;
-        Walk(count);
+        //Walk(count);
+        Walk2(count);
       } else {
         Serial.println("Reset Forward Pose");
-        ICrawl(0);
+        //ICrawl(0);
+        ICrawl2(0);
       }
     } else if (str1.startsWith("b")) {
       if (str1.length() > 1) {
