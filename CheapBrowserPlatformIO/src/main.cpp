@@ -16,6 +16,9 @@ WebServer server(80);
 //診断用関数群
 #include "diagnosis.h"
 
+//モーション関数群
+#include "motion.h"
+
 
 //関節角度配列初期(Leg角)
 float initialAngles[4][3] = {
@@ -32,12 +35,12 @@ float AnglesIK[4][3] = {
   {0.0, 0.0, 0.0}, // LEG4
 };
 //ロボット脚座標記録用
-float FootPos[4][3] = {
-  {0.0, 0.0, 0.0}, // LEG1xyz
-  {0.0, 0.0, 0.0}, // LEG2xyz
-  {0.0, 0.0, 0.0}, // LEG3xyz
-  {0.0, 0.0, 0.0}, // LEG4xyz
-};
+// float FootPos[4][3] = {
+//   {0.0, 0.0, 0.0}, // LEG1xyz
+//   {0.0, 0.0, 0.0}, // LEG2xyz
+//   {0.0, 0.0, 0.0}, // LEG3xyz
+//   {0.0, 0.0, 0.0}, // LEG4xyz
+// };
 
 
 //---------------------------------------------
@@ -50,11 +53,11 @@ void SetFootPosIKBodyCoordinate(int legIndex, double x, double y, double z)
 {
   SetFootPosIKBodyCoordinateToArray(legIndex, x, y, z, AnglesIK);
 }
-  //---------------------------------------------
+ 
+//---------------------------------------------
 void Bowing(void)
 {
   //お辞儀をする関数
-  // --- ここから「お辞儀」の修正済みコード ---
   Serial.println("Web:　slow-bowing");
 
   // 1. 開始姿勢（元の体勢）
@@ -83,7 +86,7 @@ void Bowing(void)
       float y = start[i][1] + (target[i][1] - start[i][1]) * ratio;
       float z = start[i][2] + (target[i][2] - start[i][2]) * ratio;
       SetFootPosIKBodyCoordinate(i, x, y, z);
-      FootPos[i][0] = x; FootPos[i][1] = y; FootPos[i][2] = z;
+      //FootPos[i][0] = x; FootPos[i][1] = y; FootPos[i][2] = z;
     }
     SetAnglesFromArray(AnglesIK);
     delay(25); 
@@ -103,7 +106,7 @@ void Bowing(void)
       float y = target[i][1] + (start[i][1] - target[i][1]) * ratio;
       float z = target[i][2] + (start[i][2] - target[i][2]) * ratio;
       SetFootPosIKBodyCoordinate(i, x, y, z);
-      FootPos[i][0] = x; FootPos[i][1] = y; FootPos[i][2] = z;
+      //FootPos[i][0] = x; FootPos[i][1] = y; FootPos[i][2] = z;
     }
     SetAnglesFromArray(AnglesIK);
     delay(25); 
@@ -111,345 +114,50 @@ void Bowing(void)
   Serial.println("Web: bowing done.");
   // --- ここまで ---
 }
-
 //---------------------------------------------
-void RectangleFootMotion(double phase, double *x_out, double *y_out, double *z_out, char flagFrontLeg )
-{
-  //脚先  １個分を長方形状に動かす動作生成の関数
-  double stride = 40;//歩幅
-  double f_height = 20;//遊脚高さ
-  double x,y,z;
-  double dp, ratio;
-  
-  if((phase<=0)||(phase>=1.0))
-  {
-    //front/rear関係なく同じ位置
-      x=(-0.5*stride);
-      y=0;
-      z=0;
-  }
-  else if((phase>0)&&(phase<=0.40))
-  {
-    if(flagFrontLeg !=1)//後脚の場合
-    {
-        if(phase<=0.05)//足上げ
-        {
-          dp=phase;
-          ratio=dp/0.05;
-          z=f_height*ratio;
-          x=-0.5*stride;
-          y=0;
-        }
-        else if(phase<=0.15)//足復帰
-        {
-          dp=phase-0.05;
-          ratio=dp/0.10;
-          x=stride*ratio-0.5*stride;
-          y=0;
-          z=f_height;
-        }
-        else if(phase<=0.20)//足おろし
-        {
-          dp=phase-0.15;
-          ratio=dp/0.05;
-          x=0.5*stride;
-          y=0;
-          z=f_height*(1-ratio);
-        }
-        else if(phase<=0.4)//待機
-        {
-          x=0.5*stride;
-          y=0;
-          z=0;
-        }
-    }
-    else if(flagFrontLeg ==1)//前脚の場合
-    {
-        if(phase<0.20)//待機
-        {
-          x=(-0.5*stride);
-          y=0;
-          z=0;
-        }
-        else if(phase<=0.25)//足上げ
-        {
-          dp=phase-0.20;
-          ratio=dp/0.05;
-          z=f_height*ratio;
-          x=-0.5*stride;
-          y=0;
-        }
-        else if(phase<=0.35)//足復帰
-        {
-          dp=phase-0.25;
-          ratio=dp/0.10;
-          x=stride*ratio-0.5*stride;
-          y=0;
-          z=f_height;
-        }
-        else if(phase<=0.40)//足おろし
-        {
-          dp=phase-0.35;
-          ratio=dp/0.05;
-          x=0.5*stride;
-          y=0;
-          z=f_height*(1-ratio);
-        }
-    }
-  }
-  else if((phase>0.40)&&(phase<0.5))//胴体推進1（足後ろに）
-  {
-    dp=phase-0.4;
-    ratio=dp/0.10;
-    x=0.5*stride - stride*0.5*(ratio);
-    y=0;
-    z=0;
-  }
-  else if(phase<=0.9)//半周期後の姿勢で待機
-  {
-    //front/rear関係なく同じ位置
-      x=0;
-      y=0;
-      z=0;
-  }
-  else if(phase<=1.0)//胴体推進2（足後ろに）
-  {
-    dp=phase-0.9;
-    ratio=dp/0.10;
-    x= (-stride*0.5*(ratio));
-    y=0;
-    z=0;
-  }
- 
-  *x_out=x;
-  *y_out=y;
-  *z_out=z;
-  return;
-}
-//---------------------------------------------
-void ICrawl2(double phase)
-{
-  //間歇クロールのモーション生成の関数
-  double height = 80;//胴体高さ
-  double dx_init = 10;//初期着地点をx方向に広げる幅
-  double dy_init = 60;//初期着地点をy方向に広げる幅
-  double base_x = 50;//脚付け根x座標（Body座標）
-  double base_y = 50;//脚付け根y座標（Body座標）
-  double COG[]={0,0};//重心の水平方向補正
-  int leg;//動かす箇所
 
-  //歩容軌道の中心点
-  FootPos[0][0]=base_x+dx_init+COG[0];
-  FootPos[0][1]=base_y+dy_init+COG[1];
-  FootPos[0][2]=-height;
-  FootPos[1][0]=-base_x-dx_init+COG[0];
-  FootPos[1][1]=base_y+dy_init+COG[1];
-  FootPos[1][2]=-height;
-  FootPos[2][0]=-base_x-dx_init+COG[0];
-  FootPos[2][1]=-base_y-dy_init+COG[1];
-  FootPos[2][2]=-height;
-  FootPos[3][0]=base_x+dx_init+COG[0];
-  FootPos[3][1]=-base_y-dy_init+COG[1];
-  FootPos[3][2]=-height;
-
-  double x,y,z;
-  char log_buffer[100];
-  for(leg=0;leg<4;leg++)
-//leg=0;//debug
-  {
-    double leg_phase = 0;
-    // 遊脚順に合わせて各脚の位相をずらす．等間隔ではない．
-    if(leg == 1) leg_phase = fmod(phase + 0.00, 1.0); 
-    if(leg == 0) leg_phase = fmod(phase + 0.00, 1.0); 
-    if(leg == 2) leg_phase = fmod(phase + 0.50, 1.0); 
-    if(leg == 3) leg_phase = fmod(phase + 0.50, 1.0); 
-    if((leg == 1)||(leg==2))RectangleFootMotion(leg_phase, &x, &y, &z, 0);
-    if((leg == 0)||(leg==3))RectangleFootMotion(leg_phase, &x, &y, &z, 1);
-
-    SetFootPosIKBodyCoordinate(leg, FootPos[leg][0]+x, FootPos[leg][1]+y, FootPos[leg][2]+z);
-    sprintf(log_buffer, "ICrawl2: leg=%d, phase=%.2f, x=%.1f, y=%.1f, z=%.1f", leg, fmod(phase+leg*0.25,1.0), x, y, z);
-    Serial.println(log_buffer);
-  }
-  SetAnglesFromArray(AnglesIK);
-}
-//---------------------------------------------
-void ICrawl(int mode)
-{
-  double stride[]={40,0,0};//歩幅ベクトル
-  double height = 80;//胴体高さ
-  double step_height = 20;//遊脚高さ
-  double dx_init = 10;//初期着地点をx方向に広げる幅
-  double dy_init = 60;//初期着地点をy方向に広げる幅
-  double base_x = 50;//脚付け根x座標（Body座標）
-  double base_y = 50;//脚付け根y座標（Body座標）
-  double COG[]={0,0};//重心の補正
-  int leg;//動かす箇所
-  int swing_order[]={1,0,2,3};//遊脚順
-  
-    //基準姿勢
-      FootPos[0][0]=base_x-1.0*stride[0]+dx_init+COG[0];
-      FootPos[0][1]=base_y-1.0*stride[1]+dy_init+COG[1];
-      FootPos[0][2]=-height-1.0*stride[2];
-      FootPos[1][0]=-base_x-1.0*stride[0]-dx_init+COG[0];
-      FootPos[1][1]=base_y-1.0*stride[1]+dy_init+COG[1];
-      FootPos[1][2]=-height-1.0*stride[2];
-      FootPos[2][0]=-base_x-0.5*stride[0]-dx_init+COG[0];
-      FootPos[2][1]=-base_y-0.5*stride[1]-dy_init+COG[1];
-      FootPos[2][2]=-height-0.5*stride[2];
-      FootPos[3][0]=base_x-0.5*stride[0]+dx_init+COG[0];
-      FootPos[3][1]=-base_y-0.5*stride[1]-dy_init+COG[1];
-      FootPos[3][2]=-height-0.5*stride[2];
-
-    if(mode>=1)//２遊脚(leg==1)
-    {
-      leg=swing_order[0];
-      FootPos[leg][2]+=step_height;
-    }
-    if(mode>=2)//２遊脚復帰(leg==1)
-    {
-      for(int i=0;i<3;i++)
-      FootPos[leg][i]+=stride[i];
-    }
-    if(mode>=3)//２遊脚下ろす(leg==1)
-    {
-      FootPos[leg][2]-=step_height;
-    }
-    
-    if(mode>=4)//1遊脚(leg==0)
-    {
-      leg=swing_order[1];
-      FootPos[leg][2]+=step_height;
-    }
-    if(mode>=5)//1遊脚復帰(leg==0)
-    {
-      for(int i=0;i<3;i++)
-      FootPos[leg][i]+=stride[i];
-    }
-    if(mode>=6)//1遊脚下ろす(leg==0)
-    {
-      FootPos[leg][2]-=step_height;
-    }
-
-    if(mode>=7)//胴体推進
-    {
-      for(int i=0;i<4;i++)
-      {
-        for(int j=0;j<3;j++)
-        {
-          FootPos[i][j]-=stride[j]*0.5;//胴体座標系では脚先が後ろに半歩下がるように見える．
-        }
-      }
-    }
-
-    if(mode>=8)//3遊脚(leg==2)
-    {
-      leg=swing_order[2];
-      FootPos[leg][2]+=step_height;
-    }
-    if(mode>=9)//3遊脚復帰(leg==2)
-    {
-      for(int i=0;i<3;i++)
-      FootPos[leg][i]+=stride[i];
-    }
-    if(mode>=10)//3遊脚下ろす(leg==2)
-    {
-      FootPos[leg][2]-=step_height;
-    }
-    
-    if(mode>=11)//4遊脚(leg==3)
-    {
-      leg=swing_order[3];
-      FootPos[leg][2]+=step_height;
-    }
-    if(mode>=12)//4遊脚復帰(leg==3)
-    {
-      for(int i=0;i<3;i++)
-      FootPos[leg][i]+=stride[i];
-    }
-    if(mode>=13)//4遊脚下ろす(leg==3)
-    {
-      FootPos[leg][2]-=step_height;
-    }
-
-    if(mode>=14)//胴体推進
-    {
-      for(int i=0;i<4;i++)
-      {
-        for(int j=0;j<3;j++)
-        {
-          FootPos[i][j]-=stride[j]*0.5;//胴体座標系では脚先が後ろに半歩下がるように見える．
-        }
-      }
-    }
-
-    //脚先座標を関節角に反映
-    for(int i=0;i<4;i++)
-    {
-      SetFootPosIKBodyCoordinate(i, FootPos[i][0],FootPos[i][1],FootPos[i][2]);
-    }
-    SetAnglesFromArray(AnglesIK);
-  
-}
 //----------------------------------------------
-//後退歩行のモーション生成
-void ICrawl_Back(int mode) {
-  int mode2=15-mode;//ICrawlのモードを逆順にする
-  ICrawl(mode2);
-} 
-//----------------------------------------------
-void Walk2(int repetitions) //引数を繰り返し回数(repetitions)に変更
+void Walk2(int repetitions) //間歇クロールによる前進歩行
 {
+//引数を繰り返し回数(repetitions)に変更
   Serial.println("Walk Start");
-  ICrawl2(0);
+  ICrawl2(0, AnglesIK); // 歩行の基準姿勢
   delay(500);
 
   for (int r = 0; r < repetitions; r++) {
     for (double t = 0; t < 100; t++) {
-      ICrawl2(t/100.0); // 0から1までの値をICrawl2に渡す
+      ICrawl2(t/100.0,AnglesIK); // 0から1までの値をICrawl2に渡す
+      SetAnglesFromArray(AnglesIK);
       delay(50); // 各ステップごとの待機時間（ミリ秒）
     }
   }
 
-  ICrawl2(0);
+  ICrawl2(0, AnglesIK); // 最後に止まる
+  SetAnglesFromArray(AnglesIK);
+
   Serial.println("ICrawl Walk End");
 }
 //----------------------------------------------
-void Walk(int repetitions) //引数を繰り返し回数(repetitions)に変更
+void BackWalk2(int repetitions) //間歇クロールによる後退歩行
 {
-  Serial.println("Walk Start");
-  ICrawl(0);
-  delay(500);
-
-  for (int r = 0; r < repetitions; r++) {
-    for (int i = 0; i < 16; i++) {
-      ICrawl(i);
-      delay(300); // 各ステップごとの待機時間（ミリ秒）
-    }
-  }
-
-  ICrawl(0);
-  Serial.println("ICrawl Walk End");
-}
-
-//---------------------------------------------
-void BackWalk(int repetitions) {
   Serial.println("Back Walk Start");
-  ICrawl_Back(0); // 後退の基準姿勢
+  ICrawl2_Back(0,AnglesIK); // 後退の基準姿勢
   delay(500);
 
   for (int r = 0; r < repetitions; r++) {
-    for (int i = 0; i < 16; i++) {
-      //BCrawl(i); // 後退用の16ステップを動かす
-      ICrawl_Back(i); // 後退用の16ステップを逆順で動かす
-      delay(300); 
+    for (double t = 0; t < 100; t++) {
+      ICrawl2_Back(t/100.0,AnglesIK); // 0から1までの値をICrawl2に渡す
+      SetAnglesFromArray(AnglesIK);
+      delay(50); // 各ステップごとの待機時間（ミリ秒）
     }
   }
 
-  ICrawl_Back(0); // 最後に止まる
+  ICrawl2_Back(0,AnglesIK); // 最後に止まる
+  SetAnglesFromArray(AnglesIK);
   Serial.println("ICrawl Back End");
 }
 
-//---------------------
+//---------------------------------------------
 // スマホに表示される操作画面
 void handleRoot() {
   String html = "<html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1.0'>";
@@ -459,10 +167,10 @@ void handleRoot() {
   html += "h1 { font-size: 28px; margin-bottom: 25px; letter-spacing: 2px; }";
   
   // グリッド配置
-  html += ".grid { display: grid; grid-template-columns: repeat(2, 140px); grid-gap: 30px; }";
+  html += ".grid { display: grid; grid-template-columns: repeat(3, 80px); grid-gap: 30px; }";
   
   // 基本ボタン設定（太い黒枠の白い正方形）
-  html += "button { width: 140px; height: 140px; background-color: white; border: 8px solid #000; position: relative; font-size: 24px; font-weight: bold; cursor: pointer; transition: 0.1s; display: flex; align-items: center; justify-content: center; z-index: 1; }";
+  html += "button { width: 100px; height: 100px; background-color: white; border: 8px solid #000; position: relative; font-size: 24px; font-weight: bold; cursor: pointer; transition: 0.1s; display: flex; align-items: center; justify-content: center; z-index: 1; }";
   html += "button:active { transform: scale(0.95); opacity: 0.9; }";
 
   // --- 枠で囲う設定（beforeとafterを使って色枠をずらして配置） ---
@@ -478,14 +186,17 @@ void handleRoot() {
   html += ".footer { margin-top: 35px; font-size: 12px; color: #777; }";
   html += "</style></head><body>";
 
-  html += "<h1>Cheap４脚 Controller</h1>";
+  html += "<h1>Cheap 4Leg Robot</h1>";
   
   html += "<div class='grid'>";
   // 各ボタン（classで色を呼び出し）
-  html += "  <button class='c-red' onclick=\"fetch('/w')\">前進</button>";
-  html += "  <button class='c-blue' onclick=\"fetch('/b')\">後退</button>";
+  html += "  <button class='c-red' onclick=\"fetch('/w')\">↑F</button>";
+  html += "  <button class='c-green' onclick=\"fetch('/reset')\">Reset</button>";
+  html += "  <button class='c-blue' onclick=\"fetch('/b')\">↓B</button>";
+  html += "  <button class='c-green' onclick=\"fetch('/lt')\">←L</button>";
+  html += "  <button class='c-green' onclick=\"fetch('/reset')\">Trot</button>";
+  html += "  <button class='c-green' onclick=\"fetch('/rt')\">R→</button>";
   html += "  <button class='c-yellow' onclick=\"fetch('/h')\">お辞儀</button>";
-  html += "  <button class='c-green' onclick=\"fetch('/reset')\">リセット</button>";
   html += "</div>";
 
   html += "<div class='footer'>M5Atom S3 Controller</div>";
@@ -509,10 +220,12 @@ void setupWiFi() {
 
   // スマホ操作用サーバーのボタン処理設定
   server.on("/", handleRoot);//再表示
-  server.on("/reset", []() { ICrawl(0); server.send(200, "text/plain", "OK"); });//間歇クロールの初期状態へ
-  server.on("/w", []() { Walk(1); server.send(200, "text/plain", "OK"); });//歩行開始関数を呼び出す
-  server.on("/b", []() { BackWalk(1); server.send(200, "text/plain", "OK"); });//後退関数を呼び出す
+  server.on("/reset", []() { ICrawl2(0,AnglesIK); server.send(200, "text/plain", "OK"); });//間歇クロールの初期状態へ
+  server.on("/w", []() { Walk2(1); server.send(200, "text/plain", "OK"); });//歩行開始関数を呼び出す
+  server.on("/b", []() { BackWalk2(1); server.send(200, "text/plain", "OK"); });//後退関数を呼び出す
   server.on("/h", []() { Bowing(); server.send(200, "text/plain", "OK"); });//お辞儀
+  server.on("/rt", []() { ICrawl2(0,AnglesIK); server.send(200, "text/plain", "OK"); });//右ターン
+  server.on("/lt", []() { ICrawl2(0,AnglesIK); server.send(200, "text/plain", "OK"); });//左ターン
 
 
   server.begin();
@@ -536,7 +249,7 @@ void setup() {
   init_servos();
   
   Serial.println("System Ready.");
-  ICrawl(0); // 間歇クロール歩容の基準姿勢へ
+  ICrawl2(0,AnglesIK); // 間歇クロール歩容の基準姿勢へ
 }
 
 //---------------------------------------------
@@ -564,21 +277,19 @@ void loop() {
       if (str1.length() > 1) {
         int count = str1.substring(1).toInt();
         if (count <= 0) count = 1;
-        //Walk(count);
         Walk2(count);
       } else {
         Serial.println("Reset Forward Pose");
-        //ICrawl(0);
-        ICrawl2(0);
+        ICrawl2(0,AnglesIK);
       }
     } else if (str1.startsWith("b")) {
       if (str1.length() > 1) {
         int count = str1.substring(1).toInt();
         if (count <= 0) count = 1;
-        BackWalk(count);
+        BackWalk2(count);
       } else {
         Serial.println("Reset Backward Pose");
-        ICrawl_Back(0);
+        ICrawl2_Back(0,AnglesIK);
       }
     } else if (str1 == "h") {
       Serial.println("Hello!");
