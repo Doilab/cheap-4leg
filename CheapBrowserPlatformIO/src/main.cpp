@@ -20,13 +20,6 @@ WebServer server(80);
 #include "motion.h"
 
 
-//関節角度配列初期(Leg角)
-float initialAngles[4][3] = {
-  {0.0, 0.0, 0.0}, // LEG1
-  {0.0, 0.0, 0.0}, // LEG2
-  {0.0, 0.0, 0.0}, // LEG3
-  {0.0, 0.0, 0.0}, // LEG4
-};
 //関節角度配列 逆運動学結果格納用(Leg角)
 float AnglesIK[4][3] = {
   {0.0, 0.0, 0.0}, // LEG1
@@ -34,26 +27,15 @@ float AnglesIK[4][3] = {
   {0.0, 0.0, 0.0}, // LEG3
   {0.0, 0.0, 0.0}, // LEG4
 };
-//ロボット脚座標記録用
-// float FootPos[4][3] = {
-//   {0.0, 0.0, 0.0}, // LEG1xyz
-//   {0.0, 0.0, 0.0}, // LEG2xyz
-//   {0.0, 0.0, 0.0}, // LEG3xyz
-//   {0.0, 0.0, 0.0}, // LEG4xyz
-// };
 
 
 //---------------------------------------------
-void SetFootPosIKLegCoordinate(int legIndex, double x, double y, double z)
-{
-  SetFootPosIKLegCoordinateToArray(legIndex, x, y, z, AnglesIK);
-}
-
 void SetFootPosIKBodyCoordinate(int legIndex, double x, double y, double z)
 {
   SetFootPosIKBodyCoordinateToArray(legIndex, x, y, z, AnglesIK);
 }
- 
+
+
 //---------------------------------------------
 void Bowing(void)
 {
@@ -117,42 +99,63 @@ void Bowing(void)
 //---------------------------------------------
 
 //----------------------------------------------
-void Walk2(int repetitions) //間歇クロールによる前進歩行
+void WalkTrot(int repetitions, int RotateMode) //トロット歩容による前進歩行
 {
-//引数を繰り返し回数(repetitions)に変更
-  Serial.println("Walk Start");
-  ICrawl2(0, AnglesIK); // 歩行の基準姿勢
+  Serial.println("Trot Walk Start");
+  //char RotateMode = 1; // 胴体回転の有無を制御するフラグ（1: 左回り，-1:右回り）
+  Trot(0, RotateMode, AnglesIK); // 歩行の基準姿勢
   delay(500);
 
   for (int r = 0; r < repetitions; r++) {
     for (double t = 0; t < 100; t++) {
-      ICrawl2(t/100.0,AnglesIK); // 0から1までの値をICrawl2に渡す
+      Trot(t/100.0, RotateMode, AnglesIK); // 0から1までの値をTrotに渡す
       SetAnglesFromArray(AnglesIK);
       delay(50); // 各ステップごとの待機時間（ミリ秒）
     }
   }
 
-  ICrawl2(0, AnglesIK); // 最後に止まる
+  Trot(0, RotateMode, AnglesIK); // 最後に止まる
+  SetAnglesFromArray(AnglesIK);
+
+  Serial.println("Trot Walk End");
+}
+//----------------------------------------------
+void WalkIC(int repetitions) //間歇クロールによる前進歩行
+{
+//引数を繰り返し回数(repetitions)に変更
+  Serial.println("Walk Start");
+  ICrawl(0, AnglesIK); // 歩行の基準姿勢
+  delay(500);
+
+  for (int r = 0; r < repetitions; r++) {
+    for (double t = 0; t < 100; t++) {
+      ICrawl(t/100.0,AnglesIK); // 0から1までの値をICrawl2に渡す
+      SetAnglesFromArray(AnglesIK);
+      delay(50); // 各ステップごとの待機時間（ミリ秒）
+    }
+  }
+
+  ICrawl(0, AnglesIK); // 最後に止まる
   SetAnglesFromArray(AnglesIK);
 
   Serial.println("ICrawl Walk End");
 }
 //----------------------------------------------
-void BackWalk2(int repetitions) //間歇クロールによる後退歩行
+void BackWalkIC(int repetitions) //間歇クロールによる後退歩行
 {
   Serial.println("Back Walk Start");
-  ICrawl2_Back(0,AnglesIK); // 後退の基準姿勢
+  ICrawl_Back(0,AnglesIK); // 後退の基準姿勢
   delay(500);
 
   for (int r = 0; r < repetitions; r++) {
     for (double t = 0; t < 100; t++) {
-      ICrawl2_Back(t/100.0,AnglesIK); // 0から1までの値をICrawl2に渡す
+      ICrawl_Back(t/100.0,AnglesIK); // 0から1までの値をICrawl2に渡す
       SetAnglesFromArray(AnglesIK);
       delay(50); // 各ステップごとの待機時間（ミリ秒）
     }
   }
 
-  ICrawl2_Back(0,AnglesIK); // 最後に止まる
+  ICrawl_Back(0,AnglesIK); // 最後に止まる
   SetAnglesFromArray(AnglesIK);
   Serial.println("ICrawl Back End");
 }
@@ -220,12 +223,12 @@ void setupWiFi() {
 
   // スマホ操作用サーバーのボタン処理設定
   server.on("/", handleRoot);//再表示
-  server.on("/reset", []() { ICrawl2(0,AnglesIK); server.send(200, "text/plain", "OK"); });//間歇クロールの初期状態へ
-  server.on("/w", []() { Walk2(1); server.send(200, "text/plain", "OK"); });//歩行開始関数を呼び出す
-  server.on("/b", []() { BackWalk2(1); server.send(200, "text/plain", "OK"); });//後退関数を呼び出す
+  server.on("/reset", []() { ICrawl(0,AnglesIK); server.send(200, "text/plain", "OK"); });//間歇クロールの初期状態へ
+  server.on("/w", []() { WalkIC(1); server.send(200, "text/plain", "OK"); });//歩行開始関数を呼び出す
+  server.on("/b", []() { BackWalkIC(1); server.send(200, "text/plain", "OK"); });//後退関数を呼び出す
   server.on("/h", []() { Bowing(); server.send(200, "text/plain", "OK"); });//お辞儀
-  server.on("/rt", []() { ICrawl2(0,AnglesIK); server.send(200, "text/plain", "OK"); });//右ターン
-  server.on("/lt", []() { ICrawl2(0,AnglesIK); server.send(200, "text/plain", "OK"); });//左ターン
+  server.on("/rt", []() { WalkTrot(1,-1); server.send(200, "text/plain", "OK"); });//右ターン
+  server.on("/lt", []() {  WalkTrot(1,1); server.send(200, "text/plain", "OK"); });//左ターン
 
 
   server.begin();
@@ -249,7 +252,7 @@ void setup() {
   init_servos();
   
   Serial.println("System Ready.");
-  ICrawl2(0,AnglesIK); // 間歇クロール歩容の基準姿勢へ
+  ICrawl(0,AnglesIK); // 間歇クロール歩容の基準姿勢へ
 }
 
 //---------------------------------------------
@@ -277,30 +280,36 @@ void loop() {
       if (str1.length() > 1) {
         int count = str1.substring(1).toInt();
         if (count <= 0) count = 1;
-        Walk2(count);
+        WalkIC(count);
       } else {
         Serial.println("Reset Forward Pose");
-        ICrawl2(0,AnglesIK);
+        ICrawl(0,AnglesIK);
       }
     } else if (str1.startsWith("b")) {
       if (str1.length() > 1) {
         int count = str1.substring(1).toInt();
         if (count <= 0) count = 1;
-        BackWalk2(count);
+        BackWalkIC(count);
       } else {
         Serial.println("Reset Backward Pose");
-        ICrawl2_Back(0,AnglesIK);
+        ICrawl_Back(0,AnglesIK);
       }
     } else if (str1 == "h") {
       Serial.println("Hello!");
       Bowing();
+    } else if (str1 == "t") {
+      Serial.println("Trot");
+      WalkTrot(1, 1); // 1回繰り返し、RotateMode=1（左回り）
     } else
     {
-      SetAnglesFromArray(initialAngles);
+      //SetAnglesFromArray(initialAngles);
+      SetInitialPose(AnglesIK);
+      SetAnglesFromArray(AnglesIK);
+      Serial.println("Unknown command. Reset to initial pose.");
     }
     
     // 次の命令を促す表示（シリアル入力があった時だけ出す）
-    Serial.println("1:PWM, 2:moveservo, 3:array, 4:IKLeg, 5:IKBody, w:walk, b:back, h:hello");
+    Serial.println("1:PWM, 2:moveservo, 3:array, 4:IKLeg, 5:IKBody, w:walk, b:back, t:trot, h:hello");
   }
 
   // ループが速すぎると通信が不安定になることがあるため、ごくわずかに待機
