@@ -3,8 +3,8 @@
 PlatformIOに対応
 
 ## プログラム
-* CheapBrowserPlatformIO --- PlatformIOでのソースコード
-
+* src/ --- PlatformIOでのソースコード
+* platformio.ini --- プロジェクトの設定ファイル．依存ライブラリなど．
 
 ## ブラウザでの使い方
 * SSIDに接続　"M5Atom_Robot_test"など．
