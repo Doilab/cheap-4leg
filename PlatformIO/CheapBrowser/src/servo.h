@@ -1,8 +1,9 @@
 //サーボと運動学の処理
 
-#ifndef SERVO_KINEMATICS_H
-#define SERVO_KINEMATICS_H
+#ifndef SERVO_H
+#define SERVO_H
 
+//#include <glm/vec3.hpp>
 #include <Adafruit_PWMServoDriver.h>
 //#include <math.h>
 //#include <cmath>
@@ -20,10 +21,7 @@ const uint8_t servoChannels[4][3] = {
   {9,10,11}     // LEG4
 };
 
-// リンク長 [mm]
-const float l1 = 30.0;
-const float l2 = 60.0;
-const float l3 = 80.0;
+
 
 //関節角度定義(Servo角)
 //th1S 反時計回り正　付け根のでっぱりに沿った斜め方向ゼロの基準
@@ -57,7 +55,8 @@ float OffsetAngles[4][3] = {
   {-10.0, 0.0, -5.0}  // LEG4
 };
 
-Adafruit_PWMServoDriver pwm;
+//----------------------------------------------
+Adafruit_PWMServoDriver pwm;//サーボドライバのインスタンス
 bool servos_initialized=false;//サーボが初期化されているかどうかのフラグ
 
 //----------------------------------------------
@@ -105,89 +104,17 @@ void SetAnglesFromArray(float Angles_array_in[4][3])
     moveLeg(leg, th1S, th2S, th3S);
   }
 }
-//---------------------------------------------
-char calcIK_Leg(double x, double y, double z,
-         double *th1L_out, double *th2L_out, double *th3L_out) 
+/*void SetAnglesFromState(RobotState state)
 {
-  //各脚座標系で逆運動学（Leg角.degree）
-  //途中計算はradian
-  double th11 = atan2(y,x);
-  double r = sqrt(x*x+y*y);
-  double s = sqrt(pow((r-l1),2)+z*z);
-  double abc = acos((l2*l2+l3*l3-s*s)/(2*l2*l3));
-  double th13 = M_PI-abc;
-  double alpha = atan2(-z,(r-l1));
-  double bac = acos((l2*l2+s*s-l3*l3)/(2*l2*s));
-  double th12 = alpha - bac;
+  //RobotStateから関節角度を取り出してServo角で出力
+  //全関節
+  for (int leg = 0; leg < 4; ++leg) {
+    float th1S = state.legs[leg].jointAngles[0]+OffsetAngles[leg][0];
+    float th2S = -state.legs[leg].jointAngles[1]+OffsetAngles[leg][1];
+    float th3S = state.legs[leg].jointAngles[2]+OffsetAngles[leg][2]-90;
+    moveLeg(leg, th1S, th2S, th3S);
+  }
+}*/
 
-  *th1L_out=th11*180.0/M_PI;
-  *th2L_out=th12*180.0/M_PI;
-  *th3L_out=th13*180.0/M_PI;
-  return 1;
-}
-
-void SetFootPosIKLegCoordinateToArray(int legIndex, double x, double y, double z, float Angles_array_out[4][3])
-{
-  //各脚座標で逆運動学
-  //結果は配列に格納
-    double th1_tmp,th2_tmp,th3_tmp;//Leg角．degree
-    char buf1[64];
-    calcIK_Leg(x,y,z, &th1_tmp, &th2_tmp, &th3_tmp);
-    // sprintf(buf1, "LegPos%d(%.1f, %.1f,%.1f)  ->  AngL(%.1f, %.1f,%.1f)",
-    //   legIndex, x,y,z, th1_tmp,th2_tmp,th3_tmp);
-    //Serial.println(buf1);
-    Angles_array_out[legIndex][0]=th1_tmp;
-    Angles_array_out[legIndex][1]=th2_tmp;
-    Angles_array_out[legIndex][2]=th3_tmp;
-   
-}
-
-void SetFootPosIKBodyCoordinateToArray(int legIndex, double x, double y, double z, float Angles_array_out[4][3])
-{
-  //胴体座標で逆運動学
-  double x2,y2,x3,y3;
-  double th;
-  double offset_x, offset_y;
-  char buf[64];
-  if(legIndex==0)
-  {
-    th=M_PI/4;
-    offset_x=50;//胴体中心から見た回転軸のオフセット
-    offset_y=50;//胴体中心から見た回転軸のオフセット
-  }
-  else if(legIndex==1)
-  {
-    th=M_PI*3/4;
-    offset_x=-50;
-    offset_y=50;
-  }
-  else if(legIndex==2)
-  {
-    th=-M_PI*3/4;
-    offset_x=-50;
-    offset_y=-50;
-  }
-  else if(legIndex==3)
-  {
-    th=-M_PI*1/4;
-    offset_x=50;
-    offset_y=-50;
-  }
-  else
-  {
-    return;
-  }
-      x2=x-offset_x;
-      y2=y-offset_y;
-      x3=x2*cos(-th)-y2*sin(-th);
-      y3=x2*sin(-th)+y2*cos(-th);
-//      sprintf(buf,"SetPosIKBodyCoordinate() (x,y,z)=(%.0f,%.0f,%.0f)",x,y,z);//debug
-//      Serial.println(buf);//debug
- //      sprintf(buf,"SetPosIKBodyCoordinate() (x2,y2,z)=(%.0f,%.0f,%.0f)",x2,y2,z);//debug
- //      Serial.println(buf);//debug
- //      sprintf(buf,"SetPosIKBodyCoordinate() (x3,y3,z)=(%.0f,%.0f,%.0f)",x3,y3,z);//debug
- //      Serial.println(buf);//debug
-    SetFootPosIKLegCoordinateToArray(legIndex,x3,y3,z, Angles_array_out);
-}
 
 #endif

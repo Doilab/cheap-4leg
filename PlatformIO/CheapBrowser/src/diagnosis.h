@@ -2,7 +2,8 @@
 #ifndef DIAGNOSIS_H
 #define DIAGNOSIS_H
 
-#include "servo_kinematics.h"
+#include "servo.h"
+#include "kinematics.h"
 
 //---------------------------------------------
 
