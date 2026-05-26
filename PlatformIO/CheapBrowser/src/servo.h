@@ -1,32 +1,10 @@
 //サーボと運動学の処理
 
-#ifndef SERVO_H
-#define SERVO_H
-
-//#include <glm/vec3.hpp>
-#include <Adafruit_PWMServoDriver.h>
-//#include <math.h>
-//#include <cmath>
-
-//#define SERVO_MIN 102
-//#define SERVO_MAX 512
-#define SERVO_MIN 125 //2025.11.13実験 -90度(1,2軸)
-#define SERVO_MAX 525 //2025.11.13実験 +90度
-#define SERVO_FREQ 50
-
-const uint8_t servoChannels[4][3] = {
-  {0, 1, 2},    // LEG1: THETA11, 12, 13
-  {3, 4, 5},    // LEG2
-  {6, 7, 8},    // LEG3
-  {9,10,11}     // LEG4
-};
-
-
-
 //関節角度定義(Servo角)
 //th1S 反時計回り正　付け根のでっぱりに沿った斜め方向ゼロの基準
 //th2S　上がる向きが正．水平基準
 //th3S　たたむ向きが正．第２リンクに対して直角下向きが基準
+
 //関節角度定義(Leg角)
 //th1 反時計回り正　付け根のでっぱりに沿った斜め方向ゼロの基準
 //th2　下がる向きが正．水平基準
@@ -38,13 +16,25 @@ const uint8_t servoChannels[4][3] = {
 //LEG3 右後
 //LEG4 右前
 
-////補正配列．あまり値が大きくならないようにできるだけ組立時に合わせておく．
-//float OffsetAngles[4][3] = {
-//  {-45, 10, -30}, // LEG1左前
-//  {-40, 3, -0}, // LEG2左後
-//  {0, 8, -14}, // LEG3 右後
-//  {10, 22, -20}  // LEG4右前
-//};
+#ifndef SERVO_H
+#define SERVO_H
+
+#include <Adafruit_PWMServoDriver.h>
+
+
+//#define SERVO_MIN 102
+//#define SERVO_MAX 512
+#define SERVO_MIN 125 //2025.11.13実験 -90度(1,2軸)
+#define SERVO_MAX 525 //2025.11.13実験 +90度
+#define SERVO_FREQ 50
+
+//サーボチャンネルの配列．Leg角の順番でチャンネル指定
+const uint8_t servoChannels[4][3] = {
+  {0, 1, 2},    // LEG1: THETA11, 12, 13
+  {3, 4, 5},    // LEG2
+  {6, 7, 8},    // LEG3
+  {9,10,11}     // LEG4
+};
 
 //補正配列．あまり値が大きくならないようにできるだけ組立時に合わせておく．
 //ロボットの機体により個体差あり
@@ -66,7 +56,7 @@ uint16_t angleToPulse(float angle_deg) {
   return map((int)angle_deg, -90, 90, SERVO_MIN, SERVO_MAX);//センターがゼロになるように直した
 }
 
-void init_servos() {
+void initServos() {
   //サーボの初期化
   Wire.begin(38,39); // I2Cのピンを指定（SDA=38, SCL=39）
   pwm = Adafruit_PWMServoDriver(0x40);
@@ -93,28 +83,26 @@ void moveLeg(uint8_t legIndex, float th1S, float th2S, float th3S) {
   moveServo(servoChannels[legIndex][2], th3S);
 }
 
+void moveLegWithOffset(uint8_t legIndex, float th1, float th2, float th3) {
+  //Leg角指令で脚１本の３関節を動かす．配列でチャンネル指定
+  //Leg角から補正配列を加えてServo角で出力
+    float th1S = th1 + OffsetAngles[legIndex][0];
+    float th2S = -th2 + OffsetAngles[legIndex][1];
+    float th3S = th3 + OffsetAngles[legIndex][2] -90;
+    moveLeg(legIndex, th1S, th2S, th3S);
+ }
 void SetAnglesFromArray(float Angles_array_in[4][3])
 {
   //関節角度配列（Leg角）に補正配列を加えてServo角で出力
   //全関節
+  //diagnosisで使用
   for (int leg = 0; leg < 4; ++leg) {
-    float th1S = Angles_array_in[leg][0]+OffsetAngles[leg][0];
-    float th2S = -Angles_array_in[leg][1]+OffsetAngles[leg][1];
-    float th3S = Angles_array_in[leg][2]+OffsetAngles[leg][2]-90;
-    moveLeg(leg, th1S, th2S, th3S);
+    //float th1S = Angles_array_in[leg][0]+OffsetAngles[leg][0];
+    //float th2S = -Angles_array_in[leg][1]+OffsetAngles[leg][1];
+    //float th3S = Angles_array_in[leg][2]+OffsetAngles[leg][2]-90;
+    //moveLeg(leg, th1S, th2S, th3S);
+    moveLegWithOffset(leg, Angles_array_in[leg][0], Angles_array_in[leg][1], Angles_array_in[leg][2]);
   }
 }
-/*void SetAnglesFromState(RobotState state)
-{
-  //RobotStateから関節角度を取り出してServo角で出力
-  //全関節
-  for (int leg = 0; leg < 4; ++leg) {
-    float th1S = state.legs[leg].jointAngles[0]+OffsetAngles[leg][0];
-    float th2S = -state.legs[leg].jointAngles[1]+OffsetAngles[leg][1];
-    float th3S = state.legs[leg].jointAngles[2]+OffsetAngles[leg][2]-90;
-    moveLeg(leg, th1S, th2S, th3S);
-  }
-}*/
-
 
 #endif

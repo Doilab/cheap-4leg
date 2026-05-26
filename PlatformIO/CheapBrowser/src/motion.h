@@ -7,25 +7,6 @@
 
 
 //---------------------------------------------
-void SetInitialPose(float Angles_array_out[4][3])
-{
-  //初期姿勢にする関数
-  //関節角度配列初期(Leg角)
-  float initialAngles[4][3] = {
-    {0.0, 0.0, 0.0}, // LEG1
-    {0.0, 0.0, 0.0}, // LEG2
-    {0.0, 0.0, 0.0}, // LEG3
-    {0.0, 0.0, 0.0}, // LEG4
-  };
-  for (int leg = 0; leg < 4; ++leg) {
-    //SetFootPosIKLegCoordinateToArray(leg, initialAngles[leg][0], initialAngles[leg][1], initialAngles[leg][2], Angles_array_out);
-      Angles_array_out[leg][0] = initialAngles[leg][0];
-      Angles_array_out[leg][1] = initialAngles[leg][1];
-      Angles_array_out[leg][2] = initialAngles[leg][2];
-  }
-return;
-}
-//---------------------------------------------
 void SetInitialPose(RobotState *state_out)
 {
   //初期姿勢にする関数
@@ -42,7 +23,6 @@ void SetInitialPose(RobotState *state_out)
   }
 }
 //---------------------------------------------
-//void RectangleFootMotion(float phase, float *x_out, float *y_out, float *z_out)
 glm::vec3 RectangleFootMotion(float phase)
 {
   //脚先  １個分を長方形状に動かす動作生成の関数
@@ -115,24 +95,24 @@ void Trot(float phase, int RotateMode, RobotState *state_out)
   float dy_init = 60;//初期着地点をy方向に広げる幅
   float base_x = 50;//脚付け根x座標（Body座標）
   float base_y = 50;//脚付け根y座標（Body座標）
-  float COG[]={0,0};//重心の水平方向補正
+  float COG_Adjust[]={0,0};//重心の水平方向補正
   int leg;//動かす箇所
 
   float FootPos[4][3];//脚先位置の配列
 
-  //歩容軌道の中心点
+  //歩容軌道の中心点．FootBase
   float FB[4][3];
-  FB[0][0]=base_x+dx_init+COG[0];
-  FB[0][1]=base_y+dy_init+COG[1];
+  FB[0][0]=base_x+dx_init+COG_Adjust[0];
+  FB[0][1]=base_y+dy_init+COG_Adjust[1];
   FB[0][2]=-height;
-  FB[1][0]=-base_x-dx_init+COG[0];
-  FB[1][1]=base_y+dy_init+COG[1];
+  FB[1][0]=-base_x-dx_init+COG_Adjust[0];
+  FB[1][1]=base_y+dy_init+COG_Adjust[1];
   FB[1][2]=-height;
-  FB[2][0]=-base_x-dx_init+COG[0];
-  FB[2][1]=-base_y-dy_init+COG[1];
+  FB[2][0]=-base_x-dx_init+COG_Adjust[0];
+  FB[2][1]=-base_y-dy_init+COG_Adjust[1];
   FB[2][2]=-height;
-  FB[3][0]=base_x+dx_init+COG[0];
-  FB[3][1]=-base_y-dy_init+COG[1];
+  FB[3][0]=base_x+dx_init+COG_Adjust[0];
+  FB[3][1]=-base_y-dy_init+COG_Adjust[1];
   FB[3][2]=-height;
 
   float x,y,z;
@@ -155,6 +135,7 @@ void Trot(float phase, int RotateMode, RobotState *state_out)
 
     float rad = 0;
     float pi = glm::pi<float>();
+    //旋回する場合の角度指定．各脚で旋回角が違う
     if(RotateMode == 1)
     {
       if(leg ==0)rad = 135 * pi / 180.0; // 回転角度をラジアンに変換
@@ -184,10 +165,6 @@ void Trot(float phase, int RotateMode, RobotState *state_out)
     
       glm::vec3 rotatedPos = glm::vec3(FB[leg][0]+x, FB[leg][1]+y, FB[leg][2]+z);
     
-    // FootPos[leg][0]=FB[leg][0]+x;
-    // FootPos[leg][1]=FB[leg][1]+y;
-    // FootPos[leg][2]=FB[leg][2]+z;
-    //SetFootPosIKBodyCoordinateToArray(leg, FootPos[leg][0], FootPos[leg][1], FootPos[leg][2], Angles_array_out);
     SetFootPosIKBodyCoordinateToRobotState(leg, rotatedPos, state_out);
 
     sprintf(log_buffer, "Trot: leg=%d, phase=%.2f, x=%.1f, y=%.1f, z=%.1f Rot=%d", leg, leg_phase, x, y, z, RotateMode);
@@ -196,7 +173,6 @@ void Trot(float phase, int RotateMode, RobotState *state_out)
 
 }
 //---------------------------------------------
-//void ICRectangleFootMotion(float phase, float *x_out, float *y_out, float *z_out, char flagFrontLeg )
 glm::vec3 ICRectangleFootMotion(float phase, char flagFrontLeg )
 {
   //脚先  １個分を長方形状に動かす動作生成の関数
@@ -314,7 +290,6 @@ glm::vec3 ICRectangleFootMotion(float phase, char flagFrontLeg )
   return pos_out;
 }
 //---------------------------------------------
-//void ICrawl(float phase, float Angles_array_out[4][3])
 void ICrawl(float phase, RobotState *state_out)
 {
   //間歇クロール歩容のモーション生成の関数
@@ -326,7 +301,7 @@ void ICrawl(float phase, RobotState *state_out)
   float COG[]={0,0};//重心の水平方向補正
   int leg;//動かす箇所
 
-  float FootPos[4][3];//脚先位置の配列
+  //float FootPos[4][3];//脚先位置の配列
 
   //歩容軌道の中心点
   float FB[4][3];
@@ -358,17 +333,17 @@ void ICrawl(float phase, RobotState *state_out)
 //    if((leg == 1)||(leg==2))ICRectangleFootMotion(leg_phase, &x, &y, &z, 0);
 //    if((leg == 0)||(leg==3))ICRectangleFootMotion(leg_phase, &x, &y, &z, 1);
     if((leg == 1)||(leg==2)){
-      FPos = ICRectangleFootMotion(leg_phase, 0);
+      FPos = ICRectangleFootMotion(leg_phase, 0);//RearLeg
     }
     if((leg == 0)||(leg==3)){
-      FPos = ICRectangleFootMotion(leg_phase, 1);
+      FPos = ICRectangleFootMotion(leg_phase, 1);//FrontLeg
     }
 
     glm::vec3 Pos2;
     Pos2.x = FB[leg][0]+FPos.x;
     Pos2.y = FB[leg][1]+FPos.y;
     Pos2.z = FB[leg][2]+FPos.z;
-//    SetFootPosIKBodyCoordinateToArray(leg, FootPos[leg][0], FootPos[leg][1], FootPos[leg][2], Angles_array_out);
+
     SetFootPosIKBodyCoordinateToRobotState(leg,Pos2, state_out);
 
     sprintf(log_buffer, "ICrawl2: leg=%d, phase=%.2f, x=%.1f, y=%.1f, z=%.1f", leg, leg_phase, Pos2.x, Pos2.y, Pos2.z);
@@ -377,11 +352,9 @@ void ICrawl(float phase, RobotState *state_out)
 }
 //---------------------------------------------
 //後退歩行のモーション生成
-//void ICrawl_Back(float phase, float Angles_array_out[4][3])
 void ICrawl_Back(float phase, RobotState *state_out)
  {
   float r_phase = fmod(1-phase,1.0);//ICrawlのモードを逆順にする
-  //ICrawl(r_phase, Angles_array_out);
   ICrawl(r_phase, state_out);
 } 
 #endif

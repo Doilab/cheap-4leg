@@ -29,27 +29,15 @@ WebServer server(80);
 #include "motion.h"
 
 
-//関節角度配列 逆運動学結果格納用(Leg角)
-//将来的に廃止してRobotState構造体のjointAnglesに統合する予定
-// float AnglesIK[4][3] = {
-//   {0.0, 0.0, 0.0}, // LEG1
-//   {0.0, 0.0, 0.0}, // LEG2
-//   {0.0, 0.0, 0.0}, // LEG3
-//   {0.0, 0.0, 0.0}, // LEG4
-// };
-
 RobotState robotState; // ロボットの状態を保持する構造体
 
 //---------------------------------------------
 void SetAnglesFromState(RobotState state)
 {
-  //RobotStateから関節角度を取り出してServo角で出力
+  //RobotStateから関節角度（Leg角）を取り出して駆動
   //全関節
   for (int leg = 0; leg < 4; ++leg) {
-    float th1S = state.legs[leg].jointAngles[0]+OffsetAngles[leg][0];
-    float th2S = -state.legs[leg].jointAngles[1]+OffsetAngles[leg][1];
-    float th3S = state.legs[leg].jointAngles[2]+OffsetAngles[leg][2]-90;
-    moveLeg(leg, th1S, th2S, th3S);
+    moveLegWithOffset(leg, state.legs[leg].jointAngles[0], state.legs[leg].jointAngles[1], state.legs[leg].jointAngles[2]);
   }
 }
 //---------------------------------------------
@@ -58,13 +46,6 @@ char SetFootPosIKBodyCoordinate(int legIndex, glm::vec3 pos)
   char flag = SetFootPosIKBodyCoordinateToRobotState(legIndex, pos, &robotState);
   return flag;
 }
-
-//---------------------------------------------
-// void SetFootPosIKBodyCoordinate(int legIndex, double x, double y, double z)
-// {
-//   SetFootPosIKBodyCoordinateToArray(legIndex, x, y, z, AnglesIK);
-// }
-
 
 //---------------------------------------------
 void Bowing(void)
@@ -242,7 +223,7 @@ void handleRoot() {
   html += "  <button class='c-green' onclick=\"fetch('/reset')\">Reset</button>";
   html += "  <button class='c-blue' onclick=\"fetch('/b')\">↓B</button>";
   html += "  <button class='c-green' onclick=\"fetch('/lt')\">←L</button>";
-  html += "  <button class='c-green' onclick=\"fetch('/reset')\">Trot</button>";
+  html += "  <button class='c-green' onclick=\"fetch('/t')\">Trot</button>";
   html += "  <button class='c-green' onclick=\"fetch('/rt')\">R→</button>";
   html += "  <button class='c-yellow' onclick=\"fetch('/h')\">お辞儀</button>";
   html += "</div>";
@@ -274,6 +255,7 @@ void setupWiFi() {
   server.on("/h", []() { Bowing(); server.send(200, "text/plain", "OK"); });//お辞儀
   server.on("/rt", []() { WalkTrot(1,-1); server.send(200, "text/plain", "OK"); });//右ターン
   server.on("/lt", []() {  WalkTrot(1,1); server.send(200, "text/plain", "OK"); });//左ターン
+  server.on("/t", []() {  WalkTrot(1,0); server.send(200, "text/plain", "OK"); });//左ターン
 
 
   server.begin();
@@ -294,7 +276,7 @@ void setup() {
 
   // その後にサーボなどの設定をする
   Serial.println("--- Initializing Servos ---");
-  init_servos();
+  initServos();
   
   Serial.println("System Ready.");
   ICrawl(0,&robotState); // 間歇クロール歩容の基準姿勢へ
@@ -316,7 +298,7 @@ void loop() {
     } else if (str1 == "2") {
       moveServo_test();
     } else if (str1 == "3") {
-      SetAnglesFromArray_test();
+      moveLegWithOffset_test();
     } else if (str1 == "4") {
       SetFootPosIKLegCoordinate_test();
     } else if (str1 == "5") {

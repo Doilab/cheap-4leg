@@ -1,15 +1,16 @@
-//サーボと運動学の処理
+//運動学の処理
 
 #ifndef KINEMATICS_H
 #define KINEMATICS_H
 #include <glm/glm.hpp>
-#include <glm/gtc/constants.hpp>
-#include <glm/vec3.hpp>
+#include <glm/gtc/constants.hpp>//piのため
+#include <glm/vec3.hpp>//vec3のため
+#include <cmath>//数学関数．atan2, sqrt, acosなど．
 
-// リンク長 [mm]
-const float l1 = 30.0;
-const float l2 = 60.0;
-const float l3 = 80.0;
+// Cheap４脚のリンク長 [mm]
+const float LINK1_LENGTH = 30.0;
+const float LINK2_LENGTH = 60.0;
+const float LINK3_LENGTH = 80.0;
 
 
 //関節角度定義(Servo角)
@@ -29,13 +30,14 @@ const float l3 = 80.0;
 
 
 //----------------------------------------------
-//ロボットの状態を保持する構造体
+//ロボットの３自由度脚状態を保持する構造体
 struct LegState
 {
     glm::vec3 footPos;//Leg座標での足先位置
     glm::vec3 jointAngles;//Leg角での関節角度
 };
 
+//ロボットの状態を保持する構造体
 struct RobotState
 {
     LegState legs[4];
@@ -50,14 +52,18 @@ char calcIK_Leg(float x, float y, float z,
   //各脚座標系で逆運動学（Leg角.degree）
   //途中計算はradian
   //エラーチェックが必要だがとりあえず動く範囲で動かす前提で作る．
+  float l1 = LINK1_LENGTH;
+  float l2 = LINK2_LENGTH;
+  float l3 = LINK3_LENGTH;
+
   float pi = glm::pi<float>();
   float th11 = std::atan2(y,x);
-  float r = sqrt(x*x+y*y);
-  float s = sqrt(pow((r-l1),2)+z*z);
-  float abc = acos((l2*l2+l3*l3-s*s)/(2*l2*l3));
+  float r = std::sqrt(x*x+y*y);
+  float s = std::sqrt(pow((r-l1),2)+z*z);
+  float abc = std::acos((l2*l2+l3*l3-s*s)/(2*l2*l3));
   float th13 = pi-abc;
-  float alpha = atan2(-z,(r-l1));
-  float bac = acos((l2*l2+s*s-l3*l3)/(2*l2*s));
+  float alpha = std::atan2(-z,(r-l1));
+  float bac = std::acos((l2*l2+s*s-l3*l3)/(2*l2*s));
   float th12 = alpha - bac;
 
   *th1L_out=th11*180.0/pi;

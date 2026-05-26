@@ -121,7 +121,7 @@ void moveServo_test(void)
   }
 }
 //---------------------------------------------
-void SetAnglesFromArray_test(void)
+void moveLegWithOffset_test(void)
 {
   //Leg角＋配列での駆動テスト
   char buf[64];
@@ -173,7 +173,13 @@ void SetAnglesFromArray_test(void)
     {
       return;
     }
-    SetAnglesFromArray(Angles);
+    //SetAnglesFromArray(Angles);
+    for(int leg=0;leg<4;leg++)
+    {
+      moveLegWithOffset(leg, Angles[leg][0], Angles[leg][1], Angles[leg][2]);
+      sprintf(buf,"Leg%d angles (%.1f, %.1f, %.1f)", leg, Angles[leg][0], Angles[leg][1], Angles[leg][2]);
+      Serial.println(buf);
+    }
  
   }
 }
@@ -183,7 +189,7 @@ void SetFootPosIKLegCoordinate_test(void)
 {
   //脚座標で逆運動学のテスト
   char buf[64];
-  float AnglesIK[4][3];
+  ///float AnglesIK[4][3];
   float x,y,z;
   Serial.println("SetFootPosIKLegCoordinate_test()1 or 2 or q");
   while(1)
@@ -220,11 +226,22 @@ void SetFootPosIKLegCoordinate_test(void)
     {
       return;
     }
-    SetFootPosIKLegCoordinateToArray(0,x,y,z,AnglesIK);
-    SetFootPosIKLegCoordinateToArray(1,x,y,z,AnglesIK);
-    SetFootPosIKLegCoordinateToArray(2,x,y,z,AnglesIK);
-    SetFootPosIKLegCoordinateToArray(3,x,y,z,AnglesIK);
-    SetAnglesFromArray(AnglesIK);
+    // SetFootPosIKLegCoordinateToArray(0,x,y,z,AnglesIK);
+    // SetFootPosIKLegCoordinateToArray(1,x,y,z,AnglesIK);
+    // SetFootPosIKLegCoordinateToArray(2,x,y,z,AnglesIK);
+    // SetFootPosIKLegCoordinateToArray(3,x,y,z,AnglesIK);
+    // SetAnglesFromArray(AnglesIK);
+
+    glm::vec3 pos_leg_coordinate(x,y,z);
+    glm::vec3 angles_vec3;// = SetFootPosIKLegCoordinateToVec3(glm::vec3(x,y,z));
+    angles_vec3 = SetFootPosIKLegCoordinateToVec3(pos_leg_coordinate);
+  
+    RobotState state;
+    for (int leg = 0; leg < 4; ++leg) {
+      state.legs[leg].jointAngles = angles_vec3;
+      moveLegWithOffset(leg, state.legs[leg].jointAngles[0], state.legs[leg].jointAngles[1], state.legs[leg].jointAngles[2]);
+    }
+    //SetAnglesFromState(state);
   }
 }
 //---------------------------------------------
@@ -232,8 +249,10 @@ void SetFootPosIKBodyCoordinate_test(void)
 {
   //胴体座標で逆運動学のテスト
   char buf[64];
-  float AnglesIK[4][3];
+  //float AnglesIK[4][3];
   float FootPos[4][3];
+  glm::vec3 FP[4];//FootPos
+
   double x,y,z;
   Serial.println("SetFootPosIKBodyCoordinate_test() 1 or 2 or q");
   while(1)
@@ -253,36 +272,44 @@ void SetFootPosIKBodyCoordinate_test(void)
        x=140;
        y=50;
        z=-80;
-       FootPos[0][0]=x;
-       FootPos[0][1]=y; 
-       FootPos[0][2]=z;
-       FootPos[1][0]=-x;
-       FootPos[1][1]=y; 
-       FootPos[1][2]=z;
-       FootPos[2][0]=-x;
-       FootPos[2][1]=-y; 
-       FootPos[2][2]=z;
-       FootPos[3][0]=x;
-       FootPos[3][1]=-y; 
-       FootPos[3][2]=z;
+       FP[0]=glm::vec3(x,y,z);
+       FP[1]=glm::vec3(-x,y,z);
+       FP[2]=glm::vec3(-x,-y,z);
+       FP[3]=glm::vec3(x,-y,z);
+      //  FootPos[0][0]=x;
+      //  FootPos[0][1]=y; 
+      //  FootPos[0][2]=z;
+      //  FootPos[1][0]=-x;
+      //  FootPos[1][1]=y; 
+      //  FootPos[1][2]=z;
+      //  FootPos[2][0]=-x;
+      //  FootPos[2][1]=-y; 
+      //  FootPos[2][2]=z;
+      //  FootPos[3][0]=x;
+      //  FootPos[3][1]=-y; 
+      //  FootPos[3][2]=z;
     }
     else if(str1=="2")
     {
        x=50;
        y=140;
        z=-50;
-       FootPos[0][0]=x;
-       FootPos[0][1]=y; 
-       FootPos[0][2]=z;
-       FootPos[1][0]=-x;
-       FootPos[1][1]=y; 
-       FootPos[1][2]=z;
-       FootPos[2][0]=-x;
-       FootPos[2][1]=-y; 
-       FootPos[2][2]=z;
-       FootPos[3][0]=x;
-       FootPos[3][1]=-y; 
-       FootPos[3][2]=z;
+        FP[0]=glm::vec3(x,y,z);
+        FP[1]=glm::vec3(-x,y,z);
+        FP[2]=glm::vec3(-x,-y,z);
+        FP[3]=glm::vec3(x,-y,z);
+      //  FootPos[0][0]=x;
+      //  FootPos[0][1]=y; 
+      //  FootPos[0][2]=z;
+      //  FootPos[1][0]=-x;
+      //  FootPos[1][1]=y; 
+      //  FootPos[1][2]=z;
+      //  FootPos[2][0]=-x;
+      //  FootPos[2][1]=-y; 
+      //  FootPos[2][2]=z;
+      //  FootPos[3][0]=x;
+      //  FootPos[3][1]=-y; 
+      //  FootPos[3][2]=z;
     }
     else   
     {
@@ -290,12 +317,19 @@ void SetFootPosIKBodyCoordinate_test(void)
     }
       sprintf(buf,"Body coordinate (%.0f, %.0f, %.0f)",x,y,z);
       Serial.println(buf);
-      SetFootPosIKBodyCoordinateToArray(0,FootPos[0][0],FootPos[0][1],FootPos[0][2], AnglesIK);
-      SetFootPosIKBodyCoordinateToArray(1,FootPos[1][0],FootPos[1][1],FootPos[1][2], AnglesIK);
-      SetFootPosIKBodyCoordinateToArray(2,FootPos[2][0],FootPos[2][1],FootPos[2][2], AnglesIK);
-      SetFootPosIKBodyCoordinateToArray(3,FootPos[3][0],FootPos[3][1],FootPos[3][2], AnglesIK);
-      SetAnglesFromArray(AnglesIK);
- 
+      RobotState state;
+      // for (int i = 0; i < 4; ++i) {
+      //   FP[i] = glm::vec3(FootPos[i][0], FootPos[i][1], FootPos[i][2]);
+      // }
+      // SetFootPosIKBodyCoordinateToArray(0,FootPos[0][0],FootPos[0][1],FootPos[0][2], AnglesIK);
+      // SetFootPosIKBodyCoordinateToArray(1,FootPos[1][0],FootPos[1][1],FootPos[1][2], AnglesIK);
+      // SetFootPosIKBodyCoordinateToArray(2,FootPos[2][0],FootPos[2][1],FootPos[2][2], AnglesIK);
+      // SetFootPosIKBodyCoordinateToArray(3,FootPos[3][0],FootPos[3][1],FootPos[3][2], AnglesIK);
+      // SetAnglesFromArray(AnglesIK);
+      for (int leg = 0; leg < 4; ++leg) {
+        SetFootPosIKBodyCoordinateToRobotState(leg, FP[leg], &state);
+        moveLegWithOffset(leg, state.legs[leg].jointAngles[0], state.legs[leg].jointAngles[1], state.legs[leg].jointAngles[2]);
+      }
   }
 }
 //----------------------------------------------
