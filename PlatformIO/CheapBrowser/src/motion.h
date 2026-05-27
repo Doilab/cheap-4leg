@@ -3,8 +3,8 @@
 #define MOTION_H
 //#include <math.h>
 #include "kinematics.h"
- //---------------------------------------------
-
+#include <glm/gtc/matrix_transform.hpp>
+//---------------------------------------------
 
 //---------------------------------------------
 void SetInitialPose(RobotState *state_out)
@@ -17,161 +17,13 @@ void SetInitialPose(RobotState *state_out)
     state_out->legs[leg].jointAngles[2] = 0.0;
     //脚先位置は関節角度から計算して入れる．
     //↓未実装
-    float x, y, z;
+    //float x, y, z;
     // calcFK_Leg(state_out->legs[leg].jointAngles[0], state_out->legs[leg].jointAngles[1], state_out->legs[leg].jointAngles[2], &x, &y, &z);
     // state_out->legs[leg].footPos = glm::vec3(x, y, z);
   }
 }
 //---------------------------------------------
-glm::vec3 RectangleFootMotion(float phase)
-{
-  //脚先  １個分を長方形状に動かす動作生成の関数
-  float stride = 40;//歩幅
-  float f_height = 20;//遊脚高さ
-  float x,y,z;
-  float dp, ratio;
-  
-  if((phase<=0)||(phase>=1.0))
-  {
-      x=(-0.5*stride);
-      y=0;
-      z=0;
-  }
-  else if((phase>0)&&(phase<=0.50))
-  {
-    if(phase<=0.1)//足上げ
-    {
-      dp=phase;
-      ratio=dp/0.1;
-      z=f_height*ratio;
-      x=-0.5*stride;
-      y=0;
-    }
-    else if(phase<=0.3)//足復帰
-    {
-      dp=phase-0.1;
-      ratio=dp/0.20;
-      x=stride*ratio-0.5*stride;
-      y=0;
-      z=f_height;
-    }
-    else if(phase<=0.4)//足おろし
-    {
-      dp=phase-0.3;
-      ratio=dp/0.1;
-      x=0.5*stride;
-      y=0;
-      z=f_height*(1-ratio);
-    }
-    else if(phase<=0.5)//待機
-    {
-      x=0.5*stride;
-      y=0;
-      z=0;
-    }
-  }
-  else if((phase>0.50)&&(phase<1.0))//胴体推進（足後ろに下げる）
-  {
-    dp=phase-0.5;
-    ratio=dp/0.50;
-    x=0.5*stride - stride*(ratio);
-    y=0;
-    z=0;
-  }
 
-//  *x_out=x;
-//  *y_out=y;
-//  *z_out=z;
-  glm::vec3 pos_out(x, y, z);
-  return pos_out;
-}
-//---------------------------------------------
-//void Trot(float phase, int RotateMode, float Angles_array_out[4][3])
-void Trot(float phase, int RotateMode, RobotState *state_out)
-{
-  //トロット歩容のモーション生成の関数
-  float height = 80;//胴体高さ
-  float dx_init = 10;//初期着地点をx方向に広げる幅
-  float dy_init = 60;//初期着地点をy方向に広げる幅
-  float base_x = 50;//脚付け根x座標（Body座標）
-  float base_y = 50;//脚付け根y座標（Body座標）
-  float COG_Adjust[]={0,0};//重心の水平方向補正
-  int leg;//動かす箇所
-
-  float FootPos[4][3];//脚先位置の配列
-
-  //歩容軌道の中心点．FootBase
-  float FB[4][3];
-  FB[0][0]=base_x+dx_init+COG_Adjust[0];
-  FB[0][1]=base_y+dy_init+COG_Adjust[1];
-  FB[0][2]=-height;
-  FB[1][0]=-base_x-dx_init+COG_Adjust[0];
-  FB[1][1]=base_y+dy_init+COG_Adjust[1];
-  FB[1][2]=-height;
-  FB[2][0]=-base_x-dx_init+COG_Adjust[0];
-  FB[2][1]=-base_y-dy_init+COG_Adjust[1];
-  FB[2][2]=-height;
-  FB[3][0]=base_x+dx_init+COG_Adjust[0];
-  FB[3][1]=-base_y-dy_init+COG_Adjust[1];
-  FB[3][2]=-height;
-
-  float x,y,z;
-  char log_buffer[100];
-  for(leg=0;leg<4;leg++)
-  {
-    float leg_phase = 0;
-    // 各脚の位相をずらす．
-    if(leg == 0) leg_phase = fmod(phase + 0.00, 1.0);//
-    if(leg == 2) leg_phase = fmod(phase + 0.00, 1.0);//
-    if(leg == 1) leg_phase = fmod(phase + 0.50, 1.0);// 
-    if(leg == 3) leg_phase = fmod(phase + 0.50, 1.0);//
-    //脚の動きの生成
-    //RectangleFootMotion(leg_phase, &x, &y, &z);
-    glm::vec3 FPos = RectangleFootMotion(leg_phase);
-    x=FPos.x;
-    y=FPos.y;
-    z=FPos.z;
-
-
-    float rad = 0;
-    float pi = glm::pi<float>();
-    //旋回する場合の角度指定．各脚で旋回角が違う
-    if(RotateMode == 1)
-    {
-      if(leg ==0)rad = 135 * pi / 180.0; // 回転角度をラジアンに変換
-      else if(leg ==1)rad = -135 * pi / 180.0;
-      else if(leg ==2)rad = 45 * pi / 180.0;
-      else if(leg ==3)rad = -45 * pi / 180.0;
-    }
-    else if(RotateMode == -1)
-    {
-      if(leg ==0)rad = -45 * pi / 180.0; // 回転角度をラジアンに変換
-      else if(leg ==1)rad = 45 * pi / 180.0;
-      else if(leg ==2)rad = 135 * pi / 180.0;
-      else if(leg ==3)rad = -135 * pi / 180.0;
-    }
-    else
-    {      
-      rad = 0;
-    }
-      float cos_rad = glm::cos(rad);
-      float sin_rad = glm::sin(rad);
-    
-      // 胴体回転の適用
-      float x_rot = x * cos_rad - y * sin_rad;
-      float y_rot = x * sin_rad + y * cos_rad;
-      x = x_rot;
-      y = y_rot;
-    
-      glm::vec3 rotatedPos = glm::vec3(FB[leg][0]+x, FB[leg][1]+y, FB[leg][2]+z);
-    
-    SetFootPosIKBodyCoordinateToRobotState(leg, rotatedPos, state_out);
-
-    sprintf(log_buffer, "Trot: leg=%d, phase=%.2f, x=%.1f, y=%.1f, z=%.1f Rot=%d", leg, leg_phase, x, y, z, RotateMode);
-    Serial.println(log_buffer);
-  }
-
-}
 //---------------------------------------------
 glm::vec3 ICRectangleFootMotion(float phase, char flagFrontLeg )
 {
@@ -282,9 +134,6 @@ glm::vec3 ICRectangleFootMotion(float phase, char flagFrontLeg )
     z=0;
   }
  
-  //*x_out=x;
-  //*y_out=y;
-  //*z_out=z;
   glm::vec3 pos_out(x, y, z);
 
   return pos_out;
@@ -330,8 +179,6 @@ void ICrawl(float phase, RobotState *state_out)
     if(leg == 2) leg_phase = fmod(phase + 0.50, 1.0);//右半身
     if(leg == 3) leg_phase = fmod(phase + 0.50, 1.0);//右半身
     //脚の動きの生成
-//    if((leg == 1)||(leg==2))ICRectangleFootMotion(leg_phase, &x, &y, &z, 0);
-//    if((leg == 0)||(leg==3))ICRectangleFootMotion(leg_phase, &x, &y, &z, 1);
     if((leg == 1)||(leg==2)){
       FPos = ICRectangleFootMotion(leg_phase, 0);//RearLeg
     }

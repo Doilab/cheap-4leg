@@ -106,55 +106,6 @@ glm::vec3 SetFootPosIKLegCoordinateToVec3(glm::vec3 pos)
     
 }
 
-void SetFootPosIKBodyCoordinateToArray(int legIndex, float x, float y, float z, float Angles_array_out[4][3])
-{
-  //胴体座標で逆運動学
-  float x2,y2,x3,y3;
-  float th;
-  float offset_x, offset_y;
-  char buf[64];
-  float pi = glm::pi<float>();
- 
-  if(legIndex==0)
-  {
-    th=pi/4;
-    offset_x=50;//胴体中心から見た回転軸のオフセット
-    offset_y=50;//胴体中心から見た回転軸のオフセット
-  }
-  else if(legIndex==1)
-  {
-    th=pi*3/4;
-    offset_x=-50;
-    offset_y=50;
-  }
-  else if(legIndex==2)
-  {
-    th=-pi*3/4;
-    offset_x=-50;
-    offset_y=-50;
-  }
-  else if(legIndex==3)
-  {
-    th=-pi*1/4;
-    offset_x=50;
-    offset_y=-50;
-  }
-  else
-  {
-    return;
-  }
-      x2=x-offset_x;
-      y2=y-offset_y;
-      x3=x2*cos(-th)-y2*sin(-th);
-      y3=x2*sin(-th)+y2*cos(-th);
-//      sprintf(buf,"SetPosIKBodyCoordinate() (x,y,z)=(%.0f,%.0f,%.0f)",x,y,z);//debug
-//      Serial.println(buf);//debug
- //      sprintf(buf,"SetPosIKBodyCoordinate() (x2,y2,z)=(%.0f,%.0f,%.0f)",x2,y2,z);//debug
- //      Serial.println(buf);//debug
- //      sprintf(buf,"SetPosIKBodyCoordinate() (x3,y3,z)=(%.0f,%.0f,%.0f)",x3,y3,z);//debug
- //      Serial.println(buf);//debug
-    SetFootPosIKLegCoordinateToArray(legIndex,x3,y3,z, Angles_array_out);
-}
 
 char SetFootPosIKBodyCoordinateToRobotState(int legIndex, glm::vec3 pos, RobotState *state_out)
 {
@@ -208,6 +159,7 @@ char SetFootPosIKBodyCoordinateToRobotState(int legIndex, glm::vec3 pos, RobotSt
  //      Serial.println(buf);//debug
  
  state_out->legs[legIndex].jointAngles = SetFootPosIKLegCoordinateToVec3(glm::vec3(x3,y3,z));
+ state_out->legs[legIndex].footPos = pos;//脚先位置も更新しておく． 
   return flag;
 }
 

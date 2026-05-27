@@ -28,6 +28,8 @@ WebServer server(80);
 //モーション関数群
 #include "motion.h"
 
+//トロット歩容
+#include "trotgait.h"
 
 RobotState robotState; // ロボットの状態を保持する構造体
 
@@ -48,12 +50,12 @@ char SetFootPosIKBodyCoordinate(int legIndex, glm::vec3 pos)
 }
 
 //---------------------------------------------
-void Bowing(void)
+void Bowing(void)//motion.hに移したい
 {
   //お辞儀をする関数
   Serial.println("Web:　slow-bowing");
 
-  // 1. 開始姿勢（元の体勢）
+  // 1. 開始姿勢（元の体勢）胴体座標系での脚先位置
   float start[4][3] = {
     {  20,  110, -80}, // 0
     {-105,  110, -80}, // 1
@@ -79,11 +81,8 @@ void Bowing(void)
       float y = start[i][1] + (target[i][1] - start[i][1]) * ratio;
       float z = start[i][2] + (target[i][2] - start[i][2]) * ratio;
       glm::vec3 pos(x, y, z);
-      //SetFootPosIKBodyCoordinate(i, x, y, z);
       SetFootPosIKBodyCoordinate(i, pos);
-      //FootPos[i][0] = x; FootPos[i][1] = y; FootPos[i][2] = z;
     }
-    //SetAnglesFromArray(AnglesIK);
     SetAnglesFromState(robotState); // RobotStateからServoに反映
     delay(25); 
   }
@@ -102,12 +101,8 @@ void Bowing(void)
       float y = target[i][1] + (start[i][1] - target[i][1]) * ratio;
       float z = target[i][2] + (start[i][2] - target[i][2]) * ratio;
       glm::vec3 pos(x, y, z);
-      //SetFootPosIKBodyCoordinate(i, x, y, z);
       SetFootPosIKBodyCoordinate(i, pos);
-      //SetFootPosIKBodyCoordinate(i, x, y, z);
-      //FootPos[i][0] = x; FootPos[i][1] = y; FootPos[i][2] = z;
     }
-    //SetAnglesFromArray(AnglesIK);
     SetAnglesFromState(robotState); // RobotStateからServoに反映
     delay(25); 
   }
@@ -120,23 +115,24 @@ void Bowing(void)
 void WalkTrot(int repetitions, int RotateMode) //トロット歩容による前進歩行
 {
   Serial.println("Trot Walk Start");
-  //char RotateMode = 1; // 胴体回転の有無を制御するフラグ（1: 左回り，-1:右回り）
-  //Trot(0, RotateMode, AnglesIK); // 歩行の基準姿勢
-  Trot(0, RotateMode, &robotState); // 歩行の基準姿勢
+  TrotGait  Trot; // トロット歩容のクラスインスタンス
+  
+  //Trot.SetFootBaseDefault(); // 歩容の基準姿勢をセット
+  Trot.SetFootBase(&robotState); // RobotStateから歩容の基準姿勢をセット．
+  Trot.Update(0, RotateMode, &robotState); // 歩行の基準姿勢
   delay(500);
 
   for (int r = 0; r < repetitions; r++) {
-    for (double t = 0; t < 100; t++) {
-      Trot(t/100.0, RotateMode, &robotState); // 0から1までの値をTrotに渡す
-      //SetAnglesFromArray(AnglesIK);
+    for (float t = 0; t < 100; t++) {
+      float phase = t / 100.0; // 0から1までの値を計算
+      Trot.Update(phase, RotateMode, &robotState); // 0から1までの値をTrotに渡す
       SetAnglesFromState(robotState); // RobotStateからServoに反映
 
       delay(50); // 各ステップごとの待機時間（ミリ秒）
     }
   }
 
-  Trot(0, RotateMode, &robotState); // 最後に止まる
-  //SetAnglesFromArray(AnglesIK);
+  Trot.Update(0, RotateMode, &robotState); // 最後に止まる
   SetAnglesFromState(robotState); // 最終的な姿勢をServoに反映
 
   Serial.println("Trot Walk End");
@@ -150,16 +146,15 @@ void WalkIC(int repetitions) //間歇クロールによる前進歩行
   delay(500);
 
   for (int r = 0; r < repetitions; r++) {
-    for (double t = 0; t < 100; t++) {
-      ICrawl(t/100.0, &robotState); // 0から1までの値をICrawl2に渡す
-      //SetAnglesFromArray(AnglesIK);
+    for (int t = 0; t < 100; t++) {
+      float phase = (float)t / 100.0; // 0から1までの値を計算
+      ICrawl(phase, &robotState); // 0から1までの値をICrawl2に渡す
       SetAnglesFromState(robotState); // 最終的な姿勢をServoに反映
       delay(50); // 各ステップごとの待機時間（ミリ秒）
     }
   }
 
   ICrawl(0, &robotState); // 最後に止まる
-  //SetAnglesFromArray(AnglesIK);
   SetAnglesFromState(robotState);
 
   Serial.println("ICrawl Walk End");
@@ -174,14 +169,12 @@ void BackWalkIC(int repetitions) //間歇クロールによる後退歩行
   for (int r = 0; r < repetitions; r++) {
     for (double t = 0; t < 100; t++) {
       ICrawl_Back(t/100.0, &robotState); // 0から1までの値をICrawl2に渡す
-      //SetAnglesFromArray(AnglesIK);
       SetAnglesFromState(robotState); // 最終的な姿勢をServoに反映
       delay(50); // 各ステップごとの待機時間（ミリ秒）
     }
   }
 
   ICrawl_Back(0,&robotState); // 最後に止まる
-  //SetAnglesFromArray(AnglesIK);
   SetAnglesFromState(robotState); // RobotStateからServoに反映
   Serial.println("ICrawl Back End");
 }
@@ -219,12 +212,12 @@ void handleRoot() {
   
   html += "<div class='grid'>";
   // 各ボタン（classで色を呼び出し）
-  html += "  <button class='c-red' onclick=\"fetch('/w')\">↑F</button>";
-  html += "  <button class='c-green' onclick=\"fetch('/reset')\">Reset</button>";
+  html += "  <button class='c-blue' onclick=\"fetch('/w')\">↑F</button>";
+  html += "  <button class='c-red' onclick=\"fetch('/reset')\">Reset</button>";
   html += "  <button class='c-blue' onclick=\"fetch('/b')\">↓B</button>";
-  html += "  <button class='c-green' onclick=\"fetch('/lt')\">←L</button>";
+  html += "  <button class='c-green' onclick=\"fetch('/lt')\">←CCW</button>";
   html += "  <button class='c-green' onclick=\"fetch('/t')\">Trot</button>";
-  html += "  <button class='c-green' onclick=\"fetch('/rt')\">R→</button>";
+  html += "  <button class='c-green' onclick=\"fetch('/rt')\">CW→</button>";
   html += "  <button class='c-yellow' onclick=\"fetch('/h')\">お辞儀</button>";
   html += "</div>";
 
@@ -253,9 +246,9 @@ void setupWiFi() {
   server.on("/w", []() { WalkIC(1); server.send(200, "text/plain", "OK"); });//歩行開始関数を呼び出す
   server.on("/b", []() { BackWalkIC(1); server.send(200, "text/plain", "OK"); });//後退関数を呼び出す
   server.on("/h", []() { Bowing(); server.send(200, "text/plain", "OK"); });//お辞儀
-  server.on("/rt", []() { WalkTrot(1,-1); server.send(200, "text/plain", "OK"); });//右ターン
-  server.on("/lt", []() {  WalkTrot(1,1); server.send(200, "text/plain", "OK"); });//左ターン
-  server.on("/t", []() {  WalkTrot(1,0); server.send(200, "text/plain", "OK"); });//左ターン
+  server.on("/rt", []() { WalkTrot(1,-1); server.send(200, "text/plain", "OK"); });//トロット右ターン
+  server.on("/lt", []() {  WalkTrot(1,1); server.send(200, "text/plain", "OK"); });//トロット左ターン
+  server.on("/t", []() {  WalkTrot(1,0); server.send(200, "text/plain", "OK"); });//トロット前進
 
 
   server.begin();
@@ -329,10 +322,7 @@ void loop() {
       WalkTrot(1, 1); // 1回繰り返し、RotateMode=1（左回り）
     } else
     {
-      //SetAnglesFromArray(initialAngles);
-      //SetInitialPose(AnglesIK);
       SetInitialPose(&robotState); // RobotStateの初期化
-      //SetAnglesFromArray(AnglesIK);
       SetAnglesFromState(robotState); // RobotStateからServoに反映
       Serial.println("Unknown command. Reset to initial pose.");
     }
