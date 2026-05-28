@@ -29,7 +29,10 @@ WebServer server(80);
 #include "motion.h"
 
 //トロット歩容
-#include "trotgait.h"
+#include "trot_gait.h"
+
+//間歇クロール歩容
+#include "intermittent_crawl_gait.h"
 
 RobotState robotState; // ロボットの状態を保持する構造体
 
@@ -50,63 +53,61 @@ char SetFootPosIKBodyCoordinate(int legIndex, glm::vec3 pos)
 }
 
 //---------------------------------------------
-void Bowing(void)//motion.hに移したい
+void Bowing(RobotState *state)
 {
   //お辞儀をする関数
-  Serial.println("Web:　slow-bowing");
+  Serial.println("Bowing motion start..." );
 
-  // 1. 開始姿勢（元の体勢）胴体座標系での脚先位置
-  float start[4][3] = {
-    {  20,  110, -80}, // 0
-    {-105,  110, -80}, // 1
-    { -80, -110, -80}, // 2
-    {  40, -110, -80}  // 3
-  };
+  RobotState start_r = *state;//初期姿勢
+  RobotState target_r = *state;//目標姿勢（お辞儀姿勢）
 
-  // 2. 目標のお辞儀姿勢
-  float target[4][3] = {
-    {  50,  110, -50}, // 0
-    {-105,  110, -80}, // 1
-    { -80, -110, -80}, // 2
-    {  80, -110, -50}  // 3
-  };
+  target_r.legs[0].footPos.z += 30;//脚先を30mm上げる
+  target_r.legs[3].footPos.z += 30;//脚先を30mm上げる
 
-  int steps = 20; 
+  glm::vec3 pos;
+  float phase = 0.0;
 
-  // --- A. お辞儀をする動作（スロー） ---
-  for (int s = 1; s <= steps; s++) {
-    float ratio = (float)s / (float)steps;
-    for (int i = 0; i < 4; i++) {
-      float x = start[i][0] + (target[i][0] - start[i][0]) * ratio;
-      float y = start[i][1] + (target[i][1] - start[i][1]) * ratio;
-      float z = start[i][2] + (target[i][2] - start[i][2]) * ratio;
-      glm::vec3 pos(x, y, z);
-      SetFootPosIKBodyCoordinate(i, pos);
+  for (phase = 0.0; phase <=1.0; phase+=0.01) {
+    if(phase<=0.4)
+    {
+      // --- A. お辞儀をする動作） ---
+      Serial.println("Bowing...");
+      float ratio = phase / 0.4;
+      for (int leg = 0; leg < 4; leg++) {
+        glm::vec3 s = start_r.legs[leg].footPos;
+        glm::vec3 t = target_r.legs[leg].footPos;
+        pos = s + (t - s) * ratio;//RobotStateの脚先位置も補正して線形補間する． 
+        SetFootPosIKBodyCoordinateToRobotState(leg, pos, state);
+      }
     }
-    SetAnglesFromState(robotState); // RobotStateからServoに反映
+    else if(phase<=0.6)
+    {
+      // --- B. 停止 ---
+      Serial.println("Bowing keep...");
+      for (int leg = 0; leg < 4; leg++) {
+        pos = target_r.legs[leg].footPos;
+        SetFootPosIKBodyCoordinateToRobotState(leg, pos, state);
+      }
+    }
+    else if(phase<=1.0)
+    {
+      // --- C. 元の体勢に戻る動作 ---
+      Serial.println("Bowing return...");
+      float ratio = (phase-0.6) / 0.4;
+      for (int leg = 0; leg < 4; leg++) {
+        glm::vec3 t = target_r.legs[leg].footPos;
+        glm::vec3 s = start_r.legs[leg].footPos;
+        pos = t + (s - t) * ratio;//RobotStateの脚先位置も補正して線形補間する． 
+        SetFootPosIKBodyCoordinateToRobotState(leg, pos, state);
+      }
+    }
+
+    SetAnglesFromState(*state); // RobotStateからServoに反映
     delay(25); 
   }
+  Serial.println("Bowing done.");
+  //delay(25); 
 
-  // --- B. 1秒間停止 ---
-  Serial.println("Web: 2sec wait...");
-  delay(1000); 
-
-  // --- C. 元の体勢に戻る動作（スロー） ---
-  Serial.println("Web: return");
-  for (int s = 1; s <= steps; s++) {
-    float ratio = (float)s / (float)steps;
-    for (int i = 0; i < 4; i++) {
-      // targetからstartへ向かって計算
-      float x = target[i][0] + (start[i][0] - target[i][0]) * ratio;
-      float y = target[i][1] + (start[i][1] - target[i][1]) * ratio;
-      float z = target[i][2] + (start[i][2] - target[i][2]) * ratio;
-      glm::vec3 pos(x, y, z);
-      SetFootPosIKBodyCoordinate(i, pos);
-    }
-    SetAnglesFromState(robotState); // RobotStateからServoに反映
-    delay(25); 
-  }
-  Serial.println("Web: bowing done.");
   // --- ここまで ---
 }
 //---------------------------------------------
@@ -142,19 +143,24 @@ void WalkIC(int repetitions) //間歇クロールによる前進歩行
 {
 //引数を繰り返し回数(repetitions)に変更
   Serial.println("Walk Start");
-  ICrawl(0, &robotState); // 歩行の基準姿勢
+  IntermittentCrawlGait ICrawl; // 間歇クロール歩容のクラスインスタンス
+  ICrawl.SetFootBaseDefault(); // 歩容の基準姿勢
+  ICrawl.Update(0, &robotState); // 歩行の基準姿勢
+  //ICrawl(0, &robotState); // 歩行の基準姿勢
   delay(500);
 
   for (int r = 0; r < repetitions; r++) {
     for (int t = 0; t < 100; t++) {
       float phase = (float)t / 100.0; // 0から1までの値を計算
-      ICrawl(phase, &robotState); // 0から1までの値をICrawl2に渡す
+      ICrawl.Update(phase, &robotState); 
+      //ICrawl(phase, &robotState); // 0から1までの値をICrawl2に渡す
       SetAnglesFromState(robotState); // 最終的な姿勢をServoに反映
       delay(50); // 各ステップごとの待機時間（ミリ秒）
     }
   }
 
-  ICrawl(0, &robotState); // 最後に止まる
+  ICrawl.Update(0, &robotState); // 最後に止まる
+  //ICrawl(0, &robotState); // 最後に止まる
   SetAnglesFromState(robotState);
 
   Serial.println("ICrawl Walk End");
@@ -163,18 +169,23 @@ void WalkIC(int repetitions) //間歇クロールによる前進歩行
 void BackWalkIC(int repetitions) //間歇クロールによる後退歩行
 {
   Serial.println("Back Walk Start");
-  ICrawl_Back(0, &robotState); // 後退の基準姿勢
+  IntermittentCrawlGait ICrawl; // 間歇クロール歩容のクラスインスタンス
+  ICrawl.SetFootBaseDefault(); // 歩容の基準姿勢
+  ICrawl.Update_Back(0, &robotState); // 歩行の基準姿勢
+  //ICrawl_Back(0, &robotState); // 後退の基準姿勢
   delay(500);
 
   for (int r = 0; r < repetitions; r++) {
     for (double t = 0; t < 100; t++) {
-      ICrawl_Back(t/100.0, &robotState); // 0から1までの値をICrawl2に渡す
+      //ICrawl_Back(t/100.0, &robotState); // 0から1までの値をICrawl2に渡す
+      ICrawl.Update_Back(t/100.0, &robotState); 
       SetAnglesFromState(robotState); // 最終的な姿勢をServoに反映
       delay(50); // 各ステップごとの待機時間（ミリ秒）
     }
   }
 
-  ICrawl_Back(0,&robotState); // 最後に止まる
+  //ICrawl_Back(0,&robotState); // 最後に止まる
+  ICrawl.Update_Back(0, &robotState); // 最後に止まる
   SetAnglesFromState(robotState); // RobotStateからServoに反映
   Serial.println("ICrawl Back End");
 }
@@ -242,10 +253,10 @@ void setupWiFi() {
 
   // スマホ操作用サーバーのボタン処理設定
   server.on("/", handleRoot);//再表示
-  server.on("/reset", []() { ICrawl(0, &robotState); server.send(200, "text/plain", "OK"); });//間歇クロールの初期状態へ
+  server.on("/reset", []() { WalkIC(0); server.send(200, "text/plain", "OK"); });//間歇クロールの初期状態へ
   server.on("/w", []() { WalkIC(1); server.send(200, "text/plain", "OK"); });//歩行開始関数を呼び出す
   server.on("/b", []() { BackWalkIC(1); server.send(200, "text/plain", "OK"); });//後退関数を呼び出す
-  server.on("/h", []() { Bowing(); server.send(200, "text/plain", "OK"); });//お辞儀
+  server.on("/h", []() { Bowing(&robotState); server.send(200, "text/plain", "OK"); });//お辞儀
   server.on("/rt", []() { WalkTrot(1,-1); server.send(200, "text/plain", "OK"); });//トロット右ターン
   server.on("/lt", []() {  WalkTrot(1,1); server.send(200, "text/plain", "OK"); });//トロット左ターン
   server.on("/t", []() {  WalkTrot(1,0); server.send(200, "text/plain", "OK"); });//トロット前進
@@ -272,7 +283,8 @@ void setup() {
   initServos();
   
   Serial.println("System Ready.");
-  ICrawl(0,&robotState); // 間歇クロール歩容の基準姿勢へ
+  //ICrawl(0,&robotState); // 間歇クロール歩容の基準姿勢へ
+  WalkIC(0); // 歩行の基準姿勢へ
 }
 
 //---------------------------------------------
@@ -303,7 +315,8 @@ void loop() {
         WalkIC(count);
       } else {
         Serial.println("Reset Forward Pose");
-        ICrawl(0,&robotState);
+        //ICrawl(0,&robotState);
+        WalkIC(0);
       }
     } else if (str1.startsWith("b")) {
       if (str1.length() > 1) {
@@ -312,11 +325,12 @@ void loop() {
         BackWalkIC(count);
       } else {
         Serial.println("Reset Backward Pose");
-        ICrawl_Back(0,&robotState);
+        //ICrawl_Back(0,&robotState);
+        BackWalkIC(0);
       }
     } else if (str1 == "h") {
       Serial.println("Hello!");
-      Bowing();
+      Bowing(&robotState);
     } else if (str1 == "t") {
       Serial.println("Trot");
       WalkTrot(1, 1); // 1回繰り返し、RotateMode=1（左回り）
