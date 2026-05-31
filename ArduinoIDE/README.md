@@ -18,14 +18,14 @@ Arduino IDE用
     - Adafruit BUS IO
     - M5Unified
 * GLMのヘッダファイル群をportable/sketchbook/libraries/フォルダの中に入れる．
-'''
+```
 portable
    +packages
    +sketchbook
         +libraries
              +glm,...
                   +glm.hpp,...
-'''
+```
 のようになっていればよい
 
 
