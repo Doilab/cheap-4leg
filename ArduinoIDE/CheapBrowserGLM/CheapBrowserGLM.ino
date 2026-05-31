@@ -1,7 +1,8 @@
 //#define GLM_FORCE_PURE
 //#define GLM_FORCE_SINGLE_ONLY
 
-#include <glm/glm.hpp>//ベクトルや行列の計算に使うライブラリ
+//#include <glm/glm.hpp>//ベクトルや行列の計算に使うライブラリ
+#include <glm.hpp>//ベクトルや行列の計算に使うライブラリ.ArduinoIDEの場合
 
 #include <Arduino.h>//数学関数もここに入っている
 #include <M5Unified.h>
