@@ -6,8 +6,9 @@ PlatformIOに対応
 * CheapBrowser/src/ --- PlatformIOでのソースコード
 * CheapBrowser/platformio.ini --- プロジェクトの設定ファイル．依存ライブラリなど．
 
-### GLMを使用
-ベクトル，行列計算など．
+### GLMライブラリを使用
+* ベクトル，行列計算など．
+* <a href="https://github.com/g-truc/glm/">OpenGL Mathematics</a>
 
 ## ブラウザでの使い方
 * SSIDに接続　"M5Atom_Robot_test"など．
