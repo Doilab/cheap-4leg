@@ -38,18 +38,27 @@ const uint8_t servoChannels[4][3] = {
 
 //補正配列．あまり値が大きくならないようにできるだけ組立時に合わせておく．
 //ロボットの機体により個体差あり
-// float OffsetAngles[4][3] = {
-//   {-10.0, 0.0, 2.0}, // LEG1
-//   {-7.0, -5.0, -5.0}, // LEG2
-//   {0.0, 5.0, 0.0}, // LEG3
-//   {-10.0, 0.0, -5.0}  // LEG4
-// };
+//0号
 float OffsetAngles[4][3] = {
-  {0.0, 0.0, 0.0}, // LEG1
-  {0.0, 0.0, 0.0}, // LEG2
-  {0.0, 0.0, 0.0}, // LEG3
-  {0.0, 0.0, 0.0}  // LEG4
+  {-10.0, 0.0, 0.0}, // LEG1
+  {-7.0, -5.0, 15.0}, // LEG2
+  {0.0, -10.0, 0.0}, // LEG3
+  {-10.0, 0.0, -5.0}  // LEG4
 };
+//黒１号
+// float OffsetAngles[4][3] = {
+//   {12.0, 0.0, 15.0}, // LEG1
+//   {12.0, 0.0, -5.0}, // LEG2
+//   {0.0, 5.0, 5.0}, // LEG3
+//   {0.0, 10.0,5.0}  // LEG4
+// };
+// //黒グレー２号
+// float OffsetAngles[4][3] = {
+//   {20.0, 0.0, 0.0}, // LEG1
+//   {12.0, 5.0, 0.0}, // LEG2
+//   {-10.0, 0.0, 0.0}, // LEG3
+//   {-10.0, 0.0, 5.0}  // LEG4
+// };
 
 //----------------------------------------------
 Adafruit_PWMServoDriver pwm;//サーボドライバのインスタンス
@@ -81,6 +90,22 @@ void moveServo(uint8_t channel, float angle_degS) {
   pwm.setPWM(channel, 0, pulse);
 }
 
+void freeServo(uint8_t channel) {
+  //サーボをフリーにする（PWM出力を止める）
+  if(!servos_initialized) {
+    return;//サーボが初期化されていない場合は動かさない
+  } 
+  pwm.setPWM(channel, 0, 4096); // 4096はPWM出力を止める値
+}
+
+void free_all() {
+  //全サーボをフリーにする
+  for (uint8_t leg = 0; leg < 4; ++leg) {
+    for (uint8_t joint = 0; joint < 3; ++joint) {
+      freeServo(servoChannels[leg][joint]);
+    }
+  }
+}
 
 void moveLeg(uint8_t legIndex, float th1S, float th2S, float th3S) {
   //Servo角指令で脚関節を動かす．配列でチャンネル指定

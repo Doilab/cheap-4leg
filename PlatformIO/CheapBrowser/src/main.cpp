@@ -12,7 +12,10 @@
 #include <WiFi.h>
 #include <WebServer.h>
 
-const char* ap_ssid = "M5Atom_Robot_test";//他の人と違うssidにする
+//const char* ap_ssid = "M5Atom_Robot_test";//他の人と違うssidにする
+const char* ap_ssid = "M5Atom_Robot_No0";//他の人と違うssidにする
+//const char* ap_ssid = "M5Atom_Robot_No1";//他の人と違うssidにする
+//const char* ap_ssid = "M5Atom_Robot_No2";//他の人と違うssidにする
 const char* ap_pass = "12345678";
 WebServer server(80);
 
@@ -135,7 +138,7 @@ void WalkTrot(int repetitions, int RotateMode) //トロット歩容による前�
       Trot.Update(phase, RotateMode, &robotState); // 0から1までの値をTrotに渡す
       SetAnglesFromState(robotState); // RobotStateからServoに反映
 
-      delay(50); // 各ステップごとの待機時間（ミリ秒）
+      delay(20); // 各ステップごとの待機時間（ミリ秒）
     }
   }
 
@@ -161,7 +164,7 @@ void WalkIC(int repetitions) //間歇クロールによる前進歩行
       ICrawl.Update(phase, &robotState); 
       //ICrawl(phase, &robotState); // 0から1までの値をICrawl2に渡す
       SetAnglesFromState(robotState); // 最終的な姿勢をServoに反映
-      delay(50); // 各ステップごとの待機時間（ミリ秒）
+      delay(20); // 各ステップごとの待機時間（ミリ秒）
     }
   }
 
@@ -186,7 +189,7 @@ void BackWalkIC(int repetitions) //間歇クロールによる後退歩行
       //ICrawl_Back(t/100.0, &robotState); // 0から1までの値をICrawl2に渡す
       ICrawl.Update_Back(t/100.0, &robotState); 
       SetAnglesFromState(robotState); // 最終的な姿勢をServoに反映
-      delay(50); // 各ステップごとの待機時間（ミリ秒）
+      delay(20); // 各ステップごとの待機時間（ミリ秒）
     }
   }
 
@@ -229,14 +232,15 @@ void handleRoot() {
   
   html += "<div class='grid'>";
   // 各ボタン（classで色を呼び出し）
-  html += "  <button class='c-blue' onclick=\"fetch('/w')\">↑F</button>";
-  html += "  <button class='c-blue' onclick=\"fetch('/reset')\">Reset</button>";
-  html += "  <button class='c-blue' onclick=\"fetch('/b')\">↓B</button>";
-  html += "  <button class='c-green' onclick=\"fetch('/lt')\">←CCW</button>";
-  html += "  <button class='c-green' onclick=\"fetch('/t')\">Trot</button>";
-  html += "  <button class='c-green' onclick=\"fetch('/rt')\">CW→</button>";
+  html += "  <button class='c-blue' onclick=\"fetch('/wf')\">↑F</button>";
+  html += "  <button class='c-blue' onclick=\"fetch('/home')\">Home</button>";
+  html += "  <button class='c-blue' onclick=\"fetch('/wb')\">↓B</button>";
+  html += "  <button class='c-green' onclick=\"fetch('/tl')\">←CCW</button>";
+  html += "  <button class='c-green' onclick=\"fetch('/tf')\">Trot</button>";
+  html += "  <button class='c-green' onclick=\"fetch('/tr')\">CW→</button>";
   html += "  <button class='c-red' onclick=\"fetch('/i')\">Init</button>";
-  html += "  <button class='c-yellow' onclick=\"fetch('/h')\">お辞儀</button>";
+  html += "  <button class='c-yellow' onclick=\"fetch('/bow')\">お辞儀</button>";
+  html += "  <button class='c-red' onclick=\"fetch('/0')\">Free</button>";
   html += "</div>";
 
   html += "<div class='footer'>M5Atom S3 Controller</div>";
@@ -260,15 +264,16 @@ void setupWiFi() {
 
   // スマホ操作用サーバーのボタン処理設定
   server.on("/", handleRoot);//再表示
-  server.on("/reset", []() { WalkIC(0); server.send(200, "text/plain", "OK"); });//間歇クロールの初期状態へ
-  server.on("/w", []() { WalkIC(1); server.send(200, "text/plain", "OK"); });//歩行開始関数を呼び出す
-  server.on("/b", []() { BackWalkIC(1); server.send(200, "text/plain", "OK"); });//後退関数を呼び出す
-  server.on("/rt", []() { WalkTrot(1,-1); server.send(200, "text/plain", "OK"); });//トロット右ターン
-  server.on("/lt", []() {  WalkTrot(1,1); server.send(200, "text/plain", "OK"); });//トロット左ターン
-  server.on("/t", []() {  WalkTrot(1,0); server.send(200, "text/plain", "OK"); });//トロット前進
+  server.on("/home", []() { WalkIC(0); server.send(200, "text/plain", "OK"); });//間歇クロールの初期状態へ
+  server.on("/wf", []() { WalkIC(1); server.send(200, "text/plain", "OK"); });//歩行開始関数を呼び出す
+  server.on("/wb", []() { BackWalkIC(1); server.send(200, "text/plain", "OK"); });//後退関数を呼び出す
+  server.on("/tr", []() { WalkTrot(1,-1); server.send(200, "text/plain", "OK"); });//トロット右ターン
+  server.on("/tl", []() {  WalkTrot(1,1); server.send(200, "text/plain", "OK"); });//トロット左ターン
+  server.on("/tf", []() {  WalkTrot(1,0); server.send(200, "text/plain", "OK"); });//トロット前進
 
-  server.on("/h", []() { Bowing(&robotState); server.send(200, "text/plain", "OK"); });//お辞儀
+  server.on("/bow", []() { Bowing(&robotState); server.send(200, "text/plain", "OK"); });//お辞儀
   server.on("/i", []() { InitStatus(&robotState); server.send(200, "text/plain", "OK"); });//初期化姿勢（足を伸ばした状態）
+  server.on("/0", []() { free_all(); server.send(200, "text/plain", "OK"); });//脱力
   
 
   server.begin();
@@ -307,7 +312,9 @@ void loop() {
     str1.trim();
     Serial.println("Received: " + str1);
 
-    if (str1 == "1") {
+    if (str1 == "0") {
+      free_all();
+    } else if (str1 == "1") {
       PWM_test();
     } else if (str1 == "2") {
       moveServo_test();
@@ -350,7 +357,7 @@ void loop() {
     }
     
     // 次の命令を促す表示（シリアル入力があった時だけ出す）
-    Serial.println("1:PWM, 2:moveservo, 3:SetMotors, 4:IKLeg, 5:IKBody, w:walk, b:back, t:trot, h:hello");
+    Serial.println("0:Free, 1:PWM, 2:moveservo, 3:SetMotors, 4:IKLeg, 5:IKBody, w:walk, b:back, t:trot, h:hello");
   }
 
   // ループが速すぎると通信が不安定になることがあるため、ごくわずかに待機
