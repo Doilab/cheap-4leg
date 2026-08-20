@@ -12,11 +12,8 @@
 #include <WiFi.h>
 #include <WebServer.h>
 
-//const char* ap_ssid = "M5Atom_Robot_test";//他の人と違うssidにする
-const char* ap_ssid = "M5Atom_Robot_No0";//他の人と違うssidにする
-//const char* ap_ssid = "M5Atom_Robot_No1";//他の人と違うssidにする
-//const char* ap_ssid = "M5Atom_Robot_No2";//他の人と違うssidにする
-const char* ap_pass = "12345678";
+#include "config.h"
+
 WebServer server(80);
 
 //サーボ
@@ -38,6 +35,7 @@ WebServer server(80);
 #include "intermittent_crawl_gait.h"
 
 RobotState robotState; // ロボットの状態を保持する構造体
+String str_robot_name; // ロボット名を保持する変数
 
 //---------------------------------------------
 void SetAnglesFromState(RobotState state)
@@ -228,7 +226,8 @@ void handleRoot() {
   html += ".footer { margin-top: 35px; font-size: 12px; color: #777; }";
   html += "</style></head><body>";
 
-  html += "<h1>Cheap 4Leg Robot</h1>";
+  //html += "<h1>Cheap 4Leg Robot</h1>";
+  html += "<h1>== " + str_robot_name + " ==</h1>";
   
   html += "<div class='grid'>";
   // 各ボタン（classで色を呼び出し）
@@ -283,6 +282,7 @@ void setupWiFi() {
 //------------------------------------------------------------
 //---------------------------------------------
 void setup() {
+  str_robot_name = ROBOT_NAME;
   Serial.begin(115200);
   Serial.println("--- Booting Robot ---");
   delay(1000); // 起動直後に少し待機
@@ -357,6 +357,8 @@ void loop() {
     }
     
     // 次の命令を促す表示（シリアル入力があった時だけ出す）
+    String str2 = "-- " + str_robot_name + " --\n";
+    Serial.println(str2);
     Serial.println("0:Free, 1:PWM, 2:moveservo, 3:SetMotors, 4:IKLeg, 5:IKBody, w:walk, b:back, t:trot, h:hello");
   }
 
