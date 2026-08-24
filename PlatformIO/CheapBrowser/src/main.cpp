@@ -198,7 +198,7 @@ void BackWalkIC(int repetitions) //間歇クロールによる後退歩行
 }
 
 //---------------------------------------------
-// スマホに表示される操作画面
+// Webブラウザに表示される操作画面
 void handleRoot() {
   String html = "<html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1.0'>";
   html += "<style>";
@@ -299,14 +299,15 @@ void setup() {
   Serial.println("System Ready.");
   //ICrawl(0,&robotState); // 間歇クロール歩容の基準姿勢へ
   WalkIC(0); // 歩行の基準姿勢へ
+  free_all(); // 脱力状態へ
 }
 
 //---------------------------------------------
 void loop() {
-  // 常にスマホからのアクセスをチェック（止めてはいけない）
+  // 常にWebサービス（スマホ）からのアクセスをチェック（止めてはいけない）
   server.handleClient();
 
-  // パソコンからの入力があるときだけ、以下の処理を行う
+  // USBシリアルからの入力があるときだけ、以下の処理を行う
   if (Serial.available() > 0) {
     String str1 = Serial.readString();
     str1.trim();

@@ -2,29 +2,29 @@
 #define __CONFIG_H__
 
 
-#define ROBOT_NO 0
+#define ROBOT_NO 2
 
 #if ROBOT_NO == 0
   #define ROBOT_NAME "Robot_No.0"
-  #define AP_SSID "M5Atom_Robot_No0"
+  #define AP_SSID "C4LRobot_No0"
 #elif ROBOT_NO == 1
   #define ROBOT_NAME "Robot_No.1"
-  #define AP_SSID "M5Atom_Robot_No1"
+  #define AP_SSID "C4LRobot_No1"
 #elif ROBOT_NO == 2
   #define ROBOT_NAME "Robot_No.2"
-  #define AP_SSID "M5Atom_Robot_No2"
+  #define AP_SSID "C4LRobot_No2"
 #elif ROBOT_NO == 3
   #define ROBOT_NAME "Robot_No.3"
-  #define AP_SSID "M5Atom_Robot_No3"
+  #define AP_SSID "C4LRobot_No3"
 #elif ROBOT_NO == 4
   #define ROBOT_NAME "Robot_No.4"
-  #define AP_SSID "M5Atom_Robot_No4"
+  #define AP_SSID "C4LRobot_No4"
 #elif ROBOT_NO == 5
   #define ROBOT_NAME "Robot_No.5"
-  #define AP_SSID "M5Atom_Robot_No5"
+  #define AP_SSID "C4LRobot_No5"
 #else
   #define ROBOT_NAME "Robot_test"
-  #define AP_SSID "M5Atom_Robot_test"
+  #define AP_SSID "Robot_test"
 #endif
 
 const char* ap_ssid = AP_SSID;
@@ -77,7 +77,7 @@ float OffsetAngles[4][3] = {
 float OffsetAngles[4][3] = {
   {0.0, 15.0, 0.0}, // LEG1
   {0.0, 10.0, -15.0}, // LEG2
-  {0.0, 0.0, -5.0}, // LEG3
+  {0.0, 20.0, -5.0}, // LEG3
   {0.0, -5.0, 0.0}  // LEG4
 };
 #else

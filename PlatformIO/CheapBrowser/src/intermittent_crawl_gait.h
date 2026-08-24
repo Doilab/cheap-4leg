@@ -9,7 +9,7 @@
 class IntermittentCrawlGait {
   public:
     float stride = 40; // 歩幅
-    float f_height = 20; // 遊脚高さ
+    float f_height = 25; // 遊脚高さ
     glm::vec3 FB_vec[4];//歩容軌道の中心点．FootBase
     IntermittentCrawlGait() {
       // コンストラクタで必要な初期化を行う
@@ -26,8 +26,8 @@ glm::vec3 IntermittentCrawlGait::ICRectangleFootMotion(float phase, char flagFro
 {
   //脚先  １個分を長方形状に動かす動作生成の関数
   //間歇クロール専用
-  float stride = 40;//歩幅
-  float f_height = 20;//遊脚高さ
+  //float stride = 40;//歩幅
+  //float f_height = 25;//遊脚高さ
   float x,y,z;
   float dp, ratio;
   
