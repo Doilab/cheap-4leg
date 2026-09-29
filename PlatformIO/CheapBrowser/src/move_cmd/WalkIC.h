@@ -24,3 +24,6 @@ void WalkIC(int repetitions) //間歇クロールによる前進歩行
 
     Serial.println("ICrawl Walk End");
 }
+
+// CMD
+void cmd_WalkIC(RobotState* s, int n, int)  { WalkIC(n); }

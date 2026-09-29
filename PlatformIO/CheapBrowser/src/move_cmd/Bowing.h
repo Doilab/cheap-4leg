@@ -55,3 +55,6 @@ void Bowing(RobotState *state)
 
   // --- ここまで ---
 }
+
+// CMD
+void cmd_Bowing(RobotState* s, int, int)    { Bowing(s); }

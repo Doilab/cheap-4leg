@@ -24,3 +24,5 @@ void WalkTrot(int repetitions, int RotateMode) //トロット歩容による前�
   Serial.println("Trot Walk End");
 }
 
+// CMD 
+void cmd_WalkTrot(RobotState* s, int n, int rot) { WalkTrot(n, rot); }

@@ -22,3 +22,5 @@ void BackWalkIC(int repetitions) //間歇クロールによる後退歩行
     Serial.println("ICrawl Back End");
 }
 
+// CMD
+void cmd_BackWalkIC(RobotState* s, int n, int)  { BackWalkIC(n); }
