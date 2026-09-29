@@ -38,6 +38,9 @@ WebServer server(80);
 RobotState robotState; // ロボットの状態を保持する構造体
 String str_robot_name; // ロボット名を保持する変数
 
+// Init CMD Handler
+QueueHandle_t cmdQueue;
+
 // Server Include
 #include "server/html_server.h"
 
@@ -64,6 +67,10 @@ void InitStatus(RobotState *state)
   SetAnglesFromState(*state);
 }
 //---------------------------------------------
+// Importing movement Command Structure
+//---------------------------------------------
+#include "move_cmd/cmd_strc.h"
+//---------------------------------------------
 // Importing movement Commands
 //---------------------------------------------
 #include "move_cmd/Bowing.h"
@@ -77,14 +84,28 @@ void InitStatus(RobotState *state)
 
 //Include server files.
 #include "server/server.h"
-//------------------------------------------------------------
 //---------------------------------------------
+// --- Motor Task ---
+void motorTask(void*) {
+  MotionCmd cmd;
+  while(1) {
+    if (xQueueReceive(cmdQueue, &cmd, portMAX_DELAY)) {
+      if (cmd.fn != nullptr) {  // <-- sicher
+        cmd.fn(&robotState, cmd.arg1, cmd.arg2);
+      }
+    }
+  }
+}
+//--------------------------------------------
 void setup() {
   str_robot_name = ROBOT_NAME;
   Serial.begin(115200);
   Serial.println("--- Booting Robot ---");
   delay(1000); // 起動直後に少し待機
-  
+   
+  // Init Task Queue
+  cmdQueue = xQueueCreate(5, sizeof(MotionCmd));
+  xTaskCreatePinnedToCore(motorTask, "MotorTask", 4096, NULL, 1, NULL, 0);
   
   // 先にWi-Fiを立ち上げる
   Serial.println("--- Initializing Wi-Fi ---");
@@ -111,8 +132,10 @@ void loop() {
     str1.trim();
     Serial.println("Received: " + str1);
 
+    MotionCmd cmd;
+
     if (str1 == "0") {
-      free_all();
+      cmd = {cmd_free};
     } else if (str1 == "1") {
       PWM_test();
     } else if (str1 == "2") {
@@ -127,31 +150,31 @@ void loop() {
       if (str1.length() > 1) {
         int count = str1.substring(1).toInt();
         if (count <= 0) count = 1;
-        WalkIC(count);
+        cmd = {cmd_WalkIC, count};
       } else {
         Serial.println("Reset Forward Pose");
         //ICrawl(0,&robotState);
-        WalkIC(0);
+        cmd = {cmd_WalkIC, 0};
       }
     } else if (str1.startsWith("b")) {
       if (str1.length() > 1) {
         int count = str1.substring(1).toInt();
         if (count <= 0) count = 1;
-        BackWalkIC(count);
+        cmd = {cmd_BackWalkIC, count};
       } else {
         Serial.println("Reset Backward Pose");
         //ICrawl_Back(0,&robotState);
-        BackWalkIC(0);
+        cmd = {cmd_BackWalkIC, 0};
       }
     } else if (str1 == "h") {
       Serial.println("Hello!");
-      Bowing(&robotState);
+      cmd = {cmd_Bowing};
     } else if (str1 == "t") {
       Serial.println("Trot");
-      WalkTrot(1, 1); // 1回繰り返し、RotateMode=1（左回り）
+      cmd = {cmd_WalkTrot, 1, 1}; // 1回繰り返し、RotateMode=1（左回り）
     } else
     {
-      InitStatus(&robotState); // RobotStateの初期化
+      cmd = {cmd_InitStatus}; // RobotStateの初期化
       Serial.println("Unknown command. Reset to initial pose.");
     }
     
