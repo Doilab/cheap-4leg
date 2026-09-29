@@ -2,7 +2,7 @@
 #define __CONFIG_H__
 
 
-#define ROBOT_NO 2
+#define ROBOT_NO 4
 
 #if ROBOT_NO == 0
   #define ROBOT_NAME "Robot_No.0"

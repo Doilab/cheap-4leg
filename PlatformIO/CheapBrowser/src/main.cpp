@@ -16,26 +16,30 @@
 
 WebServer server(80);
 
+
 //サーボ
-#include "servo.h"
+#include "movement/servo.h"
 
 //運動学
-#include "kinematics.h"
+#include "movement/kinematics.h"
 
 //診断用関数群
 #include "diagnosis.h"
 
 //モーション関数群
-#include "motion.h"
+#include "movement/motion.h"
 
 //トロット歩容
-#include "trot_gait.h"
+#include "movement/trot_gait.h"
 
 //間歇クロール歩容
-#include "intermittent_crawl_gait.h"
+#include "movement/intermittent_crawl_gait.h"
 
 RobotState robotState; // ロボットの状態を保持する構造体
 String str_robot_name; // ロボット名を保持する変数
+
+// Server Include
+#include "server/html_server.h"
 
 //---------------------------------------------
 void SetAnglesFromState(RobotState state)
@@ -198,87 +202,9 @@ void BackWalkIC(int repetitions) //間歇クロールによる後退歩行
 }
 
 //---------------------------------------------
-// Webブラウザに表示される操作画面
-void handleRoot() {
-  String html = "<html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1.0'>";
-  html += "<style>";
-  // 背景設定
-  html += "body { background-color: #2d2d2d; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }";
-  html += "h1 { font-size: 28px; margin-bottom: 25px; letter-spacing: 2px; }";
-  
-  // グリッド配置
-  html += ".grid { display: grid; grid-template-columns: repeat(3, 80px); grid-gap: 30px; }";
-  
-  // 基本ボタン設定（太い黒枠の白い正方形）
-  html += "button { width: 100px; height: 100px; background-color: white; border: 8px solid #000; position: relative; font-size: 24px; font-weight: bold; cursor: pointer; transition: 0.1s; display: flex; align-items: center; justify-content: center; z-index: 1; }";
-  html += "button:active { transform: scale(0.95); opacity: 0.9; }";
 
-  // --- 枠で囲う設定（beforeとafterを使って色枠をずらして配置） ---
-  // 共通設定：ボタンの背後に色付きの枠を作る
-  html += "button::before { content:''; position:absolute; top:-12px; left:-12px; right:-12px; bottom:-12px; border:3px solid currentColor; z-index: -1; pointer-events:none; }";
-
-  // 各ボタンの色指定
-  html += ".c-red { color: #ff4d4d; }";    // 前進（赤）
-  html += ".c-blue { color: #00a8ff; }";   // 後退（青）
-  html += ".c-yellow { color: #ffbc00; }"; // お辞儀（黄）
-  html += ".c-green { color: #2ed573; }";  // リセット（緑）
-
-  html += ".footer { margin-top: 35px; font-size: 12px; color: #777; }";
-  html += "</style></head><body>";
-
-  //html += "<h1>Cheap 4Leg Robot</h1>";
-  html += "<h1>== " + str_robot_name + " ==</h1>";
-  
-  html += "<div class='grid'>";
-  // 各ボタン（classで色を呼び出し）
-  html += "  <button class='c-blue' onclick=\"fetch('/wf')\">↑F</button>";
-  html += "  <button class='c-blue' onclick=\"fetch('/home')\">Home</button>";
-  html += "  <button class='c-blue' onclick=\"fetch('/wb')\">↓B</button>";
-  html += "  <button class='c-green' onclick=\"fetch('/tl')\">←CCW</button>";
-  html += "  <button class='c-green' onclick=\"fetch('/tf')\">Trot</button>";
-  html += "  <button class='c-green' onclick=\"fetch('/tr')\">CW→</button>";
-  html += "  <button class='c-red' onclick=\"fetch('/i')\">Init</button>";
-  html += "  <button class='c-yellow' onclick=\"fetch('/bow')\">お辞儀</button>";
-  html += "  <button class='c-red' onclick=\"fetch('/0')\">Free</button>";
-  html += "</div>";
-
-  html += "<div class='footer'>M5Atom S3 Controller</div>";
-  
-  html += "</body></html>";
-  server.send(200, "text/html", html);
-}
-
-// Wi-Fi専用の初期設定
-void setupWiFi() {
-  Serial.println("--- Wi-Fi Setup Start ---");
-
-  // Wi-Fiの親機モードを開始
-  if (WiFi.softAP(ap_ssid, ap_pass)) {
-    Serial.println("Wi-Fi AP Started !!");
-    Serial.print("SSID: "); Serial.println(ap_ssid);
-    Serial.print("IP Address: "); Serial.println(WiFi.softAPIP());
-  } else {
-    Serial.println("Wi-Fi AP Failed...");
-  }
-
-  // スマホ操作用サーバーのボタン処理設定
-  server.on("/", handleRoot);//再表示
-  server.on("/home", []() { WalkIC(0); server.send(200, "text/plain", "OK"); });//間歇クロールの初期状態へ
-  server.on("/wf", []() { WalkIC(1); server.send(200, "text/plain", "OK"); });//歩行開始関数を呼び出す
-  server.on("/wb", []() { BackWalkIC(1); server.send(200, "text/plain", "OK"); });//後退関数を呼び出す
-  server.on("/tr", []() { WalkTrot(1,-1); server.send(200, "text/plain", "OK"); });//トロット右ターン
-  server.on("/tl", []() {  WalkTrot(1,1); server.send(200, "text/plain", "OK"); });//トロット左ターン
-  server.on("/tf", []() {  WalkTrot(1,0); server.send(200, "text/plain", "OK"); });//トロット前進
-
-  server.on("/bow", []() { Bowing(&robotState); server.send(200, "text/plain", "OK"); });//お辞儀
-  server.on("/i", []() { InitStatus(&robotState); server.send(200, "text/plain", "OK"); });//初期化姿勢（足を伸ばした状態）
-  server.on("/0", []() { free_all(); server.send(200, "text/plain", "OK"); });//脱力
-  
-
-  server.begin();
-  Serial.println("HTTP Server Started");
-  Serial.println("--- Wi-Fi Setup Done ---");
-}
+//Include server files.
+#include "server/server.h"
 //------------------------------------------------------------
 //---------------------------------------------
 void setup() {
