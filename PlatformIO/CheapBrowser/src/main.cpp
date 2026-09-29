@@ -64,143 +64,15 @@ void InitStatus(RobotState *state)
   SetAnglesFromState(*state);
 }
 //---------------------------------------------
-void Bowing(RobotState *state)
-{
-  //お辞儀をする関数
-  Serial.println("Bowing motion start..." );
-
-  RobotState start_r = *state;//初期姿勢
-  RobotState target_r = *state;//目標姿勢（お辞儀姿勢）
-
-  target_r.legs[0].footPos.z += 30;//脚先を30mm上げる
-  target_r.legs[3].footPos.z += 30;//脚先を30mm上げる
-
-  glm::vec3 pos;
-  float phase = 0.0;
-
-  for (phase = 0.0; phase <=1.0; phase+=0.01) {
-    if(phase<=0.4)
-    {
-      // --- A. お辞儀をする動作） ---
-      Serial.println("Bowing...");
-      float ratio = phase / 0.4;
-      for (int leg = 0; leg < 4; leg++) {
-        glm::vec3 s = start_r.legs[leg].footPos;
-        glm::vec3 t = target_r.legs[leg].footPos;
-        pos = s + (t - s) * ratio;//RobotStateの脚先位置も補正して線形補間する． 
-        SetFootPosIKBodyCoordinateToRobotState(leg, pos, state);
-      }
-    }
-    else if(phase<=0.6)
-    {
-      // --- B. 停止 ---
-      Serial.println("Bowing keep...");
-      for (int leg = 0; leg < 4; leg++) {
-        pos = target_r.legs[leg].footPos;
-        SetFootPosIKBodyCoordinateToRobotState(leg, pos, state);
-      }
-    }
-    else if(phase<=1.0)
-    {
-      // --- C. 元の体勢に戻る動作 ---
-      Serial.println("Bowing return...");
-      float ratio = (phase-0.6) / 0.4;
-      for (int leg = 0; leg < 4; leg++) {
-        glm::vec3 t = target_r.legs[leg].footPos;
-        glm::vec3 s = start_r.legs[leg].footPos;
-        pos = t + (s - t) * ratio;//RobotStateの脚先位置も補正して線形補間する． 
-        SetFootPosIKBodyCoordinateToRobotState(leg, pos, state);
-      }
-    }
-
-    SetAnglesFromState(*state); // RobotStateからServoに反映
-    delay(25); 
-  }
-  Serial.println("Bowing done.");
-  //delay(25); 
-
-  // --- ここまで ---
-}
+// Importing movement Commands
 //---------------------------------------------
-
+#include "move_cmd/Bowing.h"
 //----------------------------------------------
-void WalkTrot(int repetitions, int RotateMode) //トロット歩容による前進歩行
-{
-  Serial.println("Trot Walk Start");
-  TrotGait  Trot; // トロット歩容のクラスインスタンス
-  
-  //Trot.SetFootBaseDefault(); // 歩容の基準姿勢をセット
-  Trot.SetFootBase(&robotState); // RobotStateから歩容の基準姿勢をセット．
-  Trot.Update(0, RotateMode, &robotState); // 歩行の基準姿勢
-  delay(500);
-
-  for (int r = 0; r < repetitions; r++) {
-    for (float t = 0; t < 100; t++) {
-      float phase = t / 100.0; // 0から1までの値を計算
-      Trot.Update(phase, RotateMode, &robotState); // 0から1までの値をTrotに渡す
-      SetAnglesFromState(robotState); // RobotStateからServoに反映
-
-      delay(20); // 各ステップごとの待機時間（ミリ秒）
-    }
-  }
-
-  Trot.Update(0, RotateMode, &robotState); // 最後に止まる
-  SetAnglesFromState(robotState); // 最終的な姿勢をServoに反映
-
-  Serial.println("Trot Walk End");
-}
+#include "move_cmd/WalkTrot.h"
 //----------------------------------------------
-void WalkIC(int repetitions) //間歇クロールによる前進歩行
-{
-//引数を繰り返し回数(repetitions)に変更
-  Serial.println("Walk Start");
-  IntermittentCrawlGait ICrawl; // 間歇クロール歩容のクラスインスタンス
-  ICrawl.SetFootBaseDefault(); // 歩容の基準姿勢
-  ICrawl.Update(0, &robotState); // 歩行の基準姿勢
-  //ICrawl(0, &robotState); // 歩行の基準姿勢
-  delay(500);
-
-  for (int r = 0; r < repetitions; r++) {
-    for (int t = 0; t < 100; t++) {
-      float phase = (float)t / 100.0; // 0から1までの値を計算
-      ICrawl.Update(phase, &robotState); 
-      //ICrawl(phase, &robotState); // 0から1までの値をICrawl2に渡す
-      SetAnglesFromState(robotState); // 最終的な姿勢をServoに反映
-      delay(20); // 各ステップごとの待機時間（ミリ秒）
-    }
-  }
-
-  ICrawl.Update(0, &robotState); // 最後に止まる
-  //ICrawl(0, &robotState); // 最後に止まる
-  SetAnglesFromState(robotState);
-
-  Serial.println("ICrawl Walk End");
-}
+#include "move_cmd/WalkIC.h"
 //----------------------------------------------
-void BackWalkIC(int repetitions) //間歇クロールによる後退歩行
-{
-  Serial.println("Back Walk Start");
-  IntermittentCrawlGait ICrawl; // 間歇クロール歩容のクラスインスタンス
-  ICrawl.SetFootBaseDefault(); // 歩容の基準姿勢
-  ICrawl.Update_Back(0, &robotState); // 歩行の基準姿勢
-  //ICrawl_Back(0, &robotState); // 後退の基準姿勢
-  delay(500);
-
-  for (int r = 0; r < repetitions; r++) {
-    for (double t = 0; t < 100; t++) {
-      //ICrawl_Back(t/100.0, &robotState); // 0から1までの値をICrawl2に渡す
-      ICrawl.Update_Back(t/100.0, &robotState); 
-      SetAnglesFromState(robotState); // 最終的な姿勢をServoに反映
-      delay(20); // 各ステップごとの待機時間（ミリ秒）
-    }
-  }
-
-  //ICrawl_Back(0,&robotState); // 最後に止まる
-  ICrawl.Update_Back(0, &robotState); // 最後に止まる
-  SetAnglesFromState(robotState); // RobotStateからServoに反映
-  Serial.println("ICrawl Back End");
-}
-
+#include "move_cmd/BackWalkIC.h"
 //---------------------------------------------
 
 //Include server files.
