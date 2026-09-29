@@ -1,0 +1,994 @@
+Received: w
+Reset Forward Pose
+-- Robot_No.3 --
+
+0:Free, 1:PWM, 2:moveservo, 3:SetMotors, 4:IKLeg, 5:IKBody, w:walk, b:back, t:trot, h:hello
+Received: b2
+-- Robot_No.3 --
+
+0:Free, 1:PWM, 2:moveservo, 3:SetMotors, 4:IKLeg, 5:IKBody, w:walk, b:back, t:trot, h:hello
+Back Walk Start
+ICrawl Update: leg=0, phase=0.00, x=40.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.00, x=-80.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, 
+ICrawl Update: leg=3, phase=0.50, x=60.0, y=-110.0, z=-80.0
+ICrawl Update: l.0
+ICrawl Update: leg=1, phase=0.00, 
+ICrawl Update: leg=2, phase=0.50, x=-60.0, y=-110.0, z=-80.0
+ICrawl UpdICrawl Update: leg=0, phase=0.99, x=42.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.99, x=-78.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.49, x=-58.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, 
+ICrawl Update
+ICrawl Update: leg=1, phase=0.98, x=-76.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.48, x=-56.0, y=-110.0, z=-80.0
+ICrawl ICrawl Update: leg=1, phase=0.97, x=-74.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.47, x=-54.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=
+ICrawl Update: leg=0, phase=0.96, x=48.0, y=110.0, z=-80.0
+=110.0, z=-80.0
+ICrawl Update: leg=2,
+ICraICrawl Update: leg=1, phase=0.950.0
+ICrawl Update: leg=2, phase=0.45, x=-50.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, 
+ICrawl Update: leg=0, phase=0.94, x=52.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.94, 
+ICrawl Update: leg=2, phase=0.44, x=-48.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phas
+ICrawl Update: leg=2, phase=0.43, x=-46.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.43, x=74.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.92, x=-64.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.42, x=-44.0, y=-110.0, z=-80.0
+ICrawl UpdICrawl UpdICrawl Update: leg=2, phase=0.41, x=-42.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.41, x=78.0, y=-110.0, z=-80.0
+ICrawl UpdICrawl Update: leg=2, phase=0.40, x=-40.0, y=-110.0, z=-80.0
+ICrawl UpdICrawl Update: leg=1,
+ICrawl Update: leg=2, phase=0.39, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.39, x=80.0, y=-110.0, z=-75.0
+ICrawl Update
+ICrawl Update: leg=2, phase=0.38, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.38, x=80.0, y=-110.0, z=-70.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.87, x=-6
+ICrawl Update: leg=2, phase=0.37, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phas.37, x=80.0, y=-110.0, z=-65.0
+ICrawl Update
+ICrawl UpdICraw y=-110.0, z=-60.0
+ICrawl Update: leg=1, phase=0.85, x=-6
+ICrawl Update: leg=2, phase=0.35, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.35, x=80.0, y=-110.0, z=-55.0
+ICrawl Update: leg=1, phase=0.84, x=-6
+ICrawl Update: leg=2, phase=0.34, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=0, phase=0.83, x=60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.33, x=-40.0, y=-110.0, z=-80.0
+Ieg=0, phase=0.82, x=60.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.82, x=-6
+ICrawl Update: leg=2, phase=0.32, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.81, x=60.0, y=110.0, z=-80.0
+ICraICrawl Update: leg=2, phase=
+ICrawl Update
+ICrawl , y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.80, x=-60.0, y=110.0, z=-80.0
+II=-80.0
+ICrawl Update: leg=1,
+ICrawl Update: leg=2, phase=0.29, x=-4
+ICrawl UpdICrawl Update: leg=1, phase=0.78, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.28, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.28, x=52.0, y=-110.0, z=-55.0
+ICrawl Update
+ICrawl Update: eg=1, phase=0.77, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.27, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.76, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.26, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.750, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.25, x=-4
+ICrawl Update: leg=0, 
+ICrawl Update: leg=1, phase=0.74, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.24, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3,
+ICrawl Update
+ICrawl Update: leg=1, phase=0.73, x=-6
+ICrawl Update: leg=2, phase=0.23, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.23, x=40.0, y=-110.0, z=-65.0
+ICrawl Update
+ICrawl Updleg=2, phase=0.22, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.22, x=40.0, y=-110.0, z=-70.0
+ICrawl Update: leg=1, phase=0.71, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.21, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update
+ICrawl Update: leg=1, phase=0.70, x=-6
+ICrawl Update: leg=2, phase=0.20, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.20, 
+ICrawl Update
+ICrawl Update: leg=1, phase=0.69, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.19, x=-40.0, y=-110.0, z=-75.0
+ICrawl Update
+ICrawl Update
+ICraICrawl Update: leg=2, phase=0.18, x=-40.0, y=-110.0, z=-70.0
+ICrawl Update: leg=3, phase=0.18, x=40.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1,
+ICrawl Update: leg=2, phase=0.17, x=-40.0, y=-110.0, z=-65.0
+ICraw: leg=3, phase=0.17, x=40.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.66, x=-6
+ICrawl Update: leg=2, phase=0.16, x=-40.0, y=-110.0, z=-60.0
+se=0.16, x=40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.65, x=60.0, y=110.0, z=-80.0
+ICrawl UpdICrawl Update: leg=3, phase=0.150.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=2, phase=0.14, x=-44.0, y=-110.0, z=-55.0
+ICrawl Update: leg=3, phas0, z=-80.0
+ICrawl Update: leg=0, phase=0.63, x=60.0, y=110.0, z=-80.0
+ICrawl UpdICrawl Update: leg=2, phase=0.13, x=-48.0, y=-110.0, z=-55.0
+ICICrawl Update: leg=1,
+ICrawl Update: leg=2, phase=0.12, x=-52.0, y=-110.0, z=-55.0
+ICrawl Update: leg=3, phase=0.12, x=40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.61, x=60.0, y=110.0, z=-80.0
+ICrawl UpdICrawl UpICrawl UpdICrawl ase=0.60, x=60.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.60, x=-6
+ICrawl Update: leg=2, phase=0.10, x=-60.0, y=-110.0, z=-55.0
+ICrawl Update: leg=3, phase=0.10, x=40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.59, x=60.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.59, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.09, x=-64.0, y=-110.0, z=-55.0
+ICraICrawl Update: leg=0, phase=0.58, x=60.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.58
+ICrawl Update: leg=2, phase=0.08, x=-68.0, y=-110.0, z=-55.0
+ICrawl Update: leg=3, phase=0.08
+ICrawl Update: leg=
+ICrawl Update: leg=2, 
+ICrawl UpdICrawl Update
+ICrawl Update: leg=1, phase=0.56, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.06, x=-76.0, y=-110.0, z=-55.0
+ICrawl Update: leg=3,
+ICrawl Update: leg=0, phase=0.55, x=60.0, y=110.0, z=-80.0
+ICrawase=0.55, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.05, x=-80.0, y=-110.0, z=-55.0
+ICrICrawl Update
+-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.04, x=-80.0, y=-110.0, z=-60.0
+ICrawl Update: leg=3,
+ICrawl Update
+ICrawl Update: leg=1, phas.0, z=-80.0
+ICrawl Update: leg=2, 
+ICrawl Update: leg=3, phase=0.03
+ICrawl Update
+ICrawl Update: leg=1, phase=0.52, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.02, x=-80.0, y=-110.0, z=-70.0
+ICrawl Update: leg=3, phase=0.02, x=40.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.51, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.01, x=-80.0, y=-110.0, z=-75.0
+ICrawl Update
+IICrawl Update: leg=2, phase=0.00, x=-80.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.00, 
+ICrawl Update: leg=1, phase=0.49, x=-58.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phas=-78.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase
+ICICrawl Update: leg=2, phase=0.98, x=-76.0, y=-110.0, z=-80.0
+IICrawl Update
+ICrawl Update: leg=1, phase=0.47, x=-5
+ICrawl Update: leg=2, phase=0.97, x=-74.0, y=-110.0, z=-80.0
+ICrawl Update: 
+ICrawl Update
+ICrawl Update: leg=2, phase=0.96, x=-72.0, y=-110.0, z=-80.0
+date: leg=3, phase=0.96, x=48.0, y=-110.0, z=-80.0
+ICrawl Update
+ICICrawl Update: leg=2, phase=0.95, x=-70.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.95, x=50.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1,
+ICrawl Update: leg=2, phase=0.94, x=-68.0, y=-110.0, z=-80.0
+ICraw x=52.0, y=-110.0, z=-80.0
+ICrawl Update: leg=1,
+ICrawl Update: leg=2, phase=0.93, x=-66.0, y=-110.0, z=-80.0
+110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.42, x=-4
+ICrawl Update: leg=2, phase=0.92
+ICrawl Update: leg=3, phase=0.92, x=56.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.41, x=-42.0, y=110.0, z=-80.0
+ICrawl Update: leg=2,
+ICrawl Update: leg=3, phase=0.91, x=58.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.40, x=80.0, y=110.0, z=-80.0
+ICrawl Update: leg=1,
+ICrawl Update: leg=2, phase=0.90, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.90, x=60.0, y=-1
+ICrawl Update: l, phase=0.39, x=80.0, y=110.0, z=-75.0
+ICraICrawl , x=80.0, y=110.0, z=-70.0
+ICrawl Update: leg=1, phase=0.38, x=-40.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.88, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3,
+ICrawl 110.0, z=-65.0
+ICrawl Update: leg=1, phase=0.37, x=-40.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.87, x=-60.0, y=-110.0, z=-80.0
+IICrawl Update: leg=0, phase=0.36, x=80.0, y=110.0, z=-60.0
+ICrawl UpdICrawl Update: leg=2, phase=0.86, x=-60.0, y=-110.0, z=-80.0
+ICrawlICrawl Update: leg=0, phase=0.35, 
+ICrawl Update: leg=1, phase=0.35, x=-40.0, y=110.0, z=-80.0
+ICICrawl Update: leg=3, phase=0.85, 
+ICrawl Update
+ICrawl Update: leg=1, phase=0.34, x=-40.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.84, x=-60.0, y=-110.0, z=-80.0
+ICraICrawl Update
+ICrawl Update: leg=1, phase=0.33, x=-40.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.83, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.83, x=60.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.32=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.82, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.31, x=64.0, y=110.0, z=-55.0
+ICrawl Update: leg=1, phase=0.31, x=-40.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, 
+ICrawl Update: leg=0, phase=0.30, x=60.0, y=110.0, z=-55.0
+ICrawl UpdICrawl Update: leg=2, phase=0.80, x=-60.0, y=-110.0, z=-80.0
+ICrawl UpdICrawl Update
+ICrawl Update: leg=1, phase=0.29, x=-4
+ICrawl Update: leg=2, phase=0.79, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=
+ICrawl Update: leg=0, 
+ICrawl Update: leg=1, phase=0.28, x=-40.0, y=110.0, z=-80.0
+ICraw8, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.78, x=60.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl UpdICrawl Update: leg=2, phase=0.77, x=-60.0, y=-110.0, z=-80.0
+IICrawl Update
+ICrawl Update: leg=1,
+ICrawl Update: leg=2, phase=0.76, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.75, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.75, x=60.0, y=-110.0, z=-80.0
+ICraICrawl Update: leg=2, phase=0.74, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.74, x=60.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl UpdICrawl Update: leg=2, phase=0.73, x=-60.0, y=-110.0, z=-80.0
+.73, x=60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=1,
+ICrawl Update: leg=2, phase=0.72, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase= y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.21, x=-40.0, y=110.0, z=-80.0
+=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.20, x=-40.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, 
+ICrawl Update: leg=3,
+ICrawl Update: leg=0, phase=0.19, x=40.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.19, x=-40.0, y=110.0, z=-75.0
+ICrawl UpdICrawICrawl eg=0, phase=0.18, x=40.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.18, x=-40.
+ICrawl Update: leg=2, 
+ICrawl Update: leg=3,
+ICrawl 0.17, x=40.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.17, x=-4
+ICrawl Update: leg=2, phase=0.67, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.67, 
+ICrawl Update: leg=0, phase=0.16, x=40.0, y=110.0, z=-80.0
+IICrawl Update: leg=2, phase=0.66, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.15, x=40.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.15, x=-40.0, y=110.0, z=-55.0
+ICrawl Update: leg=2, phase=0.65, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3,
+wl Update: leg=1, phase=0.14, x=-44.0, y=110.0, z=-55.0
+ICrawl Update: leg=2, phase=0.64, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3,
+eg=1, phase=0.13, x=-48.0, y=110.0, z=-55.0
+ICrawl Update: leg=2, phase=0.63, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.63, x=60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=1, phas0.12, x=-52.0, y=110.0, z=-55.0
+ICrawl Update: leg=2, phase=0.62, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.62, x=60.0, y
+ICrawl Update
+ICrawl Update: leg=1, phase=0.11, x=-56.0, y=110.0, z=-55.0
+ICrawl Update: leg=2, phase=0.61, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Upz=-55.0
+ICrawl Update: leg=2, phase=0.60, x=-60.
+ICrawl Update: leg=3, phase=0.60, x=60.
+ICrawl Update
+ICrawl Update: leg=2, phase=0.59, x=-60.0, y=-110.0, z=-80.0
+ICrawl UpdICrawl Update: leg=2, phase=0.58, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.58, x=60.0, 
+ICrawl Update: leg=1, phase=0.07, x=-7
+ICrawl Update: leg=2, phase=0.57, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.57, x=60.0,
+ICrawl Update: leg=0, phase=0.06, x=40.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.06, x=-76.
+ICrawl Update: leg=2, phase=0.56, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.56, x=60.
+ICrawl Update
+ICraICrawl Update: leg=2, phase=0.55, x=-60.0, y=-110.0, z=-80.0
+ICrICrawl Update
+IICrawl Update: leg=2, phase=0.54, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.54, x=60.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.03, x=-8
+ICrawl Update: leg=2, phase=0.53
+ICrawl Update: leg=3, phase=0.53, x=60.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.02, 
+ICrawl Update: leg=2, phase=0.52, x=-60.0, y=-110.0, z=-80.0
+se=0.52, x=60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.01
+ICrawl Update: leg=2, phase=0.51, x=-60.0, y=-110.0, z=-80.0
+ICraw0.0, y=-110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.00, x=-8
+ICrawl Upd0, z=-80.0
+ICrawl Back End
+Back Walk St
+ICrawl Update: 
+ICrawl Update: leg=1, phase=0.00, x=-80.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.50, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.50, x=60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, 
+ICrawl Update: leg=1,
+ICrawl Update: leg=2, phas
+ICr0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.99, x=42.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.99, x=-78.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.49, x=-58.0, y=-110.0, z=-80.0
+ICrawl U z=-80.0
+ICrawl Update:
+ICrawl Update: leg=2, phase=0.48, x=-56.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, 
+ICrawl Update: leg=0, phase=0.97, x=46.0, y=110.0, z=-80.0
+ICrawl Update: leg=1,
+ICrawl Update: leg=2, phase=0.47, x=-54.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.47, x=6
+ICrawl Update: leg=0, phase=0.96, x=48.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.96, x=-7
+ICrawl ICrawl ICrawl Update: leg=0, phase=0.95, x=50.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.95, x=-70
+ICrawl Update: leg=2, phase=0.45, x=-50.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.94, x=52.0, y=110.0, z=-80.0
+ICrawl Update: leg=1,
+ICrawl Update: leg=2, phase=0.44, x=-48.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=
+ICrawl Update: l z=-80.0
+ICraICrawl Update: leg=2, phase=0.43, x=-46.0, y=-110.0, z=-80.0
+ICrawl Update: l
+ICrawl Update: leg=1, phase=0.92, x=-64.0, y=110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=3, phase=0.42, x=76.0, y=-110.0, z=-80.0
+ leg=1, phase=0.91, x=-62.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.41, x=-42.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.90, x=60.0, y=110.0, z=-80.0
+e=0.90, x=-60.0, y=110.0, z=-80.0
+ICrawl UpdICrawl Update: leg=3, phase
+ICrawl Update
+ICra0.0, y=110.0, z=-80.0
+ICrawl UpdICrawl Update: leg=3
+ICrawl Update: leg=0, phase=0.88, x=60.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.88, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.38
+ICrawl Update: le
+ICrawl Update: leg=0, phase=0.87, x=60.0, y=110.0, z=-80.0
+ICraICrawl Update: leg=2, phase=0.37, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl UpdICrawl Update: leg=2, phase=0.36, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase
+ICrawl Update
+ICrawl Update: leg=1, phase=0.85, x=-6
+ICrawl Update: leg=2, phase=0.35, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, 
+ICrawl Update: leg=0, 
+ICrawl Update: leg=1, phas
+ICrawl Update: leg=2, phase=0.34, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=
+ICrawl UpdICrawl Update: leg=2, phase=0.33, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3,
+ICrawl Update
+ICrawl Update: leg=1, phase=0.82, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.32,
+ICrICrawl Update: leg=2, 
+ICrawl te: leg=3, phase=0.31, x=64.0, y=-110.0, z=-55.0
+ICrawl Update: leg=1, phase=0.80, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.30, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=hase=0.30, x=60.0, y=-110.0, z=-55.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.79, x=-60.0, y=110.0, z=-80.0
+ICrICrawl =56.0, y=-110.0, z=-55.0
+ICrawl Update: leg=1, phase=0.78, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.28
+ICrawl Update: leg=3, phase=0.28, x=52.0, y=-110.0, z=-55.0
+ICrawl Update: leg=1, phase=0.77
+ICrawl Update: leg=2, phase=0.27, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.27, x=48.0, y=-110.0, z=-55.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.76, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.26, x=-40.0, y=-110.0, z=-80.0
+ate: leg=0, phase=0.75, x=60.0, y=110.0, z=-80.0
+ICrawl UpdICrawl Update: leg=2, phase=0.25, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.25, x=40.0, y=-110.0, z=-55.0
+ICrawl phase=0.74, x=60.0, y=110.0, z=-80.0
+ICICrawl Update: leg=2, phase=0.24
+ICrawl Update: leg=3, phase=0.24, x=40.0, y=-110.0, z=-60.0
+ICrawl x=60.0, y=110.0, z=-80.0
+ICrawl Update: leg=1,
+ICrawl Update: leg=2, phase=0.23, x=-40.0, y=-110.0, z=-80.0
+ICrawl UpICrawl Update: leg=0, phase=0.72, x=60.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.72, x=-6
+ICrawl Update: leg=2, phase=0.22, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.22, x=4
+ICrawl Update
+ICrawl Update: leg=1, phase=0.71, x=-6
+ICrawl Update: leg=2, phase=0.21, x=-40.0, y
+ICrawate: leg=1, phase=0.70, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.20, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, 
+phase=0.69, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.19, x=-40.0, y=-110.0, z=-75.0
+ICrawl Update: leg=3,
+ICrawl Update: leg=0, 
+x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.18, x=-40.0, y=-110.0, z=-70.0
+ICrawl Update: leg=3, phase=0.18, x=40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.67, x=60.0, y=110.0, z=-80.0
+ICra10.0, z=-80.0
+ICrawl Update: leg=2, phase=0.17
+ICrawl UpdICrawl Update
+ICrawl Update: leg=1, phase=0.66, x=0
+ICrawl Update
+ICrawl UpdICrawl Update: leg=0, phase=0.65, x=60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.15, x=-40.0, y=-110.0, z=-55.0
+ICrawl Update: leg=3, phase=0.
+ICrawl Update
+ICrawl Update: leg=1, phase=0.64, x=-60.0, y=110.0, z=-80.0
+ICrawl Update phase=0.14, x=-44.0, y=-110.0, z=-55.0
+IICrawl Update
+ICrawl Update: leg=1, phase=
+ICrawl Update: l x=-48.0, y=-110.0, z=-55.0
+ICrawl Update: leg=0, 
+ICrawl Update: leg=1, phase=0.62, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.12, x=-52.0, y=-110.0, z=-55.0
+ICrawl Update: leg=3, phase=0.12
+ICrawl Update
+ICrawl Update: leg=2, phase=0.11, x=-56.0, y=-110.0, z=-55.0
+ICrawl Update: leg=3, phase
+ICrawl UpICrawl Update: leg=2, phase=0.10, x=-60.0, y=-110.0, z=-55.0
+ICrawl Update: leg=3, phase=0.10, x=40.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl UpdICrawl Update: leg=2,
+ICrawl Update: leg=3, phase=0.09, x=40.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.58, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.08, x=-68.0, y=-110.0, z=-55.0
+ICrawl Update8, x=40.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.57, x=-6
+ICrawl Update: leg=2,
+ICraw=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.56, x=60.0, y=110.0, z=-80.0
+ICrawl UpdICrawl Update: leg=3, phase=0.06, x=40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.55, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.05, x=-8
+ICrawl Update: leg=3, phase=0.05, 
+ICrawl Update: leg=0, phase=0.54, x=60.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.54, x=-6
+ICrawl Update: leg=2, phase=0.04, x=-80.0, y=-110.0, z=-60.0
+ICrawl Update: leg=3, phase=0.04, x=40.0, y=-110.0, z=-80.0
+=0, phase=0.53, x=60.0, y=110.0, z=-80.0
+ICrICrawl Update: leg=2, phase=0.03
+ICrawl Upd52, x=60.0, y=110.0, z=-80.0
+ICraICrawl Update: leg=2, phase=0.02, x=-80.0, y=-110.0, z=-70.0
+ICrawl Update: leg=3, phase=0.02
+ICrawl y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.51, 
+ICrawl Update: leg=2, phase=0.01, x=-80.0, y=-110.0, z=-75.0
+ICrawl Update: leg=
+ICrawl Update: leg=0, phase=0.50, x=60.0, y=110.0, z=-80.0
+ICrawl Update: 
+ICrawl Update: leg=2, phase=0.00, x=-80.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.00, x=40.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.49, x=-58.0, y=110.0, z=-80.0
+ICrawl UpICrawl ICrawl Update: leg=0, phase=0.48, x=64.0, y=110.0, z=-80.0
+ICraw=1, phase=0.48, x=-56.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.98, x=-76.
+ICrawl Update: leg=3, phase=
+ICrawl Update: leg=0, phase=0.47, x=66.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.47, x=-54.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.97, x=-7
+ICrawl Update: 
+ICrawl Update: leg=0, phase=0.46, x=68.0, y=110.0, z=-80.0
+ICraw y=110.0, z=-80.0
+ICrawl UpdICrawl-80.0
+ICrawl Update: leg=2, phase=0.95
+ICrawl Update: leg=3,
+ICrawl Update
+ICraICrawl Update: leg=2, phase=0.94, x=-68.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.94, 
+ICrawlICrawl Update: leg=2, phase=0.93, x=-66.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1,
+ICrawl Update: leg=2, phase=0.92, x=-64.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.41, x=78.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.41, x=-4
+ICraw, y=-110.0, z=-80.0
+ICrawl Update: leg=0, 
+ICrawl Update: leg=1, phase=0.40, x=-40.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.90, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.90, 
+ICrawl Update
+ICrawl Update: leg=1, phase=0.39, x=-40.0, y=110.0, z=-80.0
+ICrICrawl Update: leg=3, phase=0.89, x=60.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawlICrawl Update: leg=2, phase=0.88, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.88, x=60.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.37, x=-40.0, y=110.0, z=-80.0
+ICrawl UpdICraw=0.87, x=60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, 
+ICrawl Update: leg=1, phase=0.36, x=-40.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.86, x=-60.0, y=-110.0, z=-80.0
+ICr0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.35, x=80.0, y=110.0, z=-55.0
+ICrawl ICrawl Update: leg=2, phase=0.85
+ICrawl Update: leg=3, phase= z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.34
+ICrawl Update: leg=2, phase=0.84
+Irawl Update: leg=0, phase=0.33, x=72.0, y=110.0, z=-55.0
+ICraICrawl Update: leg=2, phase=0.83, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.83, x=60.0, y=-110.0, z=-80.0
+ICrawl  leg=0, phase=0.32, x=68.0, y=110.0, z=-55.0
+ICrawl Update: leg=1, phase=0.32, x=-4
+ICrawl Update: leg=2, phase=0.82, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.82, x=60.0, y=-110.0, z=-80.0
+e=0.31, x=64.0, y=110.0, z=-55.0
+ICrawl Update: leg=1, phase=0.31, x=-40.0, y=110.0, z=-80.0
+ICrawl Update: leg=2,
+ICrawl Update: leg=3, phase=0.81, x=60.0, y=-110.0, z=-80.0
+ICrawl .0, y=110.0, z=-55.0
+ICrawl Update: leg=1, phase=0.30, x=-40.0, y=110.0, z=-80.0
+ICrawl Update: leg=2,
+ICrawl Update: leg=3, phase=0.80, x=60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.29, x=56.0, y=110.0, z=-55.0
+ICrawl Update: leg=1, phase=0.29, x=-4
+ICrawl Update: leg=2, phase=0.79, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.79, x=60.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.28, x=-40.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.78, x=-60.0, y=-110.0, z=-80.0
+ICICrawl Update
+ICrawl Update: leg=1, phase=0.27, x=-40.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.77, x=-60.0, y=-110.0, z=-80.0
+ICrawl Upde=0.26, x=-40.0, y=110.0, z=-80.0
+ICrawl Update: leg=2,
+ICrawl Update: leg=3, phase=0.76, 
+ICrawl Update: leg=0, 
+ICrawl Update: leg=1, phase=0.25, x=-40.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.75, x=-60.0, y=-110.0, z=-80.0
+ICrawl UpdICrawl Update
+, z=-80.0
+ICrawl Update: leg=2, phase=0.74
+ICrawl Update: leg=3, phase=
+ICrawl Update
+ICrawl Update: leg=2, phase=0.73, x=-60.0, y=-110.0, z=-80.0
+ICraICrawl Update: leg=0, 
+ICrawl Update: leg=1, phase=0.22, x=-40.
+ICrawl Update: leg=2, phase=0.72, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.
+ICrICrawl Update: leg=2, phase=0.71, x=-60.0, y=-110.0, z=-80.0
+ICrawl UICrawl Update: leg=0, 
+ICrawl Update: leg=1, phase=0.20, x
+ICrawl Update: leg=2,60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.19, x=40.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.19, x=-40.0, y=110.0, z=-75.0
+ICrawl Update: leg=2, phase=0.0, z=-80.0
+ICrawl Update: leg=0, phase=0.18, x=40.0, y=110.0, z=-80.0
+ICrawl Update: leg=1,
+ICrawl Update: leg=2, phase=0.68, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.68, x=60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.17, x=40.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.17, x=-40.0, y=110.0, z=-65.0
+ICrawl Update: leg=2, phase=0.67, x=-6
+ICrawl Update: leg=3, phase=0.67, x=60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.16, x=40.0, y=110.0, z=-80.0
+ICrawl Update: leg=1,
+ICrawl Update: leg=2, phase=0.66
+ICrawl Update: leg=3, hase=0.66, x=60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=1,
+ICrawl Update: leg=2, phase=0.65
+ICr=60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.14, x=40.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.14, x=-4
+ICrawl Update: leg=2, phase=0.64, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update0.0, z=-80.0
+ICrawl UpdICrawl Update: leg=2,
+
+ICrawl Update: leg=0, phase=0.12, x=40.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=
+ICrawl Update: leg=2, phase=0.62, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase
+ICrawl Update: leg=0, phase=0.11, x=40.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.11, x=-56.0, y=110.0, z=-55.0
+ICrawl Update: leg=2, phase=0.61, x=-60.0, y=-110.0, z=-80.0
+ICrawl phase=0.10, x=40.0, y=110.0, z=-80.0
+ICrawl Update: leg=1,
+ICrawl Update: leg=2, phase=0.60
+x=40.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.09, x=-6
+ICrawl Update: leg=2, phase=0.59
+0.0, z=-80.0
+ICrawl Update: leg=1, phase=0.08, x=-6
+ICrawICrawl Update: leg=3,
+ICrawl Update: leg=0, phase=0.07, x=40.0, y=110.0, z=-80.0
+ICraICrawl Update: leg=2, phase=0.57, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.57, 
+ICrawl Update
+ICrawl Update: leg=1, phase=0.06, x=-76.0, y=110.0, z=-55.0
+ICrawl Update: leg=2, phase=0.56
+ICrawl Update: leg=3, phase=0.56, x=60.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.05, x=-80.0, y=110.0, z=-55.0
+ICrawl Update: leg=2, phase=0.55
+ICrawl Update: leg=3, phase=
+ICrawl Update: leg=0, phase=0.04, x=40.0, y=110.0, z=-80.0
+ICrawx=-80.0, y=110.0, z=-60.0
+ICrawl ICrawl UpdICrawl Update: leg=0, phase=0.03, x=40.0, y=110.0, z=-80.0
+10.0, z=-65.0
+ICrawl Update: leg=2,
+ICrawl Update: leg=3, phase=0.
+ICrawl Update: leg=0, phase=0.02, x=40.0, y=110.0, z=-80.0
+ICraw0
+ICrawl Update: leg=2, phase=0.52
+ICrawl Update: leg=3, phase=0.52, x=60.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.01, x=-80.0, y=110.0, z=-75.0
+ICrawl Update: leg=2, phase=0.51, x=-60.0, y=-110.0, z=-80.0
+ICrawlICrawl Update: leg=0, phase=0.00, x=40.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.00, x=-80.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.50, x=-60.0, y=-110.0, z=-80.0
+ICrawl UpdICrawl Back End
+Back Walk Start
+ICrawl Update:
+ICrawl Update: leg=2, 
+ICrawl Update: leg=0, phase=0.00, x=40.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.00, x=-80.
+ICrawl Update: leg=2, phase=0.50, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.50, x=60.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: lhase=0.49, x=-58.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.49, x=62.0, y=-110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.98, x=-76.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.48, x=-56.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.48, x=64.0, y=-110.0, z=-80.0
+ICrawl Update: leg=1,
+ICrawl Update: 10.0, z=-80.0
+ICrawl Update: leg=3, 
+ICrawl Update
+ICrawICrawl Update: l0
+ICrawl Update: leg=0, 
+ICraICrawl Update: leg=2,
+ICrawl Update: leg=3, phase=0.45, x=70.0, y=-110.0, z=-80.0
+ICICrawl Update: leg=2, phase=0.44, x=-48.0, y=-110.0, z=-80.0
+IC phase=0.44, x=72.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.93, x=54.0, y=110.0, z=-80.0
+ICrawICrawl ICrawl Update: leg=3, phas x=74.0, y=-110.0, z=-80.0
+ICrawl UpdICrawl Update: leg=2, 
+ICraw110.0, z=-80.0
+ICrawl UpdICraw.0
+ICrawl ICrawl Update: leg=2, phase=0.40
+ICrawl Update: leg=3, phase=0.40
+ICrawl pdate: leg=0, phase=0.89, x=60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.39, x=-40.
+ICrawl Update: leg=3, phase=0.39
+ICrawl , phase=0.88, x=60.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.88, 
+ICrawl UpdICrawl , x=60.0, y=110.0, z=-80.0
+ICrICrawl Update: leg=2, phase=0.37, x=-40.0, y=-110.0, z=-80.0
+IICrawl 110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.86, x=-6
+ICrawl Update: leg=2, phase=0.36, x=-40.0, y=-11
+ICrawl Update: leg=3,
+ICrawl .0
+ICrawl UpdICrawl Update: leg=2, phase=0.35
+ICrawl Update: leg=3, phase=0.35, x=80.0, y=-110.0, z=-55.0
+ICrawl Update: leg=1, phase=0.84, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.34
+ICrawl Update: leg=3
+ICrawl Update
+ICrawl Update: leg=1, phase=0.83, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.33, x=-40.0, y=-110.0, z=-80.0
+IICrawl Update
+ICrawl Update: leg=1, phase=0.82, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.32, x=-40.0, y=-110.0, z=-80.0
+ICrawl UpICrawl Update: leg=0, phase=0.81, x=60.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.81, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.31, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, 
+ICrawl Update
+ICrawl Update: leg=1, phase=0.80, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.30, x=-4
+ICrawl Update: leg=3, phase=0.30, x=60.0, y=-110.0, z=-55.0
+ICrawl UpdICrawUpdate: leg=2, phase=0.29, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update
+ICrawl Update: leg=1, phase=0.78
+ICrawl Update: leg=2, phase=0.28, x=-40.0, y=-110.0, z=-80.0
+ICrawl UpICrawl Update: leg=0, 
+ICrawl Update: leg=1, phase=0.77, x=-60.
+ICrawl Update: leg=2, phase=0.27, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=
+ICrawl Update: leg=1, phase=0.76, x=-6
+ICrawy=-110.0, z=-80.0
+ICrawl UpICrawl Update
+ICrawl Update: leg=1, phase=0.75, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phas-80.0
+ICrawl Update: leg=3, phase=0.25
+ICrawl Update: leg=0, phase=0.74, x=60.0, y=110.0, z=-80.0
+ICrawl UpdICrawl UICrawl Update: leg=3, phase=0.24, x=40.0, y=-110.0, z=-60.0
+ICrawl Update: leg=2, phase=0.23
+ICrawl Update: leg=3, phase=0.23, x=40.0, y=-110.0, z=-65.0
+ICrawl Update: leg=2,
+ICrawl Update: leg=3, phas.22, x=40.0, y=-110.0, z=-70.0
+ICrawl Update: leg=1, phase=0.71, x=-6
+ICrawl Update: leg=2, phase=0.21, x=-40.0,
+ICraw y=-110.0, z=-75.0
+ICrawl Update: leg=0, 
+ICrawl Update: leg=1, phase=0.70, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.20, x=-40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.20, x=40.0, y=-110.0, z=-80.0
+ICrawl ICrawl Update: leg=2, phase=0.19, x=-40.0, y=-110.0, z=-75.0
+ICrawl Update: leg=3, phase=0.19, x=40.0, y=-110.0, z=-80.0
+wl Update: leg=0, phase=0.68, x=60.0, y=110.0, z=-80.0
+ICICrawl Update: leg=2, phase=0.18, x=-40.0, y=-1
+ICrawl Update: leg=3,
+ICrawl Update: leg=0, phase=0.67, x=60.0, y=110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=2, phase=0.17
+ICraICrawl Update: l0.66, x=60.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.66, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.16, x=-40.0, y=-110.0, z=-60.0
+ICrawl Update: leg=3, phase=0.16, 
+ICrawl Update: leg=0, phase=0.65, x=60.0, y=110.0, z=-80.0
+ICrawl UpdIICrawl UpdICrawl =-80.0
+ICrawl Update: leg=1, phase=0.64, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.14
+ICrawl Update: leg=3, phase=0.14
+ICrawl Update
+ICrwl Update: leg=1, phase=0.63, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, 
+ICrawl Update: leg=3, phase=0.13
+ICrawl Update
+ICrawl Update: leg=1, phase=0.62, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.12, x=-52.0, y=-110.0, z=-55.0
+ICrawl Update: leg=3, phase=0.12, x=40.0, y=-110.0, z=-80.0
+ICrawl Update
+ICraw0.61, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2,
+ICrawl Update: leg=1, phase=0.60, x=-60.0, y=110.0, z=-80.0
+ICrawICrawl Update: leg=3, phase=0.10
+z=-80.0
+ICICrawl UpdICrawl Update: leg=0, phase=0.58, x=60.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.58, x=-60.0, y=110.0, z=-80.0
+awl Update: leg=2, phase=0.08, x=-68.0, y=-110.0, z=-55.0
+ICrawl UICrawl 
+ICrawl UpdICrawl Update: leg=2, phase=0.07, x=-72.0, y=-110.0, z=-55.0
+ICrawl Update: leg=3, phase=0.07
+ICrawl Update
+ICrawl Update: leg=1, phase=0.56, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.06, x=-76.0, y=-110.0, z=-55.0
+ICrawl Update: leg=3, phase=0.06, x=40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.55, 
+ICrawl Update: leg=2, phase=0.05.0, y=-110.0, z=-55.0
+ICrawl UpdICrawl Update
+ICrawl UpdICrawl Update: leg=2, phase=0.04, x=-80.0, y=-110.0, z=-60.0
+ICrawl Update: leg=3, phase=0.04, x=40.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.53, x=-60.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.03, x=-80.0, y=-110.0, z=-65.0
+ICrawl Update: leg=3, phase=0.03, x=40.0, y=-110.0, z=-80.0
+ICrawl UpICrawl Update: leg=2, 
+: leg=3, phase=0.02, x=40.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=2, phase=0.01, 
+se=0.01, x=40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.50, x=60.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.50, x=-6
+ICrawl Update: leg=2, phase=0.00
+ICrawl Update: leg=3, phase=0.00, x=40.0, y=-110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.49, x=-58.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.99
+ICrawl Update: leg=3, phase=0.99, x=42.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, 
+ICrawl Update: leg=1, phase=0.48, x=-56.
+ICrawl Update: leg=2, phase=0.98, x=-76.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3,
+ICrawl Update
+ICrawl Update: leg=1,
+ICrawl Update: leg=2, phase=0.97, x=-74.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.97, x=46.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.46, x=68.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.46, x=-52.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.96, x=-72.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.96, x=48.0, y=-110.0, z=-80.0
+ICrawl ase=0.45, x=70.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.45, x=-5
+ICrawl Update: leg=2,
+ICrawl Update: leg=3, phase=0.95, x=50.0, y=-110.0, z=-80.0
+ICrawl 72.0, y=110.0, z=-80.0
+ICrawl Update: 
+ICrawl Update: leg=2, phase=0.94, x
+ICrawl Update: leg=3, phase=0.94, x=52.
+ICrawl 0, z=-80.0
+ICraICrawl Update: leg=2, phase=0.93, x=-66.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.93, x=54.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.42, x=76.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.42, x=-4
+ICrawl Update: leg=2, phase=0.92, x=-64.0, y=-110.0, z=-80.0
+ICrawl Update
+e: leg=1, phase=0.41, x=-42.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.91, x=-62.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.91, 
+ICrawl Update: leg=0, phase=0.40, x=80.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.40, x=-40.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.90, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phas-40.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.89, x=-6
+ICrawl Update: leg=3, phase=0.89, x=60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.38, x=80.0, y=110.0, z=-70.0
+ICrawl Update: leg=1,.0, z=-80.0
+ICrawl UpdICrawl Update: leg=3, phase=0.88, x=60.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.37, x=-40
+ICrawl Update: leg=2, phase=0.87, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.36, x=-40.0, y=110.0, z=-80.0
+ICte: leg=2, phase=0.86, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.86, x=60.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl UpdICrawl Update: leg=2, phase=0.85, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.85, x=60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.34, x=-4
+ICraw=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.84, 
+ICrawl Update
+ICrawl Update: leg=1, phase=0.33, x=-4
+ICraw10.0, z=-80.0
+ICrawl Update
+ICrawlICrawl Update: l0
+ICrawl Update
+ICrICrawl Update: leg=2, phase=0.81, x=-60.0, y=-110.0, z=-80.0
+date: leg=3, phase=0.81, x=60.0, y=-110.0, z=-80.0
+ICrawl Update
+ICraICrawl Update: leg=2, phase=0.80, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.80, x=60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.29, x=56.0, y=110.0, z=-55.0
+ICrawl Update: leg=1, phase=0.29, x=-40.0, y=110.0, z=-80.0
+ICrawlICrawl Update: leg=3, phase= x=60.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.28, x=-4
+ICrawl Update: leg=2, phase=0.78
+ICrawl Update: leg=3, phase=0.78, x=60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.27, x=48.0, y=110.0, z=-55.0
+ICrawl Update: leg=1, phase=0.27, x=-4
+ICrawl Update: leg=2, phase=0.77
+ICrawl Update: leg=3, phase=0.77, x=60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.26, x=44.0, y=110.0, z=-55.0
+ICrICrawl Update: leg=2, phase=0.76, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.76, 
+ICrawl pdate: leg=0, phase=0.25, x=40.0, y=110.0, z=-55.0
+ICraICrawl Update: leg=2, phase=0.75
+ICrawl Update: leg=3, phase=0.75, x=60.0, y=-110.0, z=-80.0
+ICrawl , phase=0.24, x=40.0, y=110.0, z=-60.0
+ICrawl Update: leg=1,
+ICrawl Update: leg=2, phase=0.74
+ICrawl Update: leg=3, phase=0.74, x=60.0, y=-110.0, z=-80.0
+, x=40.0, y=110.0, z=-65.0
+ICrawl Update: leg=1,
+ICrawl Update: leg=2, phase=0.73
+ICrawl Update: leg=3, phase=0.73, x=60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.22, x=40.0, y=110.0, z=-70.0
+ICrawl UpdICrawl Update: leg=3, phase=
+ICrawl .0
+ICrawl Update: leg=1, phase=0.21, x=-4
+ICrawl Update: leg=2, phase=0.71, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.71, 
+ICrawl Update: leg=1, phase=0.20, x=-40.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.70, x=-60.0,ICrawl Update: leg=3, phase=0.70, x=60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=0, phase=0.19, x=40.0, y=110.0, z=-80.0
+IC, phase=0.19, x=-40.0, y=110.0, z=-75.0
+ICrawl Update: leg=2, phase=0.69, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3,
+ICrawl Update: leg=1, phase=0.18, x=-40.0, y=110.0, z=-70.0
+ICrawl Update: leg=2, phase=0.68, x=-60.0, y=-110.0, z=-80.0
+ICrICrawl Update: leg=0, phase=0.17, x=40.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.17, x=-40.0, y=110.0, z=-65.0
+ICrawICrawl Update: leg=3, phase=
+ICrawl Update: leg=1, phas0.0
+ICrawl Update: leg=2, phase=0.66
+ICrawl Update: leg=3, phase=0.66, x=60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.15, x=-4
+Update: leg=2, phase=0.65, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.65, x=60.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1,
+ICrawl Update: leg=2, phase=0.64, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.64, x=60.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.13, x=-48.0, y=110.0, z=-55.0
+ICrawl Update: leg=2, phase=0.63, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3,
+ICrawl Update
+ICrawl Update: leg=1, phase=0.12, x=-52.0, y=110.0, z=-55.0
+ICrawl Update: y=-110.0, z=-80.0
+ICrawl Update: leg=3,
+ICrawl Update: leg=0, 
+ICraICrawl Up-80.0
+ICrawl Update: 
+ICrawl Update: leg=1, phase=0.10, x=-60.0, y=110.0, z=-55.0
+ICrawl Update: leg=2, phase=0.60, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.60, x=60.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.09, x=-6
+ICrawl Update: leg=2, phase=0.59, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.59, x=60.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=0.08, x=-68.0, y=110.0, z=-55.0
+ICrawl Update: leg=2,
+ICrawl Update: leg=3, phase=0.58, x=60.0, y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=
+ICrawl Update: leg=2, phase=0.57, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: y=-110.0, z=-80.0
+ICrawl Update
+ICrawl Update: leg=1, phase=
+ICrawl Update: leg=3, =-80.0
+ICrawl Update: leg=2, phase=0.55, x=-60.0, y=-110.0, z=-80
+ICrawl Update: leg=3, phase=0.55, x=60.0, y=-110.0, z=-80.0
+wl Update: leg=0, phase=0.04, x=40.0, y=110.0, z=-80.0
+ICrICrawl Update: leg=2, phase=0.54, x=-60.0, y=-110.0, z=-80.0
+ICraICrawl eg=0, phase=0.03, x=40.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.03, x=-8
+ICrawl Update: leg=2, phase=0.53, x=-60.0, y=-110.0, z=-80.0
+ICrawlICrawl Update: l0.02, x=40.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.02, x=-80.0, y=110.0, z=-70.0
+ICrawl , y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.01, x=-80.0, y=110.0, z=-75.0
+ICrawl Update: leg=2,
+ICrawl Update: leg=3, phase=0.51, 
+ICrawl Update: leg=0, phase=0.00, x=40.0, y=110.0, z=-80.0
+ICrawl Update: leg=1, phase=0.00, x=-80.0, y=110.0, z=-80.0
+ICrawl Update: leg=2, phase=0.50, x=-60.0, y=-110.0, z=-80.0
+ICrawl Update: leg=3, phase=0.50, x=60.0, y=-110.0, z=-80.0
+ICrawl Back End
+Received: 3
+moveLegWithOffset_test()0,1,2,3,4 or q
+1
+SetAnglesFromArray 1
+Leg0 angles (0.0, 0.0, 90.0)
+Leg1 angles (0.0, 0.0, 90.0)
+Leg2 angles (0.0, 0.0, 90.0)
+Leg3 angles (0.0, 0.0, 90.0)
+0
+SetAnglesFromArray 0
+Leg0 angles (0.0, 0.0, 0.0)
+Leg1 angles (0.0, 0.0, 0.0)
+Leg2 angles (0.0, 0.0, 0.0)
+Leg3 angles (0.0, 0.0, 0.0)
+3
+SetAnglesFromArray 3
+Leg0 angles (20.0, 0.0, 90.0)
+Leg1 angles (20.0, 0.0, 90.0)
+Leg2 angles (20.0, 0.0, 90.0)
+Leg3 angles (20.0, 0.0, 90.0)
+4
+SetAnglesFromArray 4
+Leg0 angles (0.0, 51.2, 25.0)
+Leg1 angles (0.0, 51.2, 25.0)
+Leg2 angles (0.0, 51.2, 25.0)
+Leg3 angles (0.0, 51.2, 25.0)
+0
+SetAnglesFromArray 0
+Leg0 angles (0.0, 0.0, 0.0)
+Leg1 angles (0.0, 0.0, 0.0)
+Leg2 angles (0.0, 0.0, 0.0)
+Leg3 angles (0.0, 0.0, 0.0)

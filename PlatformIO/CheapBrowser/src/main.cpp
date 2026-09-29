@@ -177,6 +177,9 @@ void loop() {
       cmd = {cmd_InitStatus}; // RobotStateの初期化
       Serial.println("Unknown command. Reset to initial pose.");
     }
+
+    // Executing CMD
+    xQueueSend(cmdQueue, &cmd, 0);
     
     // 次の命令を促す表示（シリアル入力があった時だけ出す）
     String str2 = "-- " + str_robot_name + " --\n";
