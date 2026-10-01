@@ -1,7 +1,7 @@
 void Bowing(RobotState *state)
 {
   //お辞儀をする関数
-  Serial.println("Bowing motion start..." );
+  logPrintln("Bowing motion start..." );
 
   RobotState start_r = *state;//初期姿勢
   RobotState target_r = *state;//目標姿勢（お辞儀姿勢）
@@ -16,7 +16,7 @@ void Bowing(RobotState *state)
     if(phase<=0.4)
     {
       // --- A. お辞儀をする動作） ---
-      Serial.println("Bowing...");
+      logPrintln("Bowing...");
       float ratio = phase / 0.4;
       for (int leg = 0; leg < 4; leg++) {
         glm::vec3 s = start_r.legs[leg].footPos;
@@ -28,7 +28,7 @@ void Bowing(RobotState *state)
     else if(phase<=0.6)
     {
       // --- B. 停止 ---
-      Serial.println("Bowing keep...");
+      logPrintln("Bowing keep...");
       for (int leg = 0; leg < 4; leg++) {
         pos = target_r.legs[leg].footPos;
         SetFootPosIKBodyCoordinateToRobotState(leg, pos, state);
@@ -37,7 +37,7 @@ void Bowing(RobotState *state)
     else if(phase<=1.0)
     {
       // --- C. 元の体勢に戻る動作 ---
-      Serial.println("Bowing return...");
+      logPrintln("Bowing return...");
       float ratio = (phase-0.6) / 0.4;
       for (int leg = 0; leg < 4; leg++) {
         glm::vec3 t = target_r.legs[leg].footPos;
@@ -50,7 +50,7 @@ void Bowing(RobotState *state)
     SetAnglesFromState(*state); // RobotStateからServoに反映
     delay(25); 
   }
-  Serial.println("Bowing done.");
+  logPrintln("Bowing done.");
   //delay(25); 
 
   // --- ここまで ---

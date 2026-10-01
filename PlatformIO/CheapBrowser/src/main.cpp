@@ -13,6 +13,7 @@
 #include <WebServer.h>
 
 #include "config.h"
+#include "SerialLog.h"
 
 WebServer server(80);
 
@@ -38,9 +39,9 @@ WebServer server(80);
 RobotState robotState; // ロボットの状態を保持する構造体
 String str_robot_name; // ロボット名を保持する変数
 
-// Init CMD Handler
+// Init CMD Handler und Log Queue
 QueueHandle_t cmdQueue;
-
+QueueHandle_t logQueue;
 // Server Include
 #include "server/html_server.h"
 
@@ -107,6 +108,9 @@ void setup() {
   cmdQueue = xQueueCreate(5, sizeof(MotionCmd));
   xTaskCreatePinnedToCore(motorTask, "MotorTask", 4096, NULL, 1, NULL, 0);
   
+  // Log Init
+  logInit();
+  
   // 先にWi-Fiを立ち上げる
   Serial.println("--- Initializing Wi-Fi ---");
   setupWiFi(); 
@@ -123,6 +127,9 @@ void setup() {
 
 //---------------------------------------------
 void loop() {
+  // CLear Log Messages
+  logFlush();
+
   // 常にWebサービス（スマホ）からのアクセスをチェック（止めてはいけない）
   server.handleClient();
 

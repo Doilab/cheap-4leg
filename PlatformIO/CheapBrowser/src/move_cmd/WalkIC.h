@@ -1,7 +1,7 @@
 void WalkIC(int repetitions) //間歇クロールによる前進歩行
 {
     //引数を繰り返し回数(repetitions)に変更
-    Serial.println("Walk Start");
+    logPrintln("Walk Start");
     IntermittentCrawlGait ICrawl; // 間歇クロール歩容のクラスインスタンス
     ICrawl.SetFootBaseDefault(); // 歩容の基準姿勢
     ICrawl.Update(0, &robotState); // 歩行の基準姿勢
@@ -22,7 +22,7 @@ void WalkIC(int repetitions) //間歇クロールによる前進歩行
     //ICrawl(0, &robotState); // 最後に止まる
     SetAnglesFromState(robotState);
 
-    Serial.println("ICrawl Walk End");
+    logPrintln("ICrawl Walk End");
 }
 
 // CMD

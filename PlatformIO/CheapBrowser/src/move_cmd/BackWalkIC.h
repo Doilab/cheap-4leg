@@ -1,6 +1,6 @@
 void BackWalkIC(int repetitions) //間歇クロールによる後退歩行
 {
-    Serial.println("Back Walk Start");
+    logPrintln("Back Walk Start");
     IntermittentCrawlGait ICrawl; // 間歇クロール歩容のクラスインスタンス
     ICrawl.SetFootBaseDefault(); // 歩容の基準姿勢
     ICrawl.Update_Back(0, &robotState); // 歩行の基準姿勢
@@ -19,7 +19,7 @@ void BackWalkIC(int repetitions) //間歇クロールによる後退歩行
     //ICrawl_Back(0,&robotState); // 最後に止まる
     ICrawl.Update_Back(0, &robotState); // 最後に止まる
     SetAnglesFromState(robotState); // RobotStateからServoに反映
-    Serial.println("ICrawl Back End");
+    logPrintln("ICrawl Back End");
 }
 
 // CMD

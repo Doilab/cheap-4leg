@@ -194,7 +194,7 @@ void IntermittentCrawlGait::Update(float phase, RobotState *state_out)
     SetFootPosIKBodyCoordinateToRobotState(leg, FPos2, state_out);
 
     sprintf(log_buffer, "ICrawl Update: leg=%d, phase=%.2f, x=%.1f, y=%.1f, z=%.1f", leg, leg_phase, FPos2.x, FPos2.y, FPos2.z);
-    Serial.println(log_buffer);
+    logPrintln(log_buffer);
   }
 }
 //---------------------------------------------

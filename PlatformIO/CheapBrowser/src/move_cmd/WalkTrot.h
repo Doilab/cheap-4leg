@@ -1,6 +1,6 @@
 void WalkTrot(int repetitions, int RotateMode) //トロット歩容による前進歩行
 {
-  Serial.println("Trot Walk Start");
+  logPrintln("Trot Walk Start");
   TrotGait  Trot; // トロット歩容のクラスインスタンス
   
   //Trot.SetFootBaseDefault(); // 歩容の基準姿勢をセット
@@ -21,7 +21,7 @@ void WalkTrot(int repetitions, int RotateMode) //トロット歩容による前�
   Trot.Update(0, RotateMode, &robotState); // 最後に止まる
   SetAnglesFromState(robotState); // 最終的な姿勢をServoに反映
 
-  Serial.println("Trot Walk End");
+  logPrintln("Trot Walk End");
 }
 
 // CMD 
