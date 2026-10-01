@@ -81,7 +81,10 @@ void InitStatus(RobotState *state)
 #include "move_cmd/WalkIC.h"
 //----------------------------------------------
 #include "move_cmd/BackWalkIC.h"
+//----------------------------------------------
+#include "move_cmd/ManualMovement.h"
 //---------------------------------------------
+
 
 //Include server files.
 #include "server/server.h"
@@ -153,6 +156,8 @@ void loop() {
       SetFootPosIKLegCoordinate_test();
     } else if (str1 == "5") {
       SetFootPosIKBodyCoordinate_test();
+    } else if (str1 == "6"){
+      ManualMove();
     } else if (str1.startsWith("w")) {
       if (str1.length() > 1) {
         int count = str1.substring(1).toInt();
@@ -191,7 +196,7 @@ void loop() {
     // 次の命令を促す表示（シリアル入力があった時だけ出す）
     String str2 = "-- " + str_robot_name + " --\n";
     Serial.println(str2);
-    Serial.println("0:Free, 1:PWM, 2:moveservo, 3:SetMotors, 4:IKLeg, 5:IKBody, w:walk, b:back, t:trot, h:hello");
+    Serial.println("0:Free, 1:PWM, 2:moveservo, 3:SetMotors, 4:IKLeg, 5:IKBody, 6:ManualMove, w:walk, b:back, t:trot, h:hello");
   }
 
   // ループが速すぎると通信が不安定になることがあるため、ごくわずかに待機
