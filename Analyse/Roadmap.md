@@ -25,9 +25,9 @@ Sinn dahinter ist es die Tritte schneller hintereinander auszu führen und so Da
 ## Work-Tree
 
 - [ ] Daten für Tritte sammeln
-  - [ ] Tritt zur Seie ermittelen der Gradzahlen
-  - [ ] Tritt zur Seite Implementieren
-  - [ ] Tritt nachforne ermittelen der Gradzahlen
-  - [ ] Tritt nachforne Implementieren
+  - [x] Tritt zur Seie ermittelen der Gradzahlen
+  - [x] Tritt zur Seite Implementieren
+  - [x] Tritt nachforne ermittelen der Gradzahlen
+  - [x] Tritt nachforne Implementieren
   - [ ] Websteuerung konzipieren
   - [ ] Websteuerung implementieren

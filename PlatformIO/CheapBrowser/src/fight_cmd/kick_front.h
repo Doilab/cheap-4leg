@@ -62,14 +62,13 @@ void Kick_Front(){
 
 
   Angles[0][1] = -20.0;
-  Angles[0][2] =  30.0;
+  Angles[0][2] =   0.0;
  
   AngleMove(Angles);
   delay(250);
 
 
   Angles[0][1] = -10.0;
-  Angles[0][2] =   0.0;
  
   AngleMove(Angles);
   delay(250);
