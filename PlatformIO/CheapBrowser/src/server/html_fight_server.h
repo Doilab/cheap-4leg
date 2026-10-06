@@ -1,5 +1,5 @@
 // Webブラウザに表示される操作画面
-void handleRoot() {
+void handleFightView() {
   String html = "<html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1.0'>";
   html += "<style>";
   // 背景設定
@@ -31,19 +31,22 @@ void handleRoot() {
   
   html += "<div class='grid'>";
   // 各ボタン（classで色を呼び出し）
+  
+  html += "  <button class='c-blue' onclick=\"fetch('/klr')\">Kick</button>";
   html += "  <button class='c-blue' onclick=\"fetch('/wf')\">↑F</button>";
-  html += "  <button class='c-blue' onclick=\"fetch('/home')\">Home</button>";
-  html += "  <button class='c-blue' onclick=\"fetch('/wb')\">↓B</button>";
+  html += "  <button class='c-blue' onclick=\"fetch('/kst')\">Kick</button>";
+  
   html += "  <button class='c-green' onclick=\"fetch('/tl')\">←CCW</button>";
-  html += "  <button class='c-green' onclick=\"fetch('/tf')\">Trot</button>";
+  html += "  <button class='c-green' onclick=\"fetch('/home')\">Home</button>";
   html += "  <button class='c-green' onclick=\"fetch('/tr')\">CW→</button>";
-  html += "  <button class='c-red' onclick=\"fetch('/i')\">Init</button>";
-  html += "  <button class='c-yellow' onclick=\"fetch('/bow')\">お辞儀</button>";
+  
+  html += "  <button class='c-red' onclick=\"fetch('/bow')\">お辞儀</button>";
+  html += "  <button class='c-yellow' onclick=\"fetch('/wb')\">↓B</button>";
   html += "  <button class='c-red' onclick=\"fetch('/0')\">Free</button>";
   html += "</div>";
 
   html += "<div class='footer'>M5Atom S3 Controller</div>";
-  html += "<button onclick=\"window.location.href='/fight'\">Fight View</button>";
+  html += "<button onclick=\"window.location.href='/'\">Return to Home</button>";
 
   html += "</body></html>";
   server.send(200, "text/html", html);

@@ -44,6 +44,7 @@ QueueHandle_t cmdQueue;
 QueueHandle_t logQueue;
 // Server Include
 #include "server/html_server.h"
+#include "server/html_fight_server.h"
 
 //---------------------------------------------
 void SetAnglesFromState(RobotState state)
