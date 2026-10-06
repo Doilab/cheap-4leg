@@ -43,10 +43,11 @@ void handleFightView() {
   html += "  <button class='c-red' onclick=\"fetch('/bow')\">お辞儀</button>";
   html += "  <button class='c-yellow' onclick=\"fetch('/wb')\">↓B</button>";
   html += "  <button class='c-red' onclick=\"fetch('/0')\">Free</button>";
+  
+  html += "  <button onclick=\"window.location.href='/'\">Return Home</button>";
   html += "</div>";
 
   html += "<div class='footer'>M5Atom S3 Controller</div>";
-  html += "<button onclick=\"window.location.href='/'\">Return to Home</button>";
 
   html += "</body></html>";
   server.send(200, "text/html", html);
