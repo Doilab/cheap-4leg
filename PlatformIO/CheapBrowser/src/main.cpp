@@ -86,6 +86,10 @@ void InitStatus(RobotState *state)
 //---------------------------------------------
 
 //---------------------------------------------
+// Importing Fight Support Commands
+//---------------------------------------------
+#include "fight_cmd/AngelMovement.h"
+//---------------------------------------------
 // Importing Fight Commands
 //---------------------------------------------
 #include "fight_cmd/kick_left_right.h"
