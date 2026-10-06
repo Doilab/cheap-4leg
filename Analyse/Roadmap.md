@@ -24,10 +24,15 @@ Sinn dahinter ist es die Tritte schneller hintereinander auszu führen und so Da
 
 ## Work-Tree
 
-- [ ] Daten für Tritte sammeln
+- [x] Daten für Tritte sammeln
   - [x] Tritt zur Seie ermittelen der Gradzahlen
   - [x] Tritt zur Seite Implementieren
   - [x] Tritt nachforne ermittelen der Gradzahlen
   - [x] Tritt nachforne Implementieren
-  - [ ] Websteuerung konzipieren
-  - [ ] Websteuerung implementieren
+  - [x] Websteuerung konzipieren
+  - [x] Websteuerung implementieren
+- [ ] Kampfsimulationen
+- [ ] Transformation zu Inverse Kinematiks
+  - [ ] Funkions Ideen
+  - [ ] Left-Right-Kick Update
+  - [ ] Straight- Kick Update
