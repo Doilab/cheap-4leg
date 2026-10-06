@@ -94,6 +94,9 @@ void InitStatus(RobotState *state)
 //---------------------------------------------
 #include "fight_cmd/kick_left_right.h"
 //---------------------------------------------
+#include "fight_cmd/kick_front.h"
+//---------------------------------------------
+
 
 
 //Include server files.
@@ -196,6 +199,11 @@ void loop() {
       cmd = {cmd_Kick_Left_Right};
       xQueueSend(cmdQueue, &cmd, 0);
       cmd = {cmd_BackWalkIC, 0};
+    } else if (str1 == "l") {
+      Serial.println("Kick");
+      cmd = {cmd_Kick_Front};
+      xQueueSend(cmdQueue, &cmd, 0);
+      cmd = {cmd_BackWalkIC, 0};
     } else if (str1 == "t") {
       Serial.println("Trot");
       cmd = {cmd_WalkTrot, 1, 1}; // 1回繰り返し、RotateMode=1（左回り）
@@ -211,7 +219,7 @@ void loop() {
     // 次の命令を促す表示（シリアル入力があった時だけ出す）
     String str2 = "-- " + str_robot_name + " --\n";
     Serial.println(str2);
-    Serial.println("0:Free, 1:PWM, 2:moveservo, 3:SetMotors, 4:IKLeg, 5:IKBody, 6:ManualMove, w:walk, b:back, t:trot, h:hello, k:kick");
+    Serial.println("0:Free, 1:PWM, 2:moveservo, 3:SetMotors, 4:IKLeg, 5:IKBody, 6:ManualMove, w:walk, b:back, t:trot, h:hello, k:kick_left, l:kick_front");
   }
 
   // ループが速すぎると通信が不安定になることがあるため、ごくわずかに待機
