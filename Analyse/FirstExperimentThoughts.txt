@@ -1,0 +1,12 @@
+The problem is as follows:
+The third leg is too weak.
+The leg is almost strong enough to hold half the body, the battery and the head.
+The two legs at the back hold the other half. (Or each a third.)
+The impact of the 0 leg is too much to handle.
+Sometimes the robot even loses height when walking or turning. 
+This didn't happen in the second fight after the battery change, so maybe it was a power problem.
+This indicates that the stress of the kick lingers in the system and weakens the motor.
+
+Right now, I have two ideas for solutions:
+Change the fighting stance to reduce the force on the three legs.
+Strengthen the robot leg so that it can withstand the force.
