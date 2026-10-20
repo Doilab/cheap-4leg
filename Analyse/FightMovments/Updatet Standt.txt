@@ -1,0 +1,71 @@
+-- Robot_No.3 --
+
+0:Free, 1:PWM, 2:moveservo, 3:SetMotors, 4:IKLeg, 5:IKBody, 6:ManualMove, w:walk, b:back, t:trot, h:hello, k:kick_left, l:kick_front
+Received: 6
+ManualMove: Enter Angle like ('x.x y.y z.z'), Enter = use the last numbers, 'q' to exit
+
+Leg 0 angles (0.0, 0.0, 90.0)
+Leg 1 angles (0.0, 0.0, 90.0)
+Leg 2 angles (0.0, 0.0, 90.0)
+Leg 3 angles (0.0, 0.0, 90.0)
+
+Leg 0 angles (-50.0, 0.0, 90.0)
+Leg 1 angles (0.0, 0.0, 90.0)
+Leg 2 angles (0.0, 0.0, 90.0)
+Leg 3 angles (0.0, -40.0, 0.0)
+
+Leg 0 angles (-50.0, 0.0, 100.0)
+Leg 1 angles (0.0, 0.0, 100.0)
+Leg 2 angles (0.0, 0.0, 100.0)
+Leg 3 angles (0.0, -40.0, 80.0)
+
+Leg 0 angles (-50.0, 0.0, 100.0)
+Leg 1 angles (0.0, 0.0, 100.0)
+Leg 2 angles (0.0, 0.0, 100.0)
+Leg 3 angles (0.0, -40.0, 120.0)
+
+Leg 0 angles (-50.0, 0.0, 100.0)
+Leg 1 angles (0.0, 0.0, 100.0)
+Leg 2 angles (0.0, 0.0, 100.0)
+Leg 3 angles (0.0, -40.0, 140.0)
+
+Leg 0 angles (-50.0, 0.0, 100.0)
+Leg 1 angles (0.0, 0.0, 100.0)
+Leg 2 angles (0.0, 0.0, 100.0)
+Leg 3 angles (0.0, 80.0, 140.0)
+
+Leg 0 angles (-50.0, 0.0, 100.0)
+Leg 1 angles (0.0, 0.0, 100.0)
+Leg 2 angles (0.0, 0.0, 100.0)
+Leg 3 angles (0.0, 80.0, 100.0)
+
+Leg 0 angles (0.0, 0.0, 0.0)
+Leg 1 angles (0.0, 0.0, 100.0)
+Leg 2 angles (0.0, 0.0, 100.0)
+Leg 3 angles (0.0, 80.0, 100.0)
+
+Leg 0 angles (-50.0, 0.0, 100.0)
+Leg 1 angles (0.0, 0.0, 100.0)
+Leg 2 angles (0.0, 0.0, 100.0)
+Leg 3 angles (0.0, 80.0, 100.0)
+
+Leg 0 angles (-50.0, 0.0, 100.0)
+Leg 1 angles (0.0, 0.0, 100.0)
+Leg 2 angles (0.0, 0.0, 100.0)
+Leg 3 angles (0.0, 80.0, 140.0)
+
+Leg 0 angles (-50.0, 0.0, 100.0)
+Leg 1 angles (0.0, 0.0, 100.0)
+Leg 2 angles (0.0, 0.0, 100.0)
+Leg 3 angles (0.0, -40.0, 140.0)
+
+Leg 0 angles (-50.0, 0.0, 100.0)
+Leg 1 angles (0.0, 0.0, 100.0)
+Leg 2 angles (0.0, 0.0, 100.0)
+Leg 3 angles (0.0, -40.0, 100.0)
+
+Leg 0 angles (0.0, 0.0, 100.0)
+Leg 1 angles (0.0, 0.0, 100.0)
+Leg 2 angles (0.0, 0.0, 100.0)
+Leg 3 angles (0.0, 0.0, 100.0)
+

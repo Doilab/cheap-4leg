@@ -20,13 +20,6 @@ void Kick_Left_Right(){
   AngleMove(Angles);
   delay(500);
 
- 
-  Angles[0][0] =  0.0;
-  Angles[0][2] = 90.0;
-
-  AngleMove(Angles);
-  delay(500);
-
   // Return to Normal
   MoveLeg3InStandartPosition(Angles);
   ReturnToWalkingPosition(Angles);

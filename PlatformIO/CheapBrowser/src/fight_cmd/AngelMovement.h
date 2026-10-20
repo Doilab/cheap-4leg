@@ -23,6 +23,14 @@ void SetInitialFightPosition(float Angles[4][3]) {
 
 void MoveLeg3InSupportPosition(float Angles[4][3]) {
   // Set Leg 3 in support Position
+  
+  // Using Leg 0 for stable Position
+  Angles[0][0] =  -70.0;
+  Angles[0][1] = 5.0;
+  Angles[0][2] = 90.0;
+  AngleMove(Angles);
+  delay(500);
+  
 
   Angles[3][0] = 70.0;
   AngleMove(Angles);
@@ -40,6 +48,11 @@ void MoveLeg3InSupportPosition(float Angles[4][3]) {
   
   // Position Tip 
   Angles[3][2] = 100; 
+  AngleMove(Angles);
+  delay(500);
+
+  // Return Leg 0 To init Position
+  Angles[0][0] =  0.0;
   AngleMove(Angles);
   delay(500);
 }
@@ -71,7 +84,7 @@ void MoveLeg3InStandartPosition(float Angles[4][3]) {
   delay(500);
 }
 
-void ReturnToWalkingPosition(flot Angles[4][3]) {
+void ReturnToWalkingPosition(float Angles[4][3]) {
   // Return to Walk Position
 
   Angles[0][0] =  40.0;
