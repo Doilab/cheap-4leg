@@ -7,7 +7,7 @@ void handleFightView() {
   html += "h1 { font-size: 28px; margin-bottom: 25px; letter-spacing: 2px; }";
   
   // グリッド配置
-  html += ".grid { display: grid; grid-template-columns: repeat(3, 80px); grid-gap: 30px; }";
+  html += ".grid { display: grid; grid-template-columns: repeat(5, 80px); grid-gap: 30px; }";
   
   // 基本ボタン設定（太い黒枠の白い正方形）
   html += "button { width: 100px; height: 100px; background-color: white; border: 8px solid #000; position: relative; font-size: 24px; font-weight: bold; cursor: pointer; transition: 0.1s; display: flex; align-items: center; justify-content: center; z-index: 1; }";
@@ -18,32 +18,40 @@ void handleFightView() {
   html += "button::before { content:''; position:absolute; top:-12px; left:-12px; right:-12px; bottom:-12px; border:3px solid currentColor; z-index: -1; pointer-events:none; }";
 
   // 各ボタンの色指定
-  html += ".c-red { color: #ff4d4d; }";    // 前進（赤）
-  html += ".c-blue { color: #00a8ff; }";   // 後退（青）
-  html += ".c-yellow { color: #ffbc00; }"; // お辞儀（黄）
-  html += ".c-green { color: #2ed573; }";  // リセット（緑）
+  html += ".c-red { grid-column: span 1; color: #ff4d4d; }";    // 前進（赤）
+  html += ".c-blue { grid-column: span 1; color: #00a8ff; }";   // 後退（青）
+  html += ".c-yellow { grid-column: span 1; color: #ffbc00; }"; // お辞儀（黄）
+  html += ".c-green { grid-column: span 1; color: #2ed573; }";  // リセット（緑）
 
   html += ".footer { margin-top: 35px; font-size: 12px; color: #777; }";
   html += "</style></head><body>";
 
   //html += "<h1>Cheap 4Leg Robot</h1>";
   html += "<h1>== " + str_robot_name + " ==</h1>";
-  
+
   html += "<div class='grid'>";
-  // 各ボタン（classで色を呼び出し）
+  // 各ボタン（classで色を呼び出し） 
+  html += "  <button class='c-blue' onclick=\"fetch('/klr')\">Kick LR</button>";
+  html += "  <button class='c-blue' onclick=\"fetch('/kfl')\">Kick FL</button>";
   
-  html += "  <button class='c-blue' onclick=\"fetch('/klr')\">Kick</button>";
   html += "  <button class='c-blue' onclick=\"fetch('/wf')\">↑F</button>";
-  html += "  <button class='c-blue' onclick=\"fetch('/kst')\">Kick</button>";
   
+  html += "  <button class='c-blue' onclick=\"fetch('/kfr')\">Kick FR</button>";
+  html += "  <button class='c-blue' onclick=\"fetch('/krl')\">Kick RL</button>";  
+
+  html += "  <div></div>";
   html += "  <button class='c-green' onclick=\"fetch('/tl')\">←CCW</button>";
   html += "  <button class='c-green' onclick=\"fetch('/home')\">Home</button>";
   html += "  <button class='c-green' onclick=\"fetch('/tr')\">CW→</button>";
-  
+  html += "  <div></div>";
+
+  html += "  <div></div>";
   html += "  <button class='c-red' onclick=\"fetch('/bow')\">お辞儀</button>";
   html += "  <button class='c-yellow' onclick=\"fetch('/wb')\">↓B</button>";
   html += "  <button class='c-red' onclick=\"fetch('/0')\">Free</button>";
-  
+  html += "  <div></div>";
+
+  html += "  <div></div>";
   html += "  <button onclick=\"window.location.href='/'\">Return Home</button>";
   html += "</div>";
 

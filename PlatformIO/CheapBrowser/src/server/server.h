@@ -32,9 +32,29 @@ void setupWiFi() {
     }
   );//トロット左ターン
   
-  server.on("/kst",    []() 
+  server.on("/kfl",    []() 
     {  
       MotionCmd cmd = {cmd_Kick_Front_Left};
+      xQueueSend(cmdQueue, &cmd, 0);
+      cmd = {cmd_BackWalkIC, 0};
+      xQueueSend(cmdQueue, &cmd, 0);
+      server.send(200, "text/plain", "OK"); 
+    }
+  );//トロット前進
+
+  server.on("/krl",    []() 
+    {  
+      MotionCmd cmd = {cmd_Kick_Right_Left};
+      xQueueSend(cmdQueue, &cmd, 0);
+      cmd = {cmd_BackWalkIC, 0};
+      xQueueSend(cmdQueue, &cmd, 0);
+      server.send(200, "text/plain", "OK"); 
+    }
+  );//トロット左ターン
+  
+  server.on("/kfr",    []() 
+    {  
+      MotionCmd cmd = {cmd_Kick_Front_Right};
       xQueueSend(cmdQueue, &cmd, 0);
       cmd = {cmd_BackWalkIC, 0};
       xQueueSend(cmdQueue, &cmd, 0);
