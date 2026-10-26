@@ -34,7 +34,7 @@ void setupWiFi() {
   
   server.on("/kst",    []() 
     {  
-      MotionCmd cmd = {cmd_Kick_Front};
+      MotionCmd cmd = {cmd_Kick_Front_Left};
       xQueueSend(cmdQueue, &cmd, 0);
       cmd = {cmd_BackWalkIC, 0};
       xQueueSend(cmdQueue, &cmd, 0);
