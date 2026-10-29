@@ -88,7 +88,9 @@ void InitStatus(RobotState *state)
 #include "move_cmd/BackWalkIC.h"
 //----------------------------------------------
 #include "move_cmd/ManualMovement.h"
-//---------------------------------------------
+//----------------------------------------------
+#include "move_cmd/stand_up.h"
+//----------------------------------------------
 
 
 //---------------------------------------------
@@ -144,6 +146,15 @@ void setup() {
   //ICrawl(0,&robotState); // 間歇クロール歩容の基準姿勢へ
   WalkIC(0); // 歩行の基準姿勢へ
   free_all(); // 脱力状態へ
+              
+  delay(500);
+
+  MotionCmd cmd;
+  cmd = {cmd_stand_up};
+  xQueueSend(cmdQueue, &cmd, 0);
+  cmd = {cmd_BackWalkIC, 0};
+  xQueueSend(cmdQueue, &cmd, 0);
+
 }
 
 //---------------------------------------------
