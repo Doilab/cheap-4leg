@@ -7,10 +7,10 @@ void handleFightView() {
   html += "h1 { font-size: 28px; margin-bottom: 25px; letter-spacing: 2px; }";
   
   // グリッド配置
-  html += ".grid { display: grid; grid-template-columns: repeat(5, 80px); grid-gap: 30px; }";
+  html += ".grid { display: grid; grid-template-columns: repeat(5, 40px); grid-gap: 30px; }";
   
   // 基本ボタン設定（太い黒枠の白い正方形）
-  html += "button { width: 100px; height: 100px; background-color: white; border: 8px solid #000; position: relative; font-size: 24px; font-weight: bold; cursor: pointer; transition: 0.1s; display: flex; align-items: center; justify-content: center; z-index: 1; }";
+  html += "button { width: 50px; height: 50px; background-color: white; border: 8px solid #000; position: relative; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.1s; display: flex; align-items: center; justify-content: center; z-index: 1; }";
   html += "button:active { transform: scale(0.95); opacity: 0.9; }";
 
   // --- 枠で囲う設定（beforeとafterを使って色枠をずらして配置） ---
