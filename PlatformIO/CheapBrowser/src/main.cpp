@@ -186,7 +186,7 @@ void loop() {
     } else if (str1 == "5") {
       SetFootPosIKBodyCoordinate_test();
     } else if (str1 == "6"){
-      ManualMove();
+      ManualMove(&robotState);
     } else if (str1.startsWith("w")) {
       if (str1.length() > 1) {
         int count = str1.substring(1).toInt();

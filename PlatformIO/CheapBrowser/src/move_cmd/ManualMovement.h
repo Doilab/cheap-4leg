@@ -26,13 +26,16 @@ void drawTable(float Angles[4][3], int curRow, int curCol) {
   Serial.println("W/S: Up/Down  A/D: Left/Right  Enter: Edit  J: Execute  Q: Exit");
 }
 
-void ManualMove() {
+void ManualMove(RobotState *state) {
   float Angles[4][3] = {};
   int curRow = 0;
   int curCol = 0;
 
-  // Initiale Winkel aus aktuellem Roboter-Zustand übernehmen wäre hier möglich
-  // vorerst 0.0
+  for (int leg = 0; leg < 4; leg++) {
+    Angles[leg][0] = state->legs[leg].jointAngles[0];
+    Angles[leg][1] = state->legs[leg].jointAngles[1];
+    Angles[leg][2] = state->legs[leg].jointAngles[2];
+  }
 
   drawTable(Angles, curRow, curCol);
 

@@ -6,7 +6,7 @@ void SetInitialFightPositionSupportRightLeg(float Angles[4][3]) {
 
   // Set Leg 3 in support Position
   // Using Leg 0 for stable Position
-  Angles[0][0] =  -70.0;
+  Angles[0][0] =  -50.0;
   Angles[0][1] = 5.0;
   Angles[0][2] = 90.0;
   LegMove(Angles, 0);
@@ -38,7 +38,7 @@ void SetInitialFightPositionSupportRightLeg(float Angles[4][3]) {
 void ReturnToWalkingPositionSupportRightLeg(float Angles[4][3]) {
   // Return Leg 3 in normal Position
   // Using Leg 0 for stable Position
-  Angles[0][0] =  -70.0;
+  Angles[0][0] =  -50.0;
   Angles[0][1] = 5.0;
   Angles[0][2] = 90.0;
   LegMove(Angles, 0);
