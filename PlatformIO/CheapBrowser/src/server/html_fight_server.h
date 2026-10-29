@@ -53,6 +53,7 @@ void handleFightView() {
 
   html += "  <div></div>";
   html += "  <button onclick=\"window.location.href='/'\">Return Home</button>";
+  html += "  <button onclick=\"fetch('/standup')\">Stand Up</button>";
   html += "</div>";
 
   html += "<div class='footer'>M5Atom S3 Controller</div>";

@@ -66,6 +66,15 @@ void setupWiFi() {
   server.on("/i",     []() { MotionCmd c={cmd_InitStatus};    xQueueSend(cmdQueue,&c,0); server.send(200, "text/plain", "OK"); });//初期化姿勢（足を伸ばした状態）
   server.on("/0",     []() { MotionCmd c={cmd_free};          xQueueSend(cmdQueue,&c,0); server.send(200, "text/plain", "OK"); });//脱力
   
+  server.on("/standup",    []() 
+    {  
+      MotionCmd cmd = {cmd_stand_up};
+      xQueueSend(cmdQueue, &cmd, 0);
+      cmd = {cmd_BackWalkIC, 0};
+      xQueueSend(cmdQueue, &cmd, 0);
+      server.send(200, "text/plain", "OK"); 
+    }
+  );
 
   server.begin();
   Serial.println("HTTP Server Started");
