@@ -73,6 +73,10 @@ void InitStatus(RobotState *state)
 //---------------------------------------------
 #include "move_cmd/cmd_strc.h"
 //---------------------------------------------
+// Importing Fight Support Commands
+//---------------------------------------------
+#include "fight_cmd/AngelMovement.h"
+//---------------------------------------------
 // Importing movement Commands
 //---------------------------------------------
 #include "move_cmd/Bowing.h"
@@ -86,10 +90,7 @@ void InitStatus(RobotState *state)
 #include "move_cmd/ManualMovement.h"
 //---------------------------------------------
 
-//---------------------------------------------
-// Importing Fight Support Commands
-//---------------------------------------------
-#include "fight_cmd/AngelMovement.h"
+
 //---------------------------------------------
 // Importing Fight Commands
 //---------------------------------------------

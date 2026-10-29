@@ -3,67 +3,75 @@
 
 #include <Arduino.h>
 #include "../movement/servo.h"
+#include "../SerialLog.h"
 
-bool parseThreeFloats(const String& input, float& a, float& b, float& c) {
-  int idx1 = input.indexOf(' ');
-  if (idx1 < 0) return false;
-  
-  int idx2 = input.indexOf(' ', idx1 + 1);
-  if (idx2 < 0) return false;
+void drawTable(float Angles[4][3], int curRow, int curCol) {
+  Serial.println("\n=== Manual Movement Editor ===");
+  Serial.println("       Th1      Th2      Th3");
+  Serial.println("  +--------+--------+--------+");
 
-  a = input.substring(0, idx1).toFloat();
-  b = input.substring(idx1 + 1, idx2).toFloat();
-  c = input.substring(idx2 + 1).toFloat();
-  return true;
+  for (int leg = 0; leg < 4; leg++) {
+    char buf[80];
+    Serial.printf("L%d|", leg);
+    for (int joint = 0; joint < 3; joint++) {
+      if (leg == curRow && joint == curCol) {
+        Serial.printf(">%5.1f< |", Angles[leg][joint]);
+      } else {
+        Serial.printf(" %5.1f  |", Angles[leg][joint]);
+      }
+    }
+    Serial.println();
+    Serial.println("  +--------+--------+--------+");
+  }
+  Serial.println("W/S: Up/Down  A/D: Left/Right  Enter: Edit  J: Execute  Q: Exit");
 }
 
 void ManualMove() {
   float Angles[4][3] = {};
-  char buf[64];
+  int curRow = 0;
+  int curCol = 0;
 
-  Serial.println("ManualMove: Enter Angle like ('x.x y.y z.z'), Enter = use the last numbers, 'q' to exit");
+  // Initiale Winkel aus aktuellem Roboter-Zustand übernehmen wäre hier möglich
+  // vorerst 0.0
 
-  while(1) {
-    for (int i = 0; i < 4; i++) {
-      sprintf(buf, "Leg %d > ", i);
-      Serial.println(buf);
+  drawTable(Angles, curRow, curCol);
 
-      // Wait till input
+  while (1) {
+    if (Serial.available() <= 0) continue;
+
+    String input = Serial.readString();
+    input.trim();
+    char key = input.length() > 0 ? tolower(input[0]) : 0;
+
+    if (key == 'q') {
+      logPrintln("ManualMove: Exit");
+      return;
+    }
+    else if (key == 'w') curRow = (curRow + 3) % 4;  // Up
+    else if (key == 's') curRow = (curRow + 1) % 4;  // Down
+    else if (key == 'a') curCol = (curCol + 2) % 3;  // Left
+    else if (key == 'd') curCol = (curCol + 1) % 3;  // Right
+    else if (key == 'j') {                           // Execute
+      AngleMove(Angles);
+    }
+    else if (input.length() == 0 || key == '\n' || key == '\r') {
+      // Enter: Value edit
+      char prompt[40];
+      sprintf(prompt, "Leg%d Th%d [%.1f] > ", curRow, curCol, Angles[curRow][curCol]);
+      Serial.print(prompt);
+
       while (Serial.available() <= 0) { ; }
-      String str = Serial.readString();
-      str.trim();
+      String val = Serial.readString();
+      val.trim();
 
-      if (str == "q") {
-        Serial.println("ManualMove: exit");
-        return;
+      if (val.length() > 0) {
+        float newVal = val.toFloat();
+        Angles[curRow][curCol] = newVal;
       }
-      
-      if (str.length() == 0) {
-        continue; // Use last floats
-      }
-
-      float a, b, c;
-      if (parseThreeFloats(str, a, b, c)) {
-        Angles[i][0] = a;
-        Angles[i][1] = b;
-        Angles[i][2] = c;
-      } else {
-        Serial.println("Invaild Input, please retry");
-        i--; // decrease counter to retry
-      }
+      // emthy → save old Value
     }
 
-    // Move all 4 Legs
-    Serial.println();
-    for (int leg = 0; leg < 4; leg++) {
-      float x = Angles[leg][0];
-      float y = Angles[leg][1];
-      float z = Angles[leg][2];
-      moveLegWithOffset(leg, x, y, z);
-      sprintf(buf, "Leg %d angles (%.1f, %.1f, %.1f)", leg, x, y, z);
-      Serial.println(buf);
-    }
-    Serial.println();
+    drawTable(Angles, curRow, curCol);
   }
 }
 
