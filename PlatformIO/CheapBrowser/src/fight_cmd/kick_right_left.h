@@ -1,8 +1,14 @@
 #include "SerialLog.h"
 
-void Kick_Right_Left(){
-  
-  float Angles[4][3] = {};
+void Kick_Right_Left(RobotState *state) {
+
+  float Angles[4][3];
+
+  for (int leg = 0; leg < 4; leg++) {
+    for (int j = 0; j < 3; j++) {
+      Angles[leg][j] = state->legs[leg].jointAngles[j];
+    }
+  }
   
   SetInitialFightPositionSupportLeftLeg(Angles);
 
@@ -23,4 +29,4 @@ void Kick_Right_Left(){
   ReturnToWalkingPositionSupportLeftLeg(Angles);
 }
 
-void cmd_Kick_Right_Left(RobotState* s, int, int)    { Kick_Right_Left(); }
+void cmd_Kick_Right_Left(RobotState* s, int, int)    { Kick_Right_Left(s); }

@@ -1,7 +1,13 @@
-void Kick_Front_Right(){
+void Kick_Front_Right(RobotState *state) {
 
-  float Angles[4][3] = {};
-  
+  float Angles[4][3];
+
+  for (int leg = 0; leg < 4; leg++) {
+    for (int j = 0; j < 3; j++) {
+      Angles[leg][j] = state->legs[leg].jointAngles[j];
+    }
+  }
+
   SetInitialFightPositionSupportLeftLeg(Angles);
 
   // Begin Attack Move
@@ -52,4 +58,4 @@ void Kick_Front_Right(){
   ReturnToWalkingPositionSupportLeftLeg(Angles);
 }
 
-void cmd_Kick_Front_Right(RobotState* s, int, int)    { Kick_Front_Right(); }
+void cmd_Kick_Front_Right(RobotState* s, int, int)    { Kick_Front_Right(s); }
