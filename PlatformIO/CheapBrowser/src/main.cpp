@@ -35,6 +35,7 @@ WebServer server(80);
 
 //間歇クロール歩容
 #include "movement/intermittent_crawl_gait.h"
+#include "IK/SidewayMovement.h"
 
 RobotState robotState; // ロボットの状態を保持する構造体
 String str_robot_name; // ロボット名を保持する変数
@@ -84,6 +85,8 @@ void InitStatus(RobotState *state)
 #include "move_cmd/WalkTrot.h"
 //----------------------------------------------
 #include "move_cmd/WalkIC.h"
+//-----------------------------------------------
+#include "move_cmd/WalkSideway.h"
 //----------------------------------------------
 #include "move_cmd/BackWalkIC.h"
 //----------------------------------------------
@@ -210,6 +213,8 @@ void loop() {
     } else if (str1 == "h") {
       Serial.println("Hello!");
       cmd = {cmd_Bowing};
+    } else if (str1 == "e") {
+      cmd = {cmd_WalkSidway, 2};
     } else if (str1 == "n") {
       Serial.println("Kick");
       cmd = {cmd_Kick_Left_Right};
