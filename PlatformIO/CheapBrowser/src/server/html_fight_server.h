@@ -39,11 +39,11 @@ void handleFightView() {
   html += "  <button class='c-blue' onclick=\"fetch('/kfr')\">Kick FR</button>";
   html += "  <button class='c-blue' onclick=\"fetch('/krl')\">Kick RL</button>";  
 
-  html += "  <div></div>";
   html += "  <button class='c-green' onclick=\"fetch('/tl')\">←CCW</button>";
+  html += "  <button class='c-green' onclick=\"fetch('/wl')\">←L</button>";
   html += "  <button class='c-green' onclick=\"fetch('/home')\">Home</button>";
+  html += "  <button class='c-green' onclick=\"fetch('/wr')\">R→</button>";
   html += "  <button class='c-green' onclick=\"fetch('/tr')\">CW→</button>";
-  html += "  <div></div>";
 
   html += "  <div></div>";
   html += "  <button class='c-red' onclick=\"fetch('/bow')\">お辞儀</button>";
