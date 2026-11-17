@@ -15,116 +15,100 @@ class SidewayGait {
       // コンストラクタで必要な初期化を行う
     };
     void SetFootBaseDefault(void);
+    float Transition(float phase, float start, float length);
     glm::vec3 ICRectangleFootMotion(float phase, int Leg);
     void Update(float phase, RobotState *state_out);
     void Update_Back(float phase, RobotState *state_out);
 };
 //---------------------------------------------
+float SidewayGait::Transition(float phase, float start, float length) 
+{
+  return (phase - start) / length;
+}
 
 //---------------------------------------------
 glm::vec3 SidewayGait::ICRectangleFootMotion(float phase, int Leg )
 {
-  //脚先  １個分を長方形状に動かす動作生成の関数
-  //間歇クロール専用
-  //float stride = 40;//歩幅
-  //float f_height = 25;//遊脚高さ
-  float x,y,z;
-  float dp, ratio;
+  //float stride = 40;
+  //float f_height = 25;
+  float x = 0, y = 0, z = 0;
 
   bool flagFrontLeg = (Leg == 1) || (Leg == 0);
   bool flagLeft = (Leg == 1) || (Leg == 2);
 
+  // x
+  if (flagLeft) { 
+    x = -20; 
+  }
+  else { 
+    x = 30; // Front Side needs the Legs further out.
+  }
+
+
+  // y 
   if((phase<=0)||(phase>=1.0))
   {
-    //front/rear関係なく同じ位置
-      y=(-0.5*stride);
-      z=0;
+      y = -0.5*stride;
   }
-  else if((phase>0)&&(phase<=0.40))
+  else if((0<phase)&&(phase<=0.40))
   {
-    if(!flagFrontLeg)//後脚の場合
+    float y_phase = phase;
+    if(flagFrontLeg) { y_phase = phase - 0.2; }
+
+    if(y_phase<=0.05)//[0, 0.05][-0.2, 0.05]
     {
-        if(phase<=0.05)//足上げ
-        {
-          dp=phase;
-          ratio=dp/0.05;
-          z=f_height*ratio;
-          y=-0.5*stride;
-        }
-        else if(phase<=0.15)//足復帰
-        {
-          dp=phase-0.05;
-          ratio=dp/0.10;
-          y=stride*ratio-0.5*stride;
-          z=f_height;
-        }
-        else if(phase<=0.20)//足おろし
-        {
-          dp=phase-0.15;
-          ratio=dp/0.05;
-          y=0.5*stride;
-          z=f_height*(1-ratio);
-        }
-        else if(phase<=0.4)//待機
-        {
-          y=0.5*stride;
-          z=0;
-        }
+      y = -0.5*stride;
     }
-    else if(flagFrontLeg)//前脚の場合
+    else if(y_phase<=0.15)//[0.05, 0.15]
     {
-        if(phase<0.20)//待機
-        {
-          y=(-0.5*stride);
-          z=0;
-        }
-        else if(phase<=0.25)//足上げ
-        {
-          dp=phase-0.20;
-          ratio=dp/0.05;
-          z=f_height*ratio;
-          y=-0.5*stride;
-        }
-        else if(phase<=0.35)//足復帰
-        {
-          dp=phase-0.25;
-          ratio=dp/0.10;
-          y=stride*ratio-0.5*stride;
-          z=f_height;
-        }
-        else if(phase<=0.40)//足おろし
-        {
-          dp=phase-0.35;
-          ratio=dp/0.05;
-          y=0.5*stride;
-          z=f_height*(1-ratio);
-        }
+      y = stride * (Transition(y_phase, 0.05, 0.10) -0.5);
+    }
+    else if(y_phase<=0.20)//[0.15, 0.4][0.15, 0.2]
+    {
+      y = 0.5*stride;
     }
   }
-  else if((phase>0.40)&&(phase<0.5))//胴体推進1（足後ろに）
+  else if((0.40<phase)&&(phase<0.5))//胴体推進1（足後ろに）
   {
-    dp=phase-0.4;
-    ratio=dp/0.10;
-    y=0.5*stride - stride*0.5*(ratio);
-    z=0;
+      y = 0.5*stride * (1 - Transition(phase, 0.4, 0.10));
   }
   else if(phase<=0.9)//半周期後の姿勢で待機
   {
-    //front/rear関係なく同じ位置
-      y=0;
-      z=0;
+      y = 0;
   }
   else if(phase<=1.0)//胴体推進2（足後ろに）
   {
-    dp=phase-0.9;
-    ratio=dp/0.10;
-    y= (-stride*0.5*(ratio));
-    z=0;
+      y = -0.5*stride * Transition(phase, 0.9, 0.10);
   }
 
-  if (flagLeft){ x = -20; }
-  else { x = 30; }
 
+  // z
+  if((phase<=0)||(0.40<phase))// On Ground
+  {
+    z = 0;
+  }
+  else //if((0<phase)&&(phase<=0.40))
+  {
+    float z_phase = phase;
+    if(flagFrontLeg) { z_phase = phase - 0.2; }
+    
+    if ((z_phase < 0)||(0.2 < z_phase))
+    { 
+      z = 0;
+    }
+    else if(z_phase<=0.05)//[0, 0.05]
+    {
+      z = f_height * Transition(z_phase, 0, 0.05);
+    }
+    else if(z_phase<=0.15)//[0.05, 0.15]
+    {
+      z=f_height;
+    }      
+    else if(z_phase<=0.20)//[0.15, 0.20]
+    {
+      z = f_height * (1 - Transition(z_phase, 0.15, 0.05));
+    }
+  }
 
   glm::vec3 pos_out(x, y, z);
 
