@@ -89,6 +89,8 @@ void InitStatus(RobotState *state)
 #include "move_cmd/WalkSideway.h"
 //----------------------------------------------
 #include "move_cmd/BackWalkIC.h"
+//-----------------------------------------------
+#include "move_cmd/BackWalkSideway.h"
 //----------------------------------------------
 #include "move_cmd/ManualMovement.h"
 //----------------------------------------------
@@ -213,8 +215,26 @@ void loop() {
     } else if (str1 == "h") {
       Serial.println("Hello!");
       cmd = {cmd_Bowing};
-    } else if (str1 == "e") {
-      cmd = {cmd_WalkSidway, 2};
+    } else if (str1.startsWith("q")) {
+      if (str1.length() > 1) {
+        int count = str1.substring(1).toInt();
+        if (count <= 0) count = 1;
+        cmd = {cmd_WalkSidway, count};
+      } else {
+        Serial.println("Reset Forward Pose");
+        //ICrawl(0,&robotState);
+        cmd = {cmd_WalkIC, 0};
+      }
+    } else if (str1.startsWith("e")) {
+      if (str1.length() > 1) {
+        int count = str1.substring(1).toInt();
+        if (count <= 0) count = 1;
+        cmd = {cmd_BackWalkSidway, count};
+      } else {
+        Serial.println("Reset Forward Pose");
+        //ICrawl(0,&robotState);
+        cmd = {cmd_WalkIC, 0};
+      }
     } else if (str1 == "n") {
       Serial.println("Kick");
       cmd = {cmd_Kick_Left_Right};
